@@ -23,10 +23,10 @@ namespace sdk.demo
     * @Important:
     *   开发者访问小米开放平台(https://dev.mi.com/console/man/)，申请appId/appKey/appSecurity
     **/
-        private static string url = "http://10.38.162.149/api/account/token";
-        private static string appId = "2882303761517479657";
-        private static string appKey = "5221747911657";
-        private static string appSecurity = "PtfBeZyC+H8SIM/UXhZx1w==";
+        private static string url = "https://mimc.chat.xiaomi.net/api/account/token";
+        private static string appId = "2882303761517613988";
+        private static string appKey = "5361761377988";
+        private static string appSecurity = "2SZbrJOAL1xHRKb7L9AiRQ==";
 
         private string appAccount1 = "leijun";
         private string appAccount2 = "linbin";
@@ -117,7 +117,7 @@ namespace sdk.demo
 
             public void statusChange(bool isOnline, string errType, string errReason, string errDescription)
             {
-                logger.DebugFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", this.appAccount, isOnline, errType, errReason, errDescription);
+                logger.InfoFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", this.appAccount, isOnline, errType, errReason, errDescription);
             }
         }
 
@@ -134,19 +134,16 @@ namespace sdk.demo
                 logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetCount:{1}", this.appAccount, packets.Count);
                 foreach (P2PMessage msg in packets)
                 {
-                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, payload:{2}", 
-                        this.appAccount, msg.getPacketId(), System.Text.Encoding.UTF8.GetString(msg.getPayload()));
+                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}", 
+                        this.appAccount, msg.getPacketId(), msg.getSequence(), msg.getTimestamp(), 
+                        System.Text.Encoding.UTF8.GetString(msg.getPayload()));
                 }
-            }
-
-            public void HandleGroupMessage(List<P2TMessage> packets)
-            {
-                
             }
 
             public void HandleServerACK(ServerAck serverAck)
             {
-                logger.DebugFormat("{0} MIMCMessageHandler HandleServerACK message:{1}", this.appAccount, serverAck.getPacketId());
+                logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}", 
+                    this.appAccount, serverAck.getPacketId(), serverAck.getSequence(), serverAck.getTimestamp());
             }
         }
         class MIMCCaseTokenFetcher : IMIMCTokenFetcher
