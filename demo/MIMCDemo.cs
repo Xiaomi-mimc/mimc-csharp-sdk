@@ -30,15 +30,18 @@ namespace sdk.demo
 
         private string appAccount1 = "leijun";
         private string appAccount2 = "linbin";
-        private User leijunUser;
-        private User linbinUser;
+        private User leijun;
+        private User linbin;
 
         static ILog logger = LogManager.GetLogger("log");
         public static void Main(string[] args)
         {
             logger.DebugFormat("demo start");
             MIMCDemo demo = new MIMCDemo();
-            demo.ready();
+            if (!demo.ready())
+            {
+                return;
+            }
             demo.sendMessage();
             Thread.Sleep(2000);
 
@@ -47,52 +50,63 @@ namespace sdk.demo
         }
         public MIMCDemo()
         {
-            leijunUser = new User(long.Parse(appId), appAccount1);
-            leijunUser.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecurity, url, appAccount1));
-            leijunUser.RegisterOnlineStatusHandler(new OnlineStatusHandler(leijunUser.AppAccount()));
-            leijunUser.RegisterMIMCMessageHandler(new MIMCMessageHandler(leijunUser.AppAccount()));
+            leijun = new User(long.Parse(appId), appAccount1);
+            leijun.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecurity, url, appAccount1));
+            leijun.RegisterOnlineStatusHandler(new OnlineStatusHandler(leijun.AppAccount()));
+            leijun.RegisterMIMCMessageHandler(new MIMCMessageHandler(leijun.AppAccount()));
 
-            linbinUser = new User(long.Parse(appId), appAccount2);
-            linbinUser.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecurity, url, appAccount2));
-            linbinUser.RegisterOnlineStatusHandler(new OnlineStatusHandler(linbinUser.AppAccount()));
-            linbinUser.RegisterMIMCMessageHandler(new MIMCMessageHandler(linbinUser.AppAccount()));
+            linbin = new User(long.Parse(appId), appAccount2);
+            linbin.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecurity, url, appAccount2));
+            linbin.RegisterOnlineStatusHandler(new OnlineStatusHandler(linbin.AppAccount()));
+            linbin.RegisterMIMCMessageHandler(new MIMCMessageHandler(linbin.AppAccount()));
         }
 
-        void ready()
+        bool ready()
         {
-            leijunUser.Login();
-            Thread.Sleep(200);
-            linbinUser.Login();
-            Thread.Sleep(200);
-        }
+            if (!leijun.Login())
+            {
+                logger.ErrorFormat("LoginFail, {0}", leijun.AppAccount());
+                return false;
+            }
+            if (!linbin.Login())
+            {
+                logger.ErrorFormat("LoginFail, {0}", linbin.AppAccount());
+                return false;
+            }
 
+            Thread.Sleep(1000);
+            return true;
+        }
 
         void over()
         { 
-            leijunUser.Logout();
+            leijun.Logout();            
+            linbin.Logout();
             Thread.Sleep(2000);
-            linbinUser.Logout();
         }
+
         void sendMessage()
         {
-            logger.DebugFormat("demo start send message", leijunUser.AppAccount());
-
-            if (!leijunUser.IsOnline())
+            if (!leijun.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", leijunUser.AppAccount());
+                logger.DebugFormat("{0} login fail, quit!", leijun.AppAccount());
                 return;
             }
-            if (!linbinUser.IsOnline())
+            if (!linbin.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", linbinUser.AppAccount());
+                logger.DebugFormat("{0} login fail, quit!", linbin.AppAccount());
                 return;
             }
 
-            leijunUser.SendMessage(linbinUser.AppAccount(), UTF8Encoding.Default.GetBytes("Are you OK?"+ DateTime.Now.ToString("u")));
-            Thread.Sleep(100);
-            linbinUser.SendMessage(leijunUser.AppAccount(), UTF8Encoding.Default.GetBytes("I'm OK!"+ DateTime.Now.ToString("u")));
-            Thread.Sleep(100);
+            String packetId = leijun.SendMessage(linbin.AppAccount(), UTF8Encoding.Default.GetBytes("Are you OK?"+ DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount(), linbin.AppAccount(), packetId);
+            Thread.Sleep(500);
+
+            packetId = linbin.SendMessage(leijun.AppAccount(), UTF8Encoding.Default.GetBytes("I'm OK!"+ DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", linbin.AppAccount(), leijun.AppAccount(), packetId);
+            Thread.Sleep(500);
         }
+
         class OnlineStatusHandler : IMIMCOnlineStatusHandler
         {
             private string appAccount;
@@ -117,23 +131,18 @@ namespace sdk.demo
 
             public void HandleMessage(List<P2PMessage> packets)
             {
-                logger.DebugFormat("{0} MIMCMessageHandler HandleMessage packets size:{1}", this.appAccount, packets.Capacity);
+                logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetCount:{1}", this.appAccount, packets.Count);
+                foreach (P2PMessage msg in packets)
+                {
+                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, payload:{2}", 
+                        this.appAccount, msg.getPacketId(), System.Text.Encoding.UTF8.GetString(msg.getPayload()));
+                }
             }
 
             public void HandleGroupMessage(List<P2TMessage> packets)
             {
-                logger.DebugFormat("{0} MIMCMessageHandler HandleGroupMessage packets size:{1}", this.appAccount, packets.Capacity);
+                
             }
-
-            //public void HandleSendMessageTimeout(P2PMessage message)
-            //{
-            //    logger.DebugFormat("{0} MIMCMessageHandler HandleSendMessageTimeout message:{1}", this.appAccount, message.getPacketId());
-            //}
-
-            //public void HandleSendGroupMessageTimeout(P2TMessage message)
-            //{
-            //    logger.DebugFormat("{0} MIMCMessageHandler HandleSendGroupMessageTimeout message:{1}", this.appAccount, message.getPacketId());
-            //}
 
             public void HandleServerACK(ServerAck serverAck)
             {
