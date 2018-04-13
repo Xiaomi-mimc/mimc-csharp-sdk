@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>mimc-csharp-sdk</name>
+    </assembly>
+    <members>
+        <member name="T:com.xiaomi.mimc.utils.HttpWebResponseUtil">
+            <summary>  
+            有关HTTP请求的辅助类  
+            </summary>  
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.HttpWebResponseUtil.CreateGetHttpResponse(System.String,System.Nullable{System.Int32},System.String,System.Net.CookieCollection)">
+            <summary>  
+            创建GET方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.HttpWebResponseUtil.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.HttpWebResponseUtil.CreatePostHttpResponse(System.String,System.String,System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.#ctor(System.Int32)">
+            构造方法
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.#ctor(System.Byte[])">
+            构造方法
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.Allocate(System.Int32)">
+            构建一个capacity长度的字节缓存区ByteBuffer对象
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.Allocate(System.Byte[])">
+            构建一个以bytes为字节缓存区的ByteBuffer对象，一般不推荐使用
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.FixLength(System.Int32)">
+            根据length长度，确定大于此leng的最近的2次方数，如length=7，则返回值为8
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.flip(System.Byte[])">
+            翻转字节数组，如果本地字节序列为低字节序列，则进行翻转以转换为高字节序列
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.FixSizeAndReset(System.Int32,System.Int32)">
+            确定内部字节缓存数组的大小
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putBytes(System.Byte[],System.Int32,System.Int32)">
+            将bytes字节数组从startIndex开始的length字节写入到此缓存区
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putBytes(System.Byte[],System.Int32)">
+            将字节数组中从0到length的元素写入缓存区
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putBytes(System.Byte[])">
+            将字节数组全部写入缓存区
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.put(com.xiaomi.mimc.utils.ByteBuffer)">
+            将一个ByteBuffer的有效字节区写入此缓存区中
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putChar(System.Char)">
+            写入一个char数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putShort(System.Int16)">
+            写入一个int16数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putUshort(System.UInt16)">
+            写入一个uint16数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putInt(System.Int32)">
+            写入一个int32数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putUint(System.UInt32)">
+            写入一个uint32数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putLong(System.Int64)">
+            写入一个int64数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putUlong(System.UInt64)">
+            写入一个uint64数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putFloat(System.Single)">
+            写入一个float数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putByte(System.Byte)">
+            写入一个byte数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.putDouble(System.Double)">
+            写入一个double类型数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadByte">
+            读取一个字节
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.Read(System.Int32)">
+            从读取索引位置开始读取len长度的字节数组
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadChar">
+            读取一个char数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadShort">
+            读取一个int16数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadUint">
+            读取一个uint32数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadInt">
+            读取一个int32数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadUlong">
+            读取一个uint64数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadLong">
+            读取一个long数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadFloat">
+            读取一个float数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadDouble">
+            读取一个double数据
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadBytes(System.Byte[],System.Int32,System.Int32)">
+            从读取索引位置开始读取len长度的字节到disbytes目标字节数组中
+            @params disstart 目标字节数组的写入索引
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.DiscardReadBytes">
+            清除已读字节并重建缓存区
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.Clear">
+            清空此对象
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.SetReaderIndex(System.Int32)">
+            设置开始读取的索引
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.MarkReaderIndex">
+            标记读取的索引位置
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.MarkputrIndex">
+            标记写入的索引位置
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ResetReaderIndex">
+            将读取的索引位置重置为标记的读取索引位置
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ResetputrIndex">
+            将写入的索引位置重置为标记的写入索引位置
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ReadableBytes">
+            可读的有效字节数
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.ToArray">
+            获取可读的字节数组
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.ByteBuffer.GetCapacity">
+            获取缓存区大小
+        </member>
+        <member name="T:com.xiaomi.mimc.utils.Adler32">
+            <summary>
+            Computes Adler32 checksum for a stream of data. An Adler32
+            checksum is not as reliable as a CRC32 checksum, but a lot faster to
+            compute.
+            
+            The specification for Adler32 may be found in RFC 1950.
+            ZLIB Compressed Data Format Specification version 3.3)
+            
+            
+            From that document:
+            
+                 "ADLER32 (Adler-32 checksum)
+                  This contains a checksum value of the uncompressed data
+                  (excluding any dictionary data) computed according to Adler-32
+                  algorithm. This algorithm is a 32-bit extension and improvement
+                  of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
+                  standard.
+            
+                  Adler-32 is composed of two sums accumulated per byte: s1 is
+                  the sum of all bytes, s2 is the sum of all s1 values. Both sums
+                  are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+                  Adler-32 checksum is stored as s2*65536 + s1 in most-
+                  significant-byte first (network) order."
+            
+             "8.2. The Adler-32 algorithm
+            
+               The Adler-32 algorithm is much faster than the CRC32 algorithm yet
+               still provides an extremely low probability of undetected errors.
+            
+               The modulo on unsigned long accumulators can be delayed for 5552
+               bytes, so the modulo operation time is negligible.  If the bytes
+               are a, b, c, the second sum is 3a + 2b + c + 3, and so is position
+               and order sensitive, unlike the first sum, which is just a
+               checksum.  That 65521 is prime is important to avoid a possible
+               large class of two-byte errors that leave the check unchanged.
+               (The Fletcher checksum uses 255, which is not prime and which also
+               makes the Fletcher check insensitive to single byte changes 0 -
+               255.)
+            
+               The sum s1 is initialized to 1 instead of zero to make the length
+               of the sequence part of s2, so that the length does not have to be
+               checked separately. (Any sequence of zeroes has a Fletcher
+               checksum of zero.)"
+            </summary>
+            <see cref="!:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream"/>
+            <see cref="!:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream"/>
+        </member>
+        <member name="F:com.xiaomi.mimc.utils.Adler32.BASE">
+            <summary>
+            largest prime smaller than 65536
+            </summary>
+        </member>
+        <member name="F:com.xiaomi.mimc.utils.Adler32.checkValue">
+            <summary>
+            The CRC data checksum so far.
+            </summary>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.#ctor">
+            <summary>
+            Initialise a default instance of <see cref="T:com.xiaomi.mimc.utils.Adler32"></see>
+            </summary>	
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.Reset">
+            <summary>
+            Resets the Adler32 data checksum as if no update was ever called.
+            </summary>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.Value">
+            <summary>
+            Returns the Adler32 data checksum computed so far.
+            </summary>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.Update(System.Int32)">
+            <summary>
+            Updates the checksum with the byte b.
+            </summary>
+            <param name="bval">
+            The data value to add. The high byte of the int is ignored.
+            </param>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.Update(System.Byte[])">
+            <summary>
+            Updates the Adler32 data checksum with the bytes taken from 
+            a block of data.
+            </summary>
+            <param name="buffer">Contains the data to update the checksum with.</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.Update(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Update Adler32 data checksum based on a portion of a block of data
+            </summary>
+            <param name = "buffer">Contains the data to update the CRC with.</param>
+            <param name = "offset">The offset into the buffer where the data starts</param>
+            <param name = "count">The number of data bytes to update the CRC with.</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.utils.Adler32.ComputeHash(System.Byte[],System.Int32,System.Int32)">
+            <summary>Performs the hash algorithm on given data array.</summary>
+            <param name="bytesArray">Input data.</param>
+            <param name="byteStart">The position to begin reading from.</param>
+            <param name="bytesToRead">How many bytes in the bytesArray to read.</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.#ctor(System.Int64,System.String)">
+            <summary>
+            SDK User 构造函数
+            </summary>
+            <param name="appId">开发者appId</param>
+            <param name="appAccount">开发者自有系统账号</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.Login">
+            <summary>
+            用户登录之前需要保证已经初始化
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.Logout">
+            <summary>
+            用户登出
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.SendMessage(System.String,System.Byte[])">
+            <summary>
+            发送单聊消息
+            </summary>
+            <param name="toAppAccount">送达用户的account</param>
+            <param name="msg">消息体，二级制数组格式</param>
+            <returns></returns>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.RegisterOnlineStatusHandler(com.xiaomi.mimc.handler.IMIMCOnlineStatusHandler)">
+            <summary>
+            在线状态回调接口
+            </summary>
+            <param name="onlineStatusHandler">传入实现IMIMCOnlineStatusHandler的实现类</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.RegisterMIMCMessageHandler(com.xiaomi.mimc.handler.IMIMCMessageHandler)">
+            <summary>
+            消息回调接口
+            </summary>
+            <param name="messageHandler">传入实现IMIMCMessageHandler的实现类</param>
+        </member>
+        <member name="M:com.xiaomi.mimc.User.RegisterMIMCTokenFetcher(com.xiaomi.mimc.handler.IMIMCTokenFetcher)">
+            <summary>
+            注册获取Token接口
+            </summary>
+            <param name="tokenFetcher">传入实现IMIMCTokenFetcher的实现类</param>
+        </member>
+    </members>
+</doc>

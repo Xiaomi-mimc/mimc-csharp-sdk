@@ -29,6 +29,12 @@
 1. 增加 ping-pong机制；
 2. 完善代码逻辑。
 ```
+###Version 0.0.3
+```
+1. 增加超时回调接口；
+2. 添加文档注释；
+注意：mimc-csharp-sdk.xml 和 mimc-csharp-sdk.dll要在同一个路径下。
+```
 [回到顶部](#readme)
 
 
