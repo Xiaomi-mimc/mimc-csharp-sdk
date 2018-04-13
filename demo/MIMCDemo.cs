@@ -79,8 +79,8 @@ namespace sdk.demo
         }
 
         void over()
-        { 
-            leijun.Logout();            
+        {
+            leijun.Logout();
             linbin.Logout();
             Thread.Sleep(2000);
         }
@@ -98,11 +98,11 @@ namespace sdk.demo
                 return;
             }
 
-            String packetId = leijun.SendMessage(linbin.AppAccount(), UTF8Encoding.Default.GetBytes("Are you OK?"+ DateTime.Now.ToString("u")));
+            String packetId = leijun.SendMessage(linbin.AppAccount(), UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
             logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount(), linbin.AppAccount(), packetId);
             Thread.Sleep(500);
 
-            packetId = linbin.SendMessage(leijun.AppAccount(), UTF8Encoding.Default.GetBytes("I'm OK!"+ DateTime.Now.ToString("u")));
+            packetId = linbin.SendMessage(leijun.AppAccount(), UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
             logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", linbin.AppAccount(), leijun.AppAccount(), packetId);
             Thread.Sleep(500);
         }
@@ -134,15 +134,15 @@ namespace sdk.demo
                 logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetCount:{1}", this.appAccount, packets.Count);
                 foreach (P2PMessage msg in packets)
                 {
-                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}", 
-                        this.appAccount, msg.getPacketId(), msg.getSequence(), msg.getTimestamp(), 
+                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                        this.appAccount, msg.getPacketId(), msg.getSequence(), msg.getTimestamp(),
                         System.Text.Encoding.UTF8.GetString(msg.getPayload()));
                 }
             }
 
             public void HandleServerACK(ServerAck serverAck)
             {
-                logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}", 
+                logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}",
                     this.appAccount, serverAck.getPacketId(), serverAck.getSequence(), serverAck.getTimestamp());
             }
         }
