@@ -35,6 +35,11 @@
 2. 添加文档注释；
 注意：mimc-csharp-sdk.xml 和 mimc-csharp-sdk.dll要在同一个路径下。
 ```
+###Version 0.0.4
+```
+1. 增加消息超时重连机制；
+```
+
 [回到顶部](#readme)
 
 

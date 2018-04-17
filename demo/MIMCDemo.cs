@@ -16,7 +16,7 @@ namespace sdk.demo
 {
     public class MIMCDemo
     {
-        /**
+    /**
     * @Important:
     *   以下appId/appKey/appSecurity是小米MIMCDemo APP所有，会不定期更新
     *   所以，开发者应该将以下三个值替换为开发者拥有APP的appId/appKey/appSecurity
@@ -34,9 +34,11 @@ namespace sdk.demo
         private User linbin;
 
         static ILog logger = LogManager.GetLogger("log");
+
         public static void Main(string[] args)
         {
             logger.DebugFormat("demo start");
+
             MIMCDemo demo = new MIMCDemo();
             if (!demo.ready())
             {
@@ -142,7 +144,7 @@ namespace sdk.demo
 
             public void HandleSendMessageTimeout(P2PMessage msg)
             {
-                logger.InfoFormat("MIMCMessageHandler HandleSendMessageTimeout++++++++++++++++++++++++++++++++++++++++++++++++, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                logger.InfoFormat("MIMCMessageHandler HandleSendMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
                        this.appAccount, msg.getPacketId(), msg.getSequence(), msg.getTimestamp(),
                        Encoding.UTF8.GetString(msg.getPayload()));
             }
