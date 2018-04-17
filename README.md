@@ -14,7 +14,7 @@
       |--log4net.dll
 ```
 ## 更新日志
-###Version 0.0.1
+### Version 0.0.1
 ```
 实现功能：
 1. 安全认证
@@ -24,18 +24,18 @@
 5. 接收消息回调
 6. 注销
 ```
-###Version 0.0.2
+### Version 0.0.2
 ```
 1. 增加 ping-pong机制；
 2. 完善代码逻辑。
 ```
-###Version 0.0.3
+### Version 0.0.3
 ```
 1. 增加超时回调接口；
 2. 添加文档注释；
 注意：mimc-csharp-sdk.xml 和 mimc-csharp-sdk.dll要在同一个路径下。
 ```
-###Version 0.0.4
+### Version 0.0.4
 ```
 1. 增加消息超时重连机制；
 ```
