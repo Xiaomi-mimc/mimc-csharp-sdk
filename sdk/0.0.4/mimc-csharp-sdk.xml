@@ -11,6 +11,7 @@
             </summary>
             <returns></returns>
         </member>
+        <!-- 对于成员“M:com.xiaomi.mimc.utils.MIMCUtil.GetRandomString(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String)”忽略有格式错误的 XML 注释 -->
         <member name="T:com.xiaomi.mimc.utils.HttpWebResponseUtil">
             <summary>  
             有关HTTP请求的辅助类  
