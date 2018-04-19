@@ -3,7 +3,7 @@
 ##### MIMC官方详细文档点击此链接：[详细文档](https://github.com/Xiaomi-mimc/operation-manual)
 
 ## 目录
-* [安卓应用配置修改](#安卓应用配置修改)
+* [C#应用配置修改](#C#应用配置修改)
 * [用户初始化](#用户初始化)
 * [安全认证](#安全认证)
 * [登录](#登录)
@@ -13,9 +13,9 @@
 * [接收消息回调](#接收消息回调)
 * [注销](#注销)
 * [更新日志](#更新日志)
-## 说明
+## C#应用配置修改
 ```
-1、可先下载demo，并更新demo项目依赖路径到 sdk/0.0.X，然后运行demo；
+1、可先下载demo，并更新demo项目依赖路径到 sdk/0.0.X，建议采用最新版本，然后运行demo；
 
 2、在项目中添加sdk目录中最新的dll包：
    |-- mimc-csharp-sdk.dll
@@ -24,9 +24,8 @@
       |--StreamJsonRpc.dll
       |--log4net.dll
 3、项目采用Visual Studio 2017开发；
+4、日志采用log4net组件，项目中已经做了简单配置，可以按照需要自行修改；
 ```
-## C#应用配置修改
-#### 日志采用log4net组件，项目中已经做了简单配置，可以按照需要自行修改；
 
 ## 用户初始化
 
@@ -47,10 +46,11 @@ user.RegisterTokenFetcher(MIMCTokenFetcher fetcher);
 ```
 interface IMIMCTokenFetcher {
 	/**	 
-	 * @note: fetchToken()访问APP应用方自行实现的AppProxyService服务，该服务实现以下功能：
-			1. 存储appId/appKey/appSecret(appKey/appSecret不可存储在APP客户端，以防泄漏)
-			2. 用户在APP系统内的合法鉴权
-			3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过fetchToken()原样返回
+	 * @note: fetchToken()访问APP应用方自行实现的AppProxyService服务，
+	 该服务实现以下功能：
+		1. 存储appId/appKey/appSecret(appKey/appSecret不可存储在APP客户端，以防泄漏)
+		2. 用户在APP系统内的合法鉴权
+		3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过fetchToken()原样返回
 	* @return: 小米TokenService服务下发的原始数据
 	*/
 	public String fetchToken();
@@ -69,7 +69,7 @@ user.Login();
 ## 在线状态变化回调
 
 ``` 
-user.RegisterOnlineStatusHandler(MIMCOnlineStatusHandler handler);
+user.RegisterOnlineStatusHandler(IMIMCOnlineStatusHandler handler);
 
 interface IMIMCOnlineStatusHandler {
     /**
@@ -100,8 +100,8 @@ String packetId = user.SendMessage(string toAppAccount, byte[] msg)
 ## 接收消息回调
 
 ```  
-user.registerMessageHandler(MIMCMessageHandler handler);
-interface MIMCMessageHandler {
+user.registerMessageHandler(IMIMCMessageHandler handler);
+interface IMIMCMessageHandler {
 	/**
 	 * @param[packets]: 单聊消息集
 	 * @note: P2PMessage 单聊消息
@@ -134,10 +134,6 @@ interface MIMCMessageHandler {
 ```  
 user.logout();
 ```
-
-[回到顶部](#readme)
-
-
 ## 更新日志
 
 ### Version 0.0.1
