@@ -40,7 +40,6 @@ Thumbs.db
 *.dotCover
 .idea/
 .vs/
-demo/0.0.1/obj/
-demo/0.0.1/bin/
+obj/
+bin/
 
-mimc-csharp-sdk.iml

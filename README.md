@@ -39,20 +39,20 @@ User user = new User(appId, appAccount);
 ## 安全认证
 #### 参考 [认证文档](https://github.com/Xiaomi-mimc/operation-manual#%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81) 
 ``` 
-user.RegisterTokenFetcher(MIMCTokenFetcher fetcher); 
+user.RegisterTokenFetcher(IMIMCTokenFetcher fetcher); 
 ```
 实现接口：
 ```
 interface IMIMCTokenFetcher {
 	/**	 
-	 * @note: fetchToken()访问APP应用方自行实现的AppProxyService服务，
+	 * @note: FetchToken()访问APP应用方自行实现的AppProxyService服务，
 	 该服务实现以下功能：
 		1. 存储appId/appKey/appSecret(appKey/appSecret不可存储在APP客户端，以防泄漏)
 		2. 用户在APP系统内的合法鉴权
-		3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过fetchToken()原样返回
+		3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过FetchToken()原样返回
 	* @return: 小米TokenService服务下发的原始数据
 	*/
-	public String fetchToken();
+	public String FetchToken();
 }
 ```
 
@@ -77,7 +77,7 @@ interface IMIMCOnlineStatusHandler {
 　　　* @param[errReason]: 状态原因
 　　　* @param[errDescription]: 状态描述
      */
-     void statusChange(bool isOnline, string errType, string errReason,string errDescription);
+     void StatusChange(bool isOnline, string errType, string errReason,string errDescription);
 }
 ```
 
@@ -131,7 +131,7 @@ interface IMIMCMessageHandler {
 ## 注销
 
 ```  
-user.logout();
+user.Logout();
 ```
 ## 更新日志
 
@@ -163,6 +163,10 @@ user.logout();
 ### Version 0.0.5
 ```
 1. 多终端登录支持，Resource缓存到本地文件；
+```
+### Version 0.0.6（请运行demo 0.0.2）
+```
+1. 代码规范化，完善文档；
 ```
 [回到顶部](#readme)
 
