@@ -174,6 +174,12 @@ user.Logout();
 1. 项目调整为基于Net Standard 2.0 通用库；
 2. 项目依赖包基于nuget管理；
 ```
+---
+### Version 1.0.0（请运行demo 0.0.3）
+```
+1. 项目调整为基于.Net Standard 2.0、.NET Core2.0、NET Framework2.0、NETFramework 4.5四个platform的类库；
+2. 同时为了便于运行上面四个平台类库，demo不再提供项目配置文件，开发者自行创建对应的项目，将MIMCDemo.cs加入即可。
+```
 [回到顶部](#readme)
 
 
