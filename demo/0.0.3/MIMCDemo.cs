@@ -35,7 +35,7 @@ namespace sdk.demo
         private MIMCUser leijun;
         private MIMCUser linbin;
 
-        static ILog logger = LogManager.GetLogger("log");
+        static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void Main(string[] args)
         {
