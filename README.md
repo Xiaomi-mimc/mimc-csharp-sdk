@@ -93,39 +93,94 @@ interface IMIMCOnlineStatusHandler {
   **/
 String packetId = user.SendMessage(string toAppAccount, byte[] msg)
 ```
+## 发送单聊消息
 
+```  
+  /**	 <summary>
+  * 发送单聊消息
+  * </summary>
+  *  <param name="toAppAccount">消息接收者在APP帐号系统内的唯一帐号ID</param>
+  *  <param name="msg">开发者自定义消息体，二级制数组格式</param>
+  *  <param name="isStore">是否保存历史记录，true：保存，false：不存</param>
+  * <returns>packetId客户端生成的消息ID</returns>
+  **/
+String packetId = user.SendMessage(string toAppAccount, byte[] msg, bool isStore)
+```
+## 发送群聊消息
 
+```  
+   /// <summary>
+   /// 发送群聊消息
+   /// </summary>
+   /// <param name="topicId">群ID</param>
+   /// <param name="msg">开发者自定义消息体，二级制数组格式</param>
+   /// <returns>packetId客户端生成的消息ID</returns>
+String packetId = user.SendGroupMessage(long topicId, byte[] msg)
+
+```
+## 发送群聊消息
+
+```  
+   /// <summary>
+   /// 发送群聊消息
+   /// </summary>
+   /// <param name="topicId">群ID</param>
+   /// <param name="msg">开发者自定义消息体，二级制数组格式</param>
+   /// <param name="isStore">是否保存历史记录，true：保存，false：不存</param>
+   /// <returns>packetId客户端生成的消息ID</returns>
+String packetId = user.SendGroupMessage(long topicId, byte[] msg, bool isStore)
+
+```
 
 ## 接收消息回调
 
 ```  
 user.registerMessageHandler(IMIMCMessageHandler handler);
-interface IMIMCMessageHandler {
-	/**
-	 * @param[packets]: 单聊消息集
-	 * @note: P2PMessage 单聊消息
-	 *        P2PMessage.packetId: 消息ID
-	 *        P2PMessage.sequence: 序列号
-	 *        P2PMessage.fromAccount: 发送方帐号
-	 *        P2PMessage.fromResource: 发送方终端id
-	 *        P2PMessage.payload: 消息体
-	 *        P2PMessage.timestamp: 时间戳
-	 */
-	public void HandleMessage(List<P2PMessage> packets);  
-	
-	/**
-	 * @param[serverAck]: 服务器返回的serverAck对象
-	 *       serverAck.packetId: 客户端生成的消息ID
-	 *       serverAck.timestamp: 消息发送到服务器的时间(单位:ms)
-	 *       serverAck.sequence: 服务器为消息分配的递增ID，单用户空间内递增唯一，可用于去重/排序
-	*/ 
-	public void HandleServerACK(ServerAck serverAck);
-	
-	/**
-	 * @param[message]: 发送超时的单聊消息
-	 */
-	public void HandleSendMessageTimeout(P2PMessage message);
-}
+  public interface IMIMCMessageHandler
+    {
+        /// <summary>
+        /// 发送单聊消息回调接口
+        /// </summary>
+        /// <param name="packets"> 
+        /// param[packets]: 单聊消息集
+        /// @note: P2PMessage 单聊消息
+        /// P2PMessage.packetId: 消息ID
+        /// P2PMessage.sequence: 序列号
+        /// P2PMessage.fromAccount: 发送方帐号
+        /// P2PMessage.fromResource: 发送方终端id
+        /// P2PMessage.payload: 消息体
+        /// P2PMessage.timestamp: 时间戳</param>
+        void HandleMessage(List<P2PMessage> packets);
+        
+        /// <summary>
+        /// 发送群消息回调接口
+        /// </summary>
+        /// <param name="packets"> 
+        /// param[packets]: 群聊消息集</param>
+        void HandleGroupMessage(List<P2TMessage> packets);
+
+        /// <summary>
+        /// 服务器返回ACK回调接口
+        /// </summary>
+        /// <param name="serverAck">
+        /// @param[serverAck]: 服务器返回的serverAck对象
+        /// serverAck.packetId: 客户端生成的消息ID
+        /// serverAck.timestamp: 消息发送到服务器的时间(单位:ms)
+        /// serverAck.sequence: 服务器为消息分配的递增ID，单用户空间内递增唯一，可用于去重/排序</param>
+        void HandleServerACK(ServerAck serverAck);
+
+        /// <summary>
+        /// 单聊消息超时回调接口
+        /// </summary>
+        /// <param name="message">param[message]: 发送超时的单聊消息</param>
+        void HandleSendMessageTimeout(P2PMessage message);
+        
+        /// <summary>
+        /// 群聊消息超时回调接口
+        /// </summary>
+        /// <param name="message"> 发送超时的群聊消息</param>
+        void HandleSendGroupMessageTimeout(P2TMessage message);
+    }
 ```
 
 ## 注销
@@ -133,53 +188,7 @@ interface IMIMCMessageHandler {
 ```  
 user.Logout();
 ```
-## 更新日志
 
-### Version 0.0.1
-```
-实现功能：
-1. 安全认证
-2. 登录
-3. 在线状态变化回调
-4. 发送单聊消息
-5. 接收消息回调
-6. 注销
-```
-### Version 0.0.2
-```
-1. 增加 ping-pong机制；
-2. 完善代码逻辑。
-```
-### Version 0.0.3
-```
-1. 增加超时回调接口；
-2. 添加文档注释；
-注意：mimc-csharp-sdk.xml 和 mimc-csharp-sdk.dll要在同一个路径下。
-```
-### Version 0.0.4
-```
-1. 增加消息超时重连机制；
-```
-### Version 0.0.5
-```
-1. 多终端登录支持，Resource缓存到本地文件；
-```
-### Version 0.0.6（请运行demo 0.0.2）
-```
-1. 代码规范化，完善文档；
-2. 修复用户缓存文件问题。
-```
-### Version 0.0.7（请运行demo 0.0.3）
-```
-1. 项目调整为基于Net Standard 2.0 通用库；
-2. 项目依赖包基于nuget管理；
-```
----
-### Version 1.0.0（请运行demo 0.0.3）
-```
-1. 项目调整为基于.Net Standard 2.0、.NET Core2.0、NET Framework2.0、NETFramework 4.5四个platform的类库；
-2. 同时为了便于运行上面四个平台类库，demo不再提供项目配置文件，开发者自行创建对应的项目，将MIMCDemo.cs加入即可。
-```
 [回到顶部](#readme)
 
 
