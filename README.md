@@ -15,7 +15,6 @@
 ## C#应用配置修改
 ```
 1、可先下载demo，并更新demo项目依赖路径到 sdk/0.0.X，建议采用最新版本，然后运行demo；
-
 2、在项目中添加sdk目录中最新的dll包：
    |-- mimc-csharp-sdk.dll
       |--Newtonsoft.Json.dll
