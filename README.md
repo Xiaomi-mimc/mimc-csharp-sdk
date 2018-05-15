@@ -11,7 +11,7 @@
 * [发送单聊消息](#发送单聊消息)
 * [接收消息回调](#接收消息回调)
 * [注销](#注销)
-* [更新日志](#更新日志)
+* [更新日志](https://github.com/Xiaomi-mimc/mimc-csharp-sdk/blob/master/sdk/UPDATE.md)
 ## C#应用配置修改
 ```
 1、可先下载demo，并更新demo项目依赖路径到 sdk/0.0.X，建议采用最新版本，然后运行demo；
