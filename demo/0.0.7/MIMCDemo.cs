@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace sdk.demo
 {   /// <summary>
-    /// MIMC C# Demo用例，请确保更新到1.0.4以上版本
+    /// MIMC C# Demo用例，请确保更新到0.0.6以上版本
     /// </summary>
     public class MIMCDemo
     {
@@ -345,88 +345,7 @@ namespace sdk.demo
             logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount(), linbin.AppAccount(), packetId);
             Thread.Sleep(100);
         }
-        
-        /// <summary>
-        /// 在线状态回调接口实现
-        /// </summary>
-        class OnlineStatusHandler : IMIMCOnlineStatusHandler
-        {
-            private string appAccount;
-            public OnlineStatusHandler(String appAccount)
-            {
-                this.appAccount = appAccount;
-            }
 
-            public void StatusChange(bool isOnline, string errType, string errReason, string errDescription)
-            {
-                logger.InfoFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", this.appAccount, isOnline, errType, errReason, errDescription);
-            }
-        }
-
-        /// <summary>
-        /// 消息回调接口实现
-        /// </summary>
-        class MIMCMessageHandler : IMIMCMessageHandler
-        {
-            private string appAccount;
-            public MIMCMessageHandler(String appAccount)
-            {
-                this.appAccount = appAccount;
-            }
-
-            public void HandleMessage(List<P2PMessage> packets)
-            {
-                logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetCount:{1}", this.appAccount, packets.Count);
-                if (packets.Count==0)
-                {
-                    logger.WarnFormat("HandleMessage packets.Count==0");
-                    return;
-                }
-                foreach (P2PMessage msg in packets)
-                {
-                    logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                        this.appAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
-                        Encoding.UTF8.GetString(msg.Payload));
-                }
-            }
-
-
-            public void HandleGroupMessage(List<P2TMessage> packets)
-            {
-                logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetCount:{1}", this.appAccount, packets.Count);
-                if (packets.Count == 0)
-                {
-                    logger.WarnFormat("HandleGroupdMessage packets.Count==0");
-                    return;
-                }
-                foreach (P2TMessage msg in packets)
-                {
-                    logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                        this.appAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
-                        Encoding.UTF8.GetString(msg.Payload));
-                }
-            }
-
-            public void HandleSendMessageTimeout(P2PMessage msg)
-            {
-                logger.InfoFormat("MIMCMessageHandler HandleSendMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                       this.appAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
-                       Encoding.UTF8.GetString(msg.Payload));
-            }
-
-            public void HandleSendGroupMessageTimeout(P2TMessage msg)
-            {
-                logger.InfoFormat("MIMCMessageHandler HandleSendGroupdMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                         this.appAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
-                         Encoding.UTF8.GetString(msg.Payload));
-            }
-
-            public void HandleServerACK(ServerAck serverAck)
-            {
-                logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}",
-                    this.appAccount, serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp);
-            }
-        }
 
         /// <summary>
         /// 获取token接口实现
