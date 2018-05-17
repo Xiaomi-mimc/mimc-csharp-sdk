@@ -43,15 +43,22 @@ user.RegisterTokenFetcher(IMIMCTokenFetcher fetcher);
 实现接口：
 ```
 interface IMIMCTokenFetcher {
-	/**	 
-	 * @note: FetchToken()访问APP应用方自行实现的AppProxyService服务，
-	 该服务实现以下功能：
-		1. 存储appId/appKey/appSecret(appKey/appSecret不可存储在APP客户端，以防泄漏)
-		2. 用户在APP系统内的合法鉴权
-		3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过FetchToken()原样返回
-	* @return: 小米TokenService服务下发的原始数据
-	*/
-	public String FetchToken();
+	/// <summary>
+    /// MIMCUser如果采用Login()方式登录 则必须实现该接口
+    ///  FetchToken()访问APP应用方自行实现的AppProxyService服务，
+    ///  该服务实现以下功能：
+    ///1. 存储appId/appKey/appSecret(appKey/appSecret不可存储在APP客户端，以防泄漏)
+    ///2. 用户在APP系统内的合法鉴权
+    ///3. 调用小米TokenService服务，并将小米TokenService服务返回结果通过fetchToken()原样返回
+    /// </summary>
+    /// <returns>小米TokenService服务下发的原始数据</returns>
+    string FetchToken();
+    
+    /// <summary>
+    ///  MIMCUser如果采用LoginAsync()方式登录 则必须实现该接口
+    /// </summary>
+    /// <returns>小米TokenService服务下发的原始数据</returns>
+    Task<string> FetchTokenAsync();
 }
 ```
 
@@ -62,28 +69,24 @@ interface IMIMCTokenFetcher {
  * @note: 用户登录接口，除在APP初始化时调用，APP从后台切换到前台时也建议调用一次
  */ 
 user.Login();
+user.LoginAsync();
 ```
 
 ## 在线状态变化回调
 
 ``` 
-user.RegisterOnlineStatusHandler(IMIMCOnlineStatusHandler handler);
-
-interface IMIMCOnlineStatusHandler {
-    /**
-　　　* @param[isOnline]: 登录状态，MIMCConstant.STATUS_LOGIN_SUCCESS 在线，MIMCConstant.STATUS_LOGOUT 离线。
-　　　* @param[errType]: 状态码
-　　　* @param[errReason]: 状态原因
-　　　* @param[errDescription]: 状态描述
-     */
-     void StatusChange(bool isOnline, string errType, string errReason,string errDescription);
-}
+  ///添加事件
+  user.StateChangeEvent += HandleStatusChange;
+  public void HandleStatusChange(object source, StateChangeEventArgs e)
+  {
+       logger.InfoFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!",e.User.AppAccount(), e.IsOnline, e.ErrType, e.ErrReason, e.ErrDescription);
+  }
 ```
 
 ## 发送单聊消息
 
 ```  
-  /**	 <summary>
+  /**<summary>
   * 发送单聊消息
   * </summary>
   *  <param name="toAppAccount">消息接收者在APP帐号系统内的唯一帐号ID</param>
@@ -91,10 +94,8 @@ interface IMIMCOnlineStatusHandler {
   * <returns>packetId客户端生成的消息ID</returns>
   **/
 String packetId = user.SendMessage(string toAppAccount, byte[] msg)
-```
-## 发送单聊消息
+String packetId = user.SendMessageAsync(string toAppAccount, byte[] msg)
 
-```  
   /**	 <summary>
   * 发送单聊消息
   * </summary>
@@ -104,6 +105,8 @@ String packetId = user.SendMessage(string toAppAccount, byte[] msg)
   * <returns>packetId客户端生成的消息ID</returns>
   **/
 String packetId = user.SendMessage(string toAppAccount, byte[] msg, bool isStore)
+String packetId = user.SendMessageAsync(string toAppAccount, byte[] msg, bool isStore)
+
 ```
 ## 发送群聊消息
 
@@ -115,11 +118,9 @@ String packetId = user.SendMessage(string toAppAccount, byte[] msg, bool isStore
    /// <param name="msg">开发者自定义消息体，二级制数组格式</param>
    /// <returns>packetId客户端生成的消息ID</returns>
 String packetId = user.SendGroupMessage(long topicId, byte[] msg)
+String packetId = user.SendGroupMessageAsync(long topicId, byte[] msg)
 
-```
-## 发送群聊消息
 
-```  
    /// <summary>
    /// 发送群聊消息
    /// </summary>
@@ -128,58 +129,58 @@ String packetId = user.SendGroupMessage(long topicId, byte[] msg)
    /// <param name="isStore">是否保存历史记录，true：保存，false：不存</param>
    /// <returns>packetId客户端生成的消息ID</returns>
 String packetId = user.SendGroupMessage(long topicId, byte[] msg, bool isStore)
+String packetId = user.SendGroupMessageAsync(long topicId, byte[] msg, bool isStore)
 
 ```
 
 ## 接收消息回调
 
-```  
-user.registerMessageHandler(IMIMCMessageHandler handler);
-  public interface IMIMCMessageHandler
-    {
-        /// <summary>
-        /// 发送单聊消息回调接口
-        /// </summary>
-        /// <param name="packets"> 
-        /// param[packets]: 单聊消息集
-        /// @note: P2PMessage 单聊消息
-        /// P2PMessage.packetId: 消息ID
-        /// P2PMessage.sequence: 序列号
-        /// P2PMessage.fromAccount: 发送方帐号
-        /// P2PMessage.fromResource: 发送方终端id
-        /// P2PMessage.payload: 消息体
-        /// P2PMessage.timestamp: 时间戳</param>
-        void HandleMessage(List<P2PMessage> packets);
-        
-        /// <summary>
-        /// 发送群消息回调接口
-        /// </summary>
-        /// <param name="packets"> 
-        /// param[packets]: 群聊消息集</param>
-        void HandleGroupMessage(List<P2TMessage> packets);
+``` 
+///添加事件
+user.MessageEvent += HandleMessage;
+user.MessageTimeOutEvent += HandleMessageTimeout;
+user.GroupMessageEvent += HandleGroupMessage;
+user.GroupMessageTimeoutEvent += HandleGroupMessageTimeout;
+user.ServerACKEvent += HandleServerACK;
+public void HandleMessageTimeout(object source, SendMessageTimeoutEventArgs e)
+{
+    P2PMessage msg = e.P2PMessage;
+    logger.InfoFormat("MIMCMessageHandler HandleSendMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+    e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+    Encoding.UTF8.GetString(msg.Payload));
+}
 
-        /// <summary>
-        /// 服务器返回ACK回调接口
-        /// </summary>
-        /// <param name="serverAck">
-        /// @param[serverAck]: 服务器返回的serverAck对象
-        /// serverAck.packetId: 客户端生成的消息ID
-        /// serverAck.timestamp: 消息发送到服务器的时间(单位:ms)
-        /// serverAck.sequence: 服务器为消息分配的递增ID，单用户空间内递增唯一，可用于去重/排序</param>
-        void HandleServerACK(ServerAck serverAck);
+public void HandleGroupMessage(object source, GroupMessageEventArgs e)
+{
+     List<P2TMessage> packets = e.Packets;
+     logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetCount:{1}", e.User.AppAccount(), packets.Count);
+     if (packets.Count == 0)
+     {
+         logger.WarnFormat("HandleGroupdMessage packets.Count==0");
+         return;
+     }
+     foreach (P2TMessage msg in packets)
+     {
+         logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+         e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+         Encoding.UTF8.GetString(msg.Payload));
+     }
+}
 
-        /// <summary>
-        /// 单聊消息超时回调接口
-        /// </summary>
-        /// <param name="message">param[message]: 发送超时的单聊消息</param>
-        void HandleSendMessageTimeout(P2PMessage message);
-        
-        /// <summary>
-        /// 群聊消息超时回调接口
-        /// </summary>
-        /// <param name="message"> 发送超时的群聊消息</param>
-        void HandleSendGroupMessageTimeout(P2TMessage message);
-    }
+public void HandleGroupMessageTimeout(object source, SendGroupMessageTimeoutEventArgs e)
+{
+    P2TMessage msg = e.P2tMessage;
+    logger.InfoFormat("MIMCMessageHandler HandleSendGroupdMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+    e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+    Encoding.UTF8.GetString(msg.Payload));
+}
+
+public void HandleServerACK(object source, ServerACKEventArgs e)
+{
+    ServerAck serverAck = e.ServerAck;
+    logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}",
+    e.User.AppAccount(), serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp);
+}
 ```
 
 ## 注销
