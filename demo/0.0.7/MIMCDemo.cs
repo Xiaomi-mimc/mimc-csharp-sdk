@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace sdk.demo
 {   /// <summary>
-    /// MIMC C# Demo用例，请确保更新到1.0.3以上版本
+    /// MIMC C# Demo用例，请确保更新到1.0.4以上版本
     /// </summary>
     public class MIMCDemo
     {
@@ -94,13 +94,84 @@ namespace sdk.demo
         {
             leijun = new MIMCUser(appAccount1);
             leijun.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount1));
-            leijun.RegisterOnlineStatusHandler(new OnlineStatusHandler(leijun.AppAccount()));
-            leijun.RegisterMIMCMessageHandler(new MIMCMessageHandler(leijun.AppAccount()));
+            leijun.StateChangeEvent += HandleStatusChange;
+
+            leijun.MessageEvent += HandleMessage;
+            leijun.MessageTimeOutEvent += HandleMessageTimeout;
+            leijun.GroupMessageEvent += HandleGroupMessage;
+            leijun.GroupMessageTimeoutEvent += HandleGroupMessageTimeout;
+            leijun.ServerACKEvent += HandleServerACK;
 
             linbin = new MIMCUser(appAccount2);
             linbin.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount2));
-            linbin.RegisterOnlineStatusHandler(new OnlineStatusHandler(linbin.AppAccount()));
-            linbin.RegisterMIMCMessageHandler(new MIMCMessageHandler(linbin.AppAccount()));
+            linbin.StateChangeEvent += HandleStatusChange;
+            linbin.MessageEvent += HandleMessage;
+            linbin.MessageTimeOutEvent += HandleMessageTimeout;
+            linbin.GroupMessageEvent += HandleGroupMessage;
+            linbin.GroupMessageTimeoutEvent += HandleGroupMessageTimeout;
+            linbin.ServerACKEvent += HandleServerACK;
+        }
+
+        public void HandleStatusChange(object source, StateChangeEventArgs e)
+        {
+            logger.InfoFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!",e.User.AppAccount(), e.IsOnline, e.ErrType, e.ErrReason, e.ErrDescription);
+        }
+
+        public void HandleMessage(object source, MessageEventArgs e)
+        {
+            List<P2PMessage> packets = e.Packets;
+            logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetCount:{1}", e.User.AppAccount(), packets.Count);
+            if (packets.Count == 0)
+            {
+                logger.WarnFormat("HandleMessage packets.Count==0");
+                return;
+            }
+            foreach (P2PMessage msg in packets)
+            {
+                logger.InfoFormat("MIMCMessageHandler HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                    e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+                    Encoding.UTF8.GetString(msg.Payload));
+            }
+        }
+
+        public void HandleMessageTimeout(object source, SendMessageTimeoutEventArgs e)
+        {
+            P2PMessage msg = e.P2PMessage;
+            logger.InfoFormat("MIMCMessageHandler HandleSendMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                                   e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+                                   Encoding.UTF8.GetString(msg.Payload));
+        }
+
+        public void HandleGroupMessage(object source, GroupMessageEventArgs e)
+        {
+            List<P2TMessage> packets = e.Packets;
+            logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetCount:{1}", e.User.AppAccount(), packets.Count);
+            if (packets.Count == 0)
+            {
+                logger.WarnFormat("HandleGroupdMessage packets.Count==0");
+                return;
+            }
+            foreach (P2TMessage msg in packets)
+            {
+                logger.InfoFormat("MIMCMessageHandler HandleGroupdMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                      e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+                    Encoding.UTF8.GetString(msg.Payload));
+            }
+        }
+
+        public void HandleGroupMessageTimeout(object source, SendGroupMessageTimeoutEventArgs e)
+        {
+            P2TMessage msg = e.P2tMessage;
+            logger.InfoFormat("MIMCMessageHandler HandleSendGroupdMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                       e.User.AppAccount(), msg.PacketId, msg.Sequence, msg.Timestamp,
+                     Encoding.UTF8.GetString(msg.Payload));
+        }
+
+        public void HandleServerACK(object source, ServerACKEventArgs e)
+        {
+            ServerAck serverAck = e.ServerAck;
+            logger.InfoFormat("{0} MIMCMessageHandler HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3}",
+                  e.User.AppAccount(), serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp);
         }
 
         bool Ready()
@@ -274,7 +345,7 @@ namespace sdk.demo
             logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount(), linbin.AppAccount(), packetId);
             Thread.Sleep(100);
         }
-
+        
         /// <summary>
         /// 在线状态回调接口实现
         /// </summary>
