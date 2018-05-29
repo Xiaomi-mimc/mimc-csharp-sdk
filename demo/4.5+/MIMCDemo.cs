@@ -345,8 +345,8 @@ namespace sdk.demo
             logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount(), linbin.AppAccount(), packetId);
             Thread.Sleep(100);
         }
-
-
+        
+       
         /// <summary>
         /// 获取token接口实现
         /// </summary>

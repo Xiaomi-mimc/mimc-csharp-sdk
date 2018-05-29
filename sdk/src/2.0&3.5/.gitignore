@@ -22,6 +22,7 @@ config.status
 aclocal.m4
 install-sh
 autom4te.cache/
+*.user
 *.tar.gz
 tarballs/
 test-results/
@@ -39,13 +40,6 @@ Thumbs.db
 *.dotCover
 .idea/
 .vs/
-demo/0.0.1/obj/
-demo/0.0.1/bin/
+bin/
+obj/
 
-mimc-csharp-sdk.iml
-.gitignore
-MIMCDemo.cs
-app.config
-demo.csproj
-demo.sln
-packages.config
