@@ -306,7 +306,12 @@ namespace com.xiaomi.mimc
             this.uuid = long.Parse(data.GetValue("miUserId").ToString());
             this.SecurityKey = data.GetValue("miUserSecurityKey").ToString();
             logger.DebugFormat("{0} get token SecurityKey :{1}", this.appAccount, this.SecurityKey);
-
+            
+             if (!this.appAccount.Equals(data.GetValue("appAccount").ToString()))
+            {
+                logger.WarnFormat("{0} Login fail appAccount does  not match {1}!={2}", this.appAccount, this.appAccount, data.GetValue("appAccount").ToString());
+                return false;
+            }
             if (string.IsNullOrEmpty(data.GetValue("token").ToString()))
             {
                 logger.DebugFormat("{0} Login fail token IsNullOrEmpty uuid:{1}", this.appAccount, this.uuid);
