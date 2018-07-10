@@ -43,9 +43,5 @@ demo/0.0.1/obj/
 demo/0.0.1/bin/
 
 mimc-csharp-sdk.iml
-.gitignore
-MIMCDemo.cs
-app.config
-demo.csproj
-demo.sln
-packages.config
+
+

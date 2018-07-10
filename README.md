@@ -1,5 +1,7 @@
 # MIMC官方详细文档点击此链接：[详细文档](https://admin.mimc.chat.xiaomi.net/docs/0405-csharp.html)
-
+```
+开放源码后，大家可根据源码自行调整适配自己的项目，今后将不再针对某个C#库版本进行单独适配代码。
+```
 ## 联系我们
 
 #### E-Mail
