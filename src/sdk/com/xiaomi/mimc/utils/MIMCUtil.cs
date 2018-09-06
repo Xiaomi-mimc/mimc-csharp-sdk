@@ -173,7 +173,6 @@ namespace com.xiaomi.mimc.utils
             {
                 BinaryFormatter binDeserializer = new BinaryFormatter();
                 obj = (T)binDeserializer.Deserialize(fileStream);
-                fileStream.Close();
             }
             return obj;
         }
@@ -221,7 +220,6 @@ namespace com.xiaomi.mimc.utils
                 byte[] payload = ms.ToArray();
                 v6Body.Payload = payload;
                 v6Packet.Body = v6Body;
-                ms.Dispose();
             }
 
             return v6Packet;
@@ -263,14 +261,12 @@ namespace com.xiaomi.mimc.utils
                 Serializer.Serialize(ms, sequenceAck);
                 byte[] sequenceAckBin = ms.ToArray();
                 packet.payload = sequenceAckBin;
-                ms.Dispose();
             }
             byte[] mimcBins = null;
             using (MemoryStream mimcStream = new MemoryStream())
             {
                 Serializer.Serialize(mimcStream, packet);
                 mimcBins = mimcStream.ToArray();
-                mimcStream.Dispose();
             }
             ClientHeader clientHeader = MIMCUtil.CreateClientHeader(user, Constant.CMD_SECMSG, Constant.CIPHER_RC4, packet.packetId);
 
@@ -322,7 +318,6 @@ namespace com.xiaomi.mimc.utils
                 byte[] payload = ms.ToArray();
                 v6Body.Payload = payload;
                 v6Packet.Body = v6Body;
-                ms.Dispose();
             }
             return v6Packet;
         }

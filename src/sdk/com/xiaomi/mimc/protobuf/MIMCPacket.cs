@@ -994,6 +994,47 @@ namespace mimc
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCQueryOnlineUsers")]
+  public partial class UCQueryOnlineUsers : global::ProtoBuf.IExtensible
+  {
+    public UCQueryOnlineUsers() {}
+    
+    private mimc.UCGroup _group;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public mimc.UCGroup group
+    {
+      get { return _group; }
+      set { _group = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCQueryOnlineUsersResp")]
+  public partial class UCQueryOnlineUsersResp : global::ProtoBuf.IExtensible
+  {
+    public UCQueryOnlineUsersResp() {}
+    
+    private mimc.UCGroup _group;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public mimc.UCGroup group
+    {
+      get { return _group; }
+      set { _group = value; }
+    }
+    private long _userCount;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"userCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public long userCount
+    {
+      get { return _userCount; }
+      set { _userCount = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"FeInfo")]
   public partial class FeInfo : global::ProtoBuf.IExtensible
   {
@@ -1095,7 +1136,10 @@ namespace mimc
       RTS_SIGNAL = 7,
             
       [global::ProtoBuf.ProtoEnum(Name=@"UC_PACKET", Value=8)]
-      UC_PACKET = 8
+      UC_PACKET = 8,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"P2P_MESSAGE_FOR_SYNC", Value=9)]
+      P2P_MESSAGE_FOR_SYNC = 9
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"UC_MSG_TYPE")]
@@ -1130,7 +1174,13 @@ namespace mimc
       MESSAGE_LIST = 9,
             
       [global::ProtoBuf.ProtoEnum(Name=@"DISMISS", Value=10)]
-      DISMISS = 10
+      DISMISS = 10,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"QUERY_ONLINE_USERS", Value=11)]
+      QUERY_ONLINE_USERS = 11,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"QUERY_ONLINE_USERS_RESP", Value=12)]
+      QUERY_ONLINE_USERS_RESP = 12
     }
   
 }

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using com.xiaomi.mimc.packet;
 
 namespace com.xiaomi.mimc
 {
-    public class GroupMessageEventArgs
+    public class GroupMessageEventArgs : EventArgs
     {
         private readonly MIMCUser user;
 

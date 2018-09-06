@@ -26,7 +26,6 @@ namespace com.xiaomi.mimc
             using (MemoryStream ms = new MemoryStream(feV6Packet.Body.Payload))
             {
                 packet = Serializer.Deserialize<MIMCPacket>(ms);
-                ms.Dispose();
             }
             if (packet == null)
             {
@@ -44,7 +43,6 @@ namespace com.xiaomi.mimc
                 using (MemoryStream ackStream = new MemoryStream(packet.payload))
                 {
                     packetAck = Serializer.Deserialize<MIMCPacketAck>(ackStream);
-                    ackStream.Dispose();
                 }
                 if (packetAck == null)
                 {
@@ -75,7 +73,6 @@ namespace com.xiaomi.mimc
                 using (MemoryStream ucStream = new MemoryStream(packet.payload))
                 {
                     ucPacket = Serializer.Deserialize<UCPacket>(ucStream);
-                    ucStream.Dispose();
                 }
                 if (ucPacket == null)
                 {
@@ -94,14 +91,14 @@ namespace com.xiaomi.mimc
                     logger.DebugFormat("HandleJoinUnlimitedGroup UC_MSG_TYPE.JOIN_RESP：{0}", ucPacket.type);
                     user.HandleJoinUnlimitedGroup(ucPacket);
                 }
+
                 if (ucPacket.type == UC_MSG_TYPE.QUIT_RESP)
                 {
                     logger.DebugFormat("HandleQuitUnlimitedGroup UC_MSG_TYPE.QUIT_RESP：{0}", ucPacket.type);
                     user.HandleQuitUnlimitedGroup(ucPacket);
                 }
                 if (ucPacket.type == UC_MSG_TYPE.DISMISS)
-                {
-                    logger.DebugFormat("HandleDismissUnlimitedGroup UC_MSG_TYPE.DISMISS：{0}", ucPacket.type);
+                {   logger.DebugFormat("HandleDismissUnlimitedGroup UC_MSG_TYPE.DISMISS：{0}", ucPacket.type);
                     user.HandleDismissUnlimitedGroup(ucPacket);
                 }
 
@@ -116,7 +113,6 @@ namespace com.xiaomi.mimc
                 using (MemoryStream comStream = new MemoryStream(packet.payload))
                 {
                     packetList = Serializer.Deserialize<MIMCPacketList>(comStream);
-                    comStream.Dispose();
                 }
                 if (packetList == null || packetList.packets.ToArray().Length == 0)
                 {
@@ -159,7 +155,6 @@ namespace com.xiaomi.mimc
                         using (MemoryStream p2pStream = new MemoryStream(p.payload))
                         {
                             p2pMessage = Serializer.Deserialize<MIMCP2PMessage>(p2pStream);
-                            p2pStream.Dispose();
                         }
                         if (p2pMessage == null)
                         {
@@ -180,7 +175,6 @@ namespace com.xiaomi.mimc
                         using (MemoryStream p2tStream = new MemoryStream(p.payload))
                         {
                             p2tMessage = Serializer.Deserialize<MIMCP2TMessage>(p2tStream);
-                            p2tStream.Dispose();
                         }
                         if (p2tMessage == null)
                         {

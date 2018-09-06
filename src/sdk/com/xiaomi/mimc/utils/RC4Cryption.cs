@@ -17,10 +17,9 @@ using System.Text;
 */
 namespace com.xiaomi.mimc.utils
 {
-    public class RC4Cryption 
+    public class RC4Cryption
     {
-        private static int keylength = 8;
-        private  byte[] S;
+        private byte[] S;
         private int the_i;
         private int the_j;
         private int next_j = -666;
@@ -101,7 +100,7 @@ namespace com.xiaomi.mimc.utils
 
         public static byte[] GenerateKeyForRC4(string secretKey, string id)
         {
-            byte[] keyBytes =  Convert.FromBase64String(secretKey);
+            byte[] keyBytes = Convert.FromBase64String(secretKey);
             byte[] idbytes = UTF8Encoding.Default.GetBytes(id); ;
             byte[] result = new byte[keyBytes.Length + 1 + idbytes.Length];
 
@@ -111,11 +110,11 @@ namespace com.xiaomi.mimc.utils
             }
             result[keyBytes.Length] = (byte)'_';
             for (int i = 0; i < idbytes.Length; ++i)
-           {
+            {
                 result[keyBytes.Length + 1 + i] = idbytes[i];
             }
 
-           return result;
+            return result;
         }
     }
 }

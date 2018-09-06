@@ -1,8 +1,9 @@
-﻿using mimc;
+﻿using System;
+using mimc;
 
 namespace com.xiaomi.mimc
 {
-    public class DismissUnlimitedGroupEventArgs
+    public class DismissUnlimitedGroupEventArgs : EventArgs
     {
         private readonly MIMCUser user;
 

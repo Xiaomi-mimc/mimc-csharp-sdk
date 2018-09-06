@@ -18,8 +18,8 @@ namespace com.xiaomi.mimc.packet
 {
     public class MIMCObject
     {
-        string type;
-        Object packet;
+        private string type;
+        private Object packet;
 
         public MIMCObject()
         {

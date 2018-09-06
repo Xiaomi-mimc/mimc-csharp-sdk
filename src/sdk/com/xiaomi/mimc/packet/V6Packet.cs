@@ -93,7 +93,7 @@ namespace com.xiaomi.mimc.packet
         }
 
 
-        public byte[] ToByteArray(byte[] v6bodyKey, byte[] payloadKey,MIMCUser user)
+        public byte[] ToByteArray(byte[] v6bodyKey, byte[] payloadKey, MIMCUser user)
         {
             //Ping packet
             if (v6BodyBin == null && Body == null)
@@ -113,19 +113,16 @@ namespace com.xiaomi.mimc.packet
                 Serializer.Serialize(ms, Body.ClientHeader);
                 byte[] clientHeaderBins = ms.ToArray();
                 short clientHeaderLen = (short)clientHeaderBins.Length;
-                ms.Dispose();
-          
-
-            int payloadLen = (Body.Payload == null || Body.Payload.Length == 0) ? 0 : Body.Payload.Length;            
-             bodyBuffer = ByteBuffer.Allocate(Constant.V6_BODY_HEADER_LENGTH + clientHeaderLen + payloadLen);
-            bodyBuffer.putShort(Constant.PAYLOAD_TYPE);
-            bodyBuffer.putShort(clientHeaderLen);
-            bodyBuffer.putInt(payloadLen);
-            bodyBuffer.putBytes(clientHeaderBins);
+                int payloadLen = (Body.Payload == null || Body.Payload.Length == 0) ? 0 : Body.Payload.Length;
+                bodyBuffer = ByteBuffer.Allocate(Constant.V6_BODY_HEADER_LENGTH + clientHeaderLen + payloadLen);
+                bodyBuffer.putShort(Constant.PAYLOAD_TYPE);
+                bodyBuffer.putShort(clientHeaderLen);
+                bodyBuffer.putInt(payloadLen);
+                bodyBuffer.putBytes(clientHeaderBins);
             }
             if (Body.Payload != null)
             {
-               bodyBuffer.putBytes(payloadKey != null?RC4Cryption.DoEncrypt(payloadKey, Body.Payload): Body.Payload);
+                bodyBuffer.putBytes(payloadKey != null ? RC4Cryption.DoEncrypt(payloadKey, Body.Payload) : Body.Payload);
             }
 
             v6BodyBin = bodyBuffer.ToArray();

@@ -85,7 +85,6 @@ namespace com.xiaomi.mimc.packet
             using (MemoryStream ms = new MemoryStream(clientHeaderBins))
             {
                 clientHeader = Serializer.Deserialize<ClientHeader>(ms);
-                ms.Dispose();
             }
                 
             //logger.InfoFormat("receive v6 packet cmd:{0}, user:{1}", clientHeader.cmd, user.AppAccount());

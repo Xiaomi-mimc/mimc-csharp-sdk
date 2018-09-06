@@ -72,7 +72,7 @@ namespace com.xiaomi.mimc
         private long uuid;
         private string resource;
         private bool logoutFlag;
-        private string securityKey = "";
+        private string securityKey;
         private string token;
         private long lastLoginTimestamp;
         private long lastCreateConnTimestamp;
@@ -127,7 +127,6 @@ namespace com.xiaomi.mimc
         /// <summary>
         /// SDK User 构造函数
         /// </summary>
-        /// <param name="appId">开发者在小米开放平台申请的appId</param>
         /// <param name="appAccount">用户在APP帐号系统内的唯一帐号ID</param>
         public MIMCUser(string appAccount) : this(appAccount, null)
         {
@@ -136,7 +135,6 @@ namespace com.xiaomi.mimc
         /// <summary>
         /// SDK User 构造函数
         /// </summary>
-        /// <param name="appId">开发者在小米开放平台申请的appId</param>
         /// <param name="appAccount">用户在APP帐号系统内的唯一帐号ID</param>
         /// <param name="path">用户缓存目录</param>
         public MIMCUser(string appAccount, string path)
@@ -147,7 +145,8 @@ namespace com.xiaomi.mimc
             this.Status = Constant.OnlineStatus.Offline;
             this.logoutFlag = false;
             this.LastLoginTimestamp = 0;
-            this.LastCreateConnTimestamp = 0;
+            this.LastCreateConnTimestamp
+                = 0;
             this.LastPingTimestamp = 0;
             this.lastUcPingTimestamp = 0;
             this.atomic = new AtomicInteger();
@@ -251,7 +250,6 @@ namespace com.xiaomi.mimc
             using (MemoryStream stream = new MemoryStream(ucPacket.payload))
             {
                 messageList = Serializer.Deserialize<UCMessageList>(stream);
-                stream.Dispose();
             }
             if (messageList == null)
             {
@@ -290,7 +288,6 @@ namespace com.xiaomi.mimc
             using (MemoryStream ucStream = new MemoryStream(ucPacket.payload))
             {
                 uCJoinResp = Serializer.Deserialize<UCJoinResp>(ucStream);
-                ucStream.Dispose();
             }
             JoinUnlimitedGroupEventArgs eventArgs = new JoinUnlimitedGroupEventArgs(this, uCJoinResp);
             joinUnlimitedGroupEvent(this, eventArgs);
@@ -308,7 +305,6 @@ namespace com.xiaomi.mimc
             using (MemoryStream ucStream = new MemoryStream(ucPacket.payload))
             {
                 resp = Serializer.Deserialize<UCQuitResp>(ucStream);
-                ucStream.Dispose();
             }
             QuitUnlimitedGroupEventArgs eventArgs = new QuitUnlimitedGroupEventArgs(this, resp);
             quitUnlimitedGroupEvent(this, eventArgs);
@@ -397,7 +393,7 @@ namespace com.xiaomi.mimc
         public bool Login()
         {
             String tokenStr = tokenFetcher.FetchToken();
-            if (tokenStr==null|| tokenStr.Length==0)
+            if (tokenStr == null || tokenStr.Length == 0)
             {
                 return false;
             }
@@ -476,7 +472,6 @@ namespace com.xiaomi.mimc
         {
             return Logout();
         }
-
         /// <summary>
         /// 用户登出
         /// </summary>
@@ -745,7 +740,7 @@ namespace com.xiaomi.mimc
                     using (MemoryStream ms = new MemoryStream(feV6Packet.Body.Payload))
                     {
                         connResp = Serializer.Deserialize<XMMsgConnResp>(ms);
-                        ms.Dispose();
+
                     }
                     if (null == connResp)
                     {
@@ -766,7 +761,7 @@ namespace com.xiaomi.mimc
                     using (MemoryStream ms = new MemoryStream(feV6Packet.Body.Payload))
                     {
                         xMMsgBindResp = Serializer.Deserialize<XMMsgBindResp>(ms);
-                        ms.Dispose();
+
                     }
                     this.Status = xMMsgBindResp.result ? Constant.OnlineStatus.Online : Constant.OnlineStatus.Offline;
                     this.HandleStateChange(xMMsgBindResp.result, xMMsgBindResp.error_type, xMMsgBindResp.error_reason, xMMsgBindResp.error_desc);
@@ -776,7 +771,7 @@ namespace com.xiaomi.mimc
                 {
                     MemoryStream ms = new MemoryStream(feV6Packet.Body.Payload);
                     XMMsgPing xMMsgPing = Serializer.Deserialize<XMMsgPing>(ms);
-                    ms.Dispose();
+
 
                     logger.InfoFormat("<--- receive v6 packet cmd:Short-Ping-Pong appAccount:{0}", this.appAccount);
                     continue;
@@ -849,7 +844,7 @@ namespace com.xiaomi.mimc
                     using (MemoryStream ms = new MemoryStream(mimcPacket.payload))
                     {
                         MIMCP2PMessage p2p = Serializer.Deserialize<MIMCP2PMessage>(ms);
-                        ms.Dispose();
+
                         P2PMessage p2pMessage = new P2PMessage(mimcPacket.packetId, mimcPacket.sequence, p2p.from.appAccount, p2p.from.resource, p2p.payload, mimcPacket.timestamp);
                         HandleSendMessageTimeout(p2pMessage);
                         logger.DebugFormat("{0} ThreadCallback SendMessageTimeout packetId:{1}", this.appAccount, p2pMessage.PacketId);
@@ -860,7 +855,7 @@ namespace com.xiaomi.mimc
                     using (MemoryStream ms = new MemoryStream(mimcPacket.payload))
                     {
                         MIMCP2TMessage p2t = Serializer.Deserialize<MIMCP2TMessage>(ms);
-                        ms.Dispose();
+
                         P2TMessage p2tMessage = new P2TMessage(mimcPacket.packetId, mimcPacket.sequence, p2t.from.appAccount, p2t.from.resource, p2t.to.topicId, p2t.payload, mimcPacket.timestamp);
                         HandleSendGroupMessageTimeout(p2tMessage);
                         logger.DebugFormat("{0} ThreadCallback SendGroupMessageTimeout packetId:{1}", this.appAccount, p2tMessage.PacketId);
@@ -872,7 +867,7 @@ namespace com.xiaomi.mimc
                     using (MemoryStream ms = new MemoryStream(mimcPacket.payload))
                     {
                         UCPacket packet = Serializer.Deserialize<UCPacket>(ms);
-                        ms.Dispose();
+
                         HandleSendUnlimitedGroupMessageTimeout(packet);
                         logger.DebugFormat("{0} ThreadCallback SendUnlimitedMessageTimeout packetId:{1},type:{2},ucType{3}", this.appAccount, mimcPacket.packetId, mimcPacket.type, packet.type);
                     }
@@ -979,7 +974,7 @@ namespace com.xiaomi.mimc
                 ms.Flush();
                 ms.Position = 0;
                 packet.payload = p2pPacket;
-                ms.Dispose();
+
             }
             packet.timestamp = MIMCUtil.CurrentTimeMillis();
             byte[] packetBin = null;
@@ -989,7 +984,6 @@ namespace com.xiaomi.mimc
                 packetBin = stream.ToArray();
                 stream.Flush();
                 stream.Position = 0;
-                stream.Dispose();
             }
             if (SendPacket(packetId, packetBin, Constant.MIMC_C2S_DOUBLE_DIRECTION))
             {
@@ -1079,7 +1073,7 @@ namespace com.xiaomi.mimc
                 byte[] p2tPacket = ms.ToArray();
                 ms.Flush();
                 ms.Position = 0;
-                ms.Dispose();
+
                 packet.payload = p2tPacket;
             }
 
@@ -1091,7 +1085,6 @@ namespace com.xiaomi.mimc
                 packetBin = stream.ToArray();
                 stream.Flush();
                 stream.Position = 0;
-                stream.Dispose();
             }
 
             if (SendPacket(packetId, packetBin, Constant.MIMC_C2S_DOUBLE_DIRECTION))
@@ -1194,6 +1187,65 @@ namespace com.xiaomi.mimc
                 return false;
             }
         }
+        /// <summary>
+        /// 获取无限大群人数
+        /// </summary>
+        /// <returns></returns>
+        public string GetUnlimitedGroupUsersNum(long topicId)
+        {
+            logger.DebugFormat("{0} CreateUnlimitedGroup uuid:{1}", appAccount, this.uuid.ToString());
+            IDictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("token", Token);
+            headers.Add("topicId", topicId.ToString());
+
+            HttpWebResponse myResponse = HttpWebResponseUtil.CreateGetHttpResponse(Constant.QUERY_UNLIMITE_CHAT_ONLINE_INFO_URL, null, null, null, headers);
+            string cookieString = myResponse.Headers["Set-Cookie"];
+            StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+            string content = reader.ReadToEnd();
+            JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+            string code = jo.GetValue("code").ToString();
+            if (code != "200")
+            {
+                logger.DebugFormat("GetUnlimitedGroupUsersNum error:{0}", content);
+                return null;
+            }
+            JObject data = (JObject)jo.GetValue("data");
+            logger.DebugFormat("GetUnlimitedGroupUsersNum success content:{0},topicId:{1}", content, data.GetValue("topicId").ToString());
+
+            reader.Close();
+            myResponse.Close();
+            return data.ToString();
+        }
+
+        /// <summary>
+        /// 获取无限大群用户列表
+        /// </summary>
+        /// <returns></returns>
+        public string GetUnlimitedGroupUsers(long topicId)
+        {
+            logger.DebugFormat("{0} CreateUnlimitedGroup uuid:{1}", appAccount, this.uuid.ToString());
+            IDictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("token", Token);
+            headers.Add("topicId", topicId.ToString());
+
+            HttpWebResponse myResponse = HttpWebResponseUtil.CreateGetHttpResponse(Constant.QUERY_UNLIMITE_CHAT_USERLIST_URL, null, null, null, headers);
+            string cookieString = myResponse.Headers["Set-Cookie"];
+            StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+            string content = reader.ReadToEnd();
+            logger.DebugFormat("GetUnlimitedGroupUsers ------------------content:{0}", content);
+
+            JObject jo = (JObject)JsonConvert.DeserializeObject(content);
+            string code = jo.GetValue("code").ToString();
+            if (code != "200")
+            {
+                logger.DebugFormat("GetUnlimitedGroupUsers error:{0}", content);
+                return null;
+            }
+            JObject data = (JObject)jo.GetValue("data");
+            reader.Close();
+            myResponse.Close();
+            return data.ToString();
+        }
 
         /// <summary>
         /// 获取无限大群列表
@@ -1271,7 +1323,7 @@ namespace com.xiaomi.mimc
                 byte[] tempPacket = ms.ToArray();
                 ms.Flush();
                 ms.Position = 0;
-                ms.Dispose();
+
                 ucPacket.payload = tempPacket;
             }
             ucPacket.packetId = packetId;
@@ -1321,7 +1373,7 @@ namespace com.xiaomi.mimc
                 byte[] tempPacket = ms.ToArray();
                 ms.Flush();
                 ms.Position = 0;
-                ms.Dispose();
+
                 ucPacket.payload = tempPacket;
             }
             ucPacket.packetId = packetId;
@@ -1380,7 +1432,7 @@ namespace com.xiaomi.mimc
                 byte[] tempPacket = ms.ToArray();
                 ms.Flush();
                 ms.Position = 0;
-                ms.Dispose();
+
                 ucPacket.payload = tempPacket;
             }
             ucPacket.packetId = packetId;
@@ -1434,7 +1486,7 @@ namespace com.xiaomi.mimc
                 Serializer.Serialize(ms, ucPing);
                 byte[] payload = ms.ToArray();
                 ucPacket.payload = payload;
-                ms.Dispose();
+
             }
             return ucPacket;
         }
@@ -1468,7 +1520,7 @@ namespace com.xiaomi.mimc
                 Serializer.Serialize(ms, ucSeqAck);
                 byte[] payload = ms.ToArray();
                 ucPacket.payload = payload;
-                ms.Dispose();
+
             }
             return ucPacket;
         }
@@ -1491,7 +1543,7 @@ namespace com.xiaomi.mimc
                 byte[] tempPacket = ms.ToArray();
                 ms.Flush();
                 ms.Position = 0;
-                ms.Dispose();
+
                 mimcPacket.payload = tempPacket;
             }
 
@@ -1503,13 +1555,12 @@ namespace com.xiaomi.mimc
                 packetBin = stream.ToArray();
                 stream.Flush();
                 stream.Position = 0;
-                stream.Dispose();
             }
             logger.DebugFormat("--> {0} SendUCPacket ,packetId:{1},type:{2}", this.appAccount, packetId, ucPacket.type);
 
             if (SendPacket(packetId, packetBin, Constant.MIMC_C2S_DOUBLE_DIRECTION))
             {
-                if (ucPacket.type == UC_MSG_TYPE.MESSAGE )
+                if (ucPacket.type == UC_MSG_TYPE.MESSAGE)
                 {
                     TimeoutPacket timeoutPacket = new TimeoutPacket(mimcPacket, MIMCUtil.CurrentTimeMillis());
 

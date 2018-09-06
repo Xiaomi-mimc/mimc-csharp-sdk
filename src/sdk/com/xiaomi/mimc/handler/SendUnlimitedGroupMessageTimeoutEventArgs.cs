@@ -1,8 +1,9 @@
-﻿using mimc;
+﻿using System;
+using mimc;
 
 namespace com.xiaomi.mimc
 {
-    public class SendUnlimitedGroupMessageTimeoutEventArgs
+    public class SendUnlimitedGroupMessageTimeoutEventArgs : EventArgs
     {
         private readonly MIMCUser user;
 

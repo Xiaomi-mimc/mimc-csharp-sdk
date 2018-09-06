@@ -36,7 +36,7 @@ namespace com.xiaomi.mimc.client
         private string host;
         private int port;
 
-        private long lastPingTimestampMs;
+        //private long lastPingTimestampMs;
         private long nextResetSockTimestamp;
 
         private IFrontendPeerFetcher peerFetcher;
@@ -46,13 +46,13 @@ namespace com.xiaomi.mimc.client
 
         private string challenge;
 
-        private string connpt = "";
-        private string model = "";
-        private string os = "";
+        //private string connpt = "";
+        //private string model = "";
+        //private string os = "";
         private string udid = "";
-        private string sdk = "";
-        private string locale = "";
-        private int andVer = 0;
+        //private string sdk = "";
+        //private string locale = "";
+        //private int andVer = 0;
         private MIMCUser user;
         private TcpClient tcpConnection;
         private State connState;

@@ -39,6 +39,7 @@ namespace com.xiaomi.mimc.utils
         /// <param name="timeout">请求的超时时间</param>  
         /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
         /// <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+        /// <param name="headers">随同HTTP请求发送的headers信息</param>  
         /// <returns></returns>  
         public static HttpWebResponse CreateGetHttpResponse(string url, int? timeout, string userAgent, CookieCollection cookies, IDictionary<string, string> headers)
         {
@@ -159,7 +160,7 @@ namespace com.xiaomi.mimc.utils
         /// 创建POST方式的HTTP请求  
         /// </summary>  
         /// <param name="url">请求的URL</param>  
-        /// <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+        /// <param name="parametersJson">随同请求POST的参数名称及参数值json</param>  
         /// <param name="timeout">请求的超时时间</param>  
         /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
         /// <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
@@ -176,7 +177,7 @@ namespace com.xiaomi.mimc.utils
         /// 创建DELETE方式的HTTP请求  
         /// </summary>  
         /// <param name="url">请求的URL</param>  
-        /// <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+        /// <param name="parametersJson">随同请求POST的参数名称及参数值字典</param>  
         /// <param name="timeout">请求的超时时间</param>  
         /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
         /// <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
@@ -193,7 +194,7 @@ namespace com.xiaomi.mimc.utils
         /// 创建POST方式的HTTP请求  
         /// </summary>  
         /// <param name="url">请求的URL</param>  
-        /// <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+        /// <param name="parametersJson">随同请求POST的参数名称及参数值字典</param>  
         /// <param name="timeout">请求的超时时间</param>  
         /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
         /// <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
@@ -279,7 +280,7 @@ namespace com.xiaomi.mimc.utils
         /// 创建POST方式的HTTP请求  
         /// </summary>  
         /// <param name="url">请求的URL</param>  
-        /// <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+        /// <param name="parametersJson">随同请求POST的参数名称及参数值字典</param>  
         /// <param name="timeout">请求的超时时间</param>  
         /// <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
         /// <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
