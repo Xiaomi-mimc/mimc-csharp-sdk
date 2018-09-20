@@ -21,7 +21,7 @@ namespace com.xiaomi.mimc.frontend
     {
         public Peer Peer()
         {
-            return new Peer(Constant.FE_URL_STAGING, Constant.FE_PORT_STAGING);
+            return new Peer(Constant.FE_URL, Constant.FE_PORT);
         }
     }
 }
