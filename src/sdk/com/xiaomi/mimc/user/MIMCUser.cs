@@ -155,6 +155,7 @@ namespace com.xiaomi.mimc
             this.timeoutPackets = new ConcurrentDictionary<string, TimeoutPacket>();
             this.userHandler = new MIMCUserHandler();
             this.SetResource(path);
+            this.ackSequenceSet = new HashSet<long>();
 
             MIMCConnection connection = new MIMCConnection();
             this.connection = connection;
