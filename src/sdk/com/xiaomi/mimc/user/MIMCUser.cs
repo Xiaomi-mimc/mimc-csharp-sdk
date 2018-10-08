@@ -84,6 +84,7 @@ namespace com.xiaomi.mimc
         private IMIMCTokenFetcher tokenFetcher;
         private MIMCUserHandler userHandler;
         private List<long> ucTopics;
+        private HashSet<long> ackSequenceSet;
 
 
         public long LastLoginTimestamp { get; set; }
@@ -106,6 +107,7 @@ namespace com.xiaomi.mimc
         public ConcurrentDictionary<string, TimeoutPacket> TimeoutPackets { get => timeoutPackets; set => timeoutPackets = value; }
         public long AppId { get => appId; set => appId = value; }
         public long LastUcPingTimestamp { get => lastUcPingTimestamp; set => lastUcPingTimestamp = value; }
+        public HashSet<long> AckSequenceSet { get => ackSequenceSet; set => ackSequenceSet = value; }
 
 
         //定义事件处理器

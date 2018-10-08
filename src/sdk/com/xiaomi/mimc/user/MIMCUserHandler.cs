@@ -35,6 +35,12 @@ namespace com.xiaomi.mimc
             logger.InfoFormat("HandleSecMsg, type:{0} , uuid:{1}, packetId:{2}, chid:{3}",
                packet.type, user.Uuid, packet.packetId, user.Chid);
 
+            if (user.AckSequenceSet.Contains(packet.sequence))
+            {
+                return;
+            }
+            user.AckSequenceSet.Add(packet.sequence);
+
             if (packet.type == MIMC_MSG_TYPE.PACKET_ACK)
             {
                 logger.DebugFormat("{0} <--- receive PACKET_ACK :{1}", user.AppAccount, packet.packetId);
