@@ -204,11 +204,11 @@ namespace com.xiaomi.mimc
                 if (this.P2pAckSequenceSet.Contains(packets[i].Sequence))
                 {
                     logger.WarnFormat("{0} HandleMessage fail,packet.Sequence already existed ：{1}", this.AppAccount, packets[i].Sequence);
+                    packets.RemoveAt(i);
                     continue;
                 }
                 logger.DebugFormat("{0} HandleMessage ,packet.Sequence add：{1}", this.AppAccount, packets[i].Sequence);
                 this.P2pAckSequenceSet.Add(packets[i].Sequence);
-                packets.RemoveAt(i);
             }
             if (packets.Count == 0 || packets == null)
             {
