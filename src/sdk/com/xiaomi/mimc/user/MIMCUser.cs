@@ -246,7 +246,7 @@ namespace com.xiaomi.mimc
                 {
                     logger.WarnFormat("{0} HandleGroupMessage fail,packet.Sequence already existed ：{1}", this.AppAccount, message.Sequence);
                     packets.RemoveAt(i);
-                    return;
+                    continue;
                 }
                 logger.DebugFormat("{0} HandleGroupMessage ,packet.Sequence add：{1}", this.AppAccount, message.Sequence);
                 this.P2tAckSequenceSet.Add(message.Sequence);
@@ -310,7 +310,7 @@ namespace com.xiaomi.mimc
                 {
                     logger.WarnFormat("{0} HandleUnlimitedGroupMessage fail,packet.sequence already existed ：{1}", this.AppAccount, ucMessage.sequence);
                     messageList.message.Remove(ucMessage);
-                    return;
+                    continue;
                 }
                 logger.DebugFormat("{0} HandleUnlimitedGroupMessage ,packet.sequence add ：{1}", this.AppAccount, ucMessage.sequence);
                 this.UCAckSequenceSet.Add(ucMessage.sequence);
