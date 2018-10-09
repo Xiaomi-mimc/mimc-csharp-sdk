@@ -1,4 +1,5 @@
 ﻿using System;
+using com.xiaomi.mimc.packet;
 using mimc;
 
 namespace com.xiaomi.mimc
@@ -7,15 +8,15 @@ namespace com.xiaomi.mimc
     {
         private readonly MIMCUser user;
 
-        private UCPacket packet;
+        private P2UMessage packet;
 
-        public SendUnlimitedGroupMessageTimeoutEventArgs(MIMCUser user, UCPacket packet)
+        public SendUnlimitedGroupMessageTimeoutEventArgs(MIMCUser user, P2UMessage packet)
         {
             this.user = user;
             this.packet = packet;
         }
 
-        public UCPacket Packet { get => packet; set => packet = value; }
+        public P2UMessage Packet { get => packet; set => packet = value; }
 
         public MIMCUser User => user;
     }

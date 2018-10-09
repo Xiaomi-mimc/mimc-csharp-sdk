@@ -244,7 +244,7 @@ namespace com.xiaomi.mimc
                 P2TMessage message = packets[i];
                 if (this.P2tAckSequenceSet.Contains(message.Sequence))
                 {
-                    logger.WarnFormat("{0} HandleGroupMessage fail,packet.Sequence already existed ：{1}", this.AppAccount, message.Sequence);
+                    logger.WarnFormat("{0} HandleGroupMessage fail,packet.Sequence already existed ：{1},Count:{2}", this.AppAccount, message.Sequence, P2tAckSequenceSet.Count);
                     packets.RemoveAt(i);
                     continue;
                 }
@@ -283,43 +283,34 @@ namespace com.xiaomi.mimc
             serverACKEvent(this, eventArgs);
         }
 
-        internal void HandleUnlimitedGroupMessage(UCPacket ucPacket)
+        internal void HandleUnlimitedGroupMessage(List<P2UMessage> p2uMessagesList, UCGroup group, long maxSequence)
         {
-
             if (null == unlimitedGroupMessageEvent)
             {
                 logger.WarnFormat("{0} HandleUnlimitedGroupMessage fail ServerACKEvent is null. ", this.appAccount);
                 return;
             }
+            if (p2uMessagesList.Count > 1)
+                logger.WarnFormat(" HandleUnlimitedGroupMessage p2uMessagesList size {0} ", p2uMessagesList.Count);
 
-            UCMessageList messageList = null;
-            using (MemoryStream stream = new MemoryStream(ucPacket.payload))
+            for (int i = p2uMessagesList.Count - 1; i >= 0; i--)
             {
-                messageList = Serializer.Deserialize<UCMessageList>(stream);
-            }
-            if (messageList == null)
-            {
-                logger.WarnFormat("HandleUnlimitedGroupMessage seqAck is null");
-                return;
-            }
-
-            for (int i = messageList.message.Count - 1; i >= 0; i--)
-            {
-                UCMessage ucMessage = messageList.message[i];
-                if (this.UCAckSequenceSet.Contains(ucMessage.sequence))
+                P2UMessage p2uMessage = p2uMessagesList[i];
+                if (this.UCAckSequenceSet.Contains(p2uMessage.Sequence))
                 {
-                    logger.WarnFormat("{0} HandleUnlimitedGroupMessage fail,packet.sequence already existed ：{1}", this.AppAccount, ucMessage.sequence);
-                    messageList.message.Remove(ucMessage);
+                    logger.WarnFormat("{0} HandleUnlimitedGroupMessage fail,packet.sequence already existed ：{1}，packetId:{2},Count:{3}", this.AppAccount, p2uMessage.Sequence, p2uMessage.PacketId, UCAckSequenceSet.Count);
+                    p2uMessagesList.Remove(p2uMessage);
                     continue;
                 }
-                logger.DebugFormat("{0} HandleUnlimitedGroupMessage ,packet.sequence add ：{1}", this.AppAccount, ucMessage.sequence);
-                this.UCAckSequenceSet.Add(ucMessage.sequence);
+                this.UCAckSequenceSet.Add(p2uMessage.Sequence);
+                logger.DebugFormat("{0} sequence add success ：{1}，packetId:{2},Count:{3}", this.AppAccount, p2uMessage.Sequence, p2uMessage.PacketId, UCAckSequenceSet.Count);
+
             }
-            if (messageList.message.Count == 0 || messageList.message == null)
+            if (p2uMessagesList.Count == 0 || p2uMessagesList == null)
             {
                 return;
             }
-            UCPacket ucAckPacket = BuildUcSeqAckPacket(this, messageList);
+            UCPacket ucAckPacket = BuildUcSeqAckPacket(this, group, maxSequence);
             String packetId = MIMCUtil.CreateMsgId(this);
 
             if (SendUCPacket(packetId, ucAckPacket))
@@ -334,7 +325,7 @@ namespace com.xiaomi.mimc
 
             logger.InfoFormat("{0} HandleUnlimitedGroupMessage success. ", this.appAccount);
 
-            UnlimitedGroupMessageEventArgs eventArgs = new UnlimitedGroupMessageEventArgs(this, ucPacket);
+            UnlimitedGroupMessageEventArgs eventArgs = new UnlimitedGroupMessageEventArgs(this, p2uMessagesList);
             unlimitedGroupMessageEvent(this, eventArgs);
         }
 
@@ -384,14 +375,29 @@ namespace com.xiaomi.mimc
             DismissUnlimitedGroupEventArgs eventArgs = new DismissUnlimitedGroupEventArgs(this, ucPacket);
             dismissUnlimitedGroupEvent(this, eventArgs);
         }
-        private void HandleSendUnlimitedGroupMessageTimeout(UCPacket message)
+        private void HandleSendUnlimitedGroupMessageTimeout(UCPacket ucPacket)
         {
             if (null == unlimitedGroupMessageTimeoutEvent)
             {
                 logger.WarnFormat("{0} HandleSendUnlimitedGroupMessageTimeout fail unlimitedGroupMessageTimeoutEvent is null. ", this.appAccount);
                 return;
             }
-            SendUnlimitedGroupMessageTimeoutEventArgs eventArgs = new SendUnlimitedGroupMessageTimeoutEventArgs(this, message);
+
+            logger.DebugFormat(" UC_PACKET packetId:{0}", ucPacket.packetId);
+            UCMessage ucMessage = null;
+            using (MemoryStream ucStream = new MemoryStream(ucPacket.payload))
+            {
+                ucMessage = Serializer.Deserialize<UCMessage>(ucStream);
+            }
+            if (ucMessage == null)
+            {
+                logger.WarnFormat("HandleSecMsg p2tMessage is null");
+            }
+            logger.DebugFormat("UC_PACKET UC_MSG_TYPE：{0}", ucPacket.type);
+
+            SendUnlimitedGroupMessageTimeoutEventArgs eventArgs = new SendUnlimitedGroupMessageTimeoutEventArgs(this, new P2UMessage(ucMessage.packetId, ucMessage.sequence,
+                               ucMessage.user.appAccount, null,
+                               ucMessage.group.topicId, ucMessage.payload, ucMessage.timestamp));
             unlimitedGroupMessageTimeoutEvent(this, eventArgs);
         }
 
@@ -928,10 +934,14 @@ namespace com.xiaomi.mimc
                 {
                     using (MemoryStream ms = new MemoryStream(mimcPacket.payload))
                     {
-                        UCPacket packet = Serializer.Deserialize<UCPacket>(ms);
+                        UCPacket ucPacket = Serializer.Deserialize<UCPacket>(ms);
 
-                        HandleSendUnlimitedGroupMessageTimeout(packet);
-                        logger.DebugFormat("{0} ThreadCallback SendUnlimitedMessageTimeout packetId:{1},type:{2},ucType{3}", this.appAccount, mimcPacket.packetId, mimcPacket.type, packet.type);
+                        if (ucPacket.type == UC_MSG_TYPE.MESSAGE_LIST)
+                        {
+                            HandleSendUnlimitedGroupMessageTimeout(ucPacket);
+                        }
+
+                        logger.DebugFormat("{0} ThreadCallback SendUnlimitedMessageTimeout packetId:{1},type:{2},ucType{3}", this.appAccount, mimcPacket.packetId, mimcPacket.type, ucPacket.type);
                     }
                 }
 
@@ -1476,14 +1486,14 @@ namespace com.xiaomi.mimc
             UCGroup to = new UCGroup();
             to.appId = appId;
             to.topicId = topicId;
+            String packetId = MIMCUtil.CreateMsgId(this);
 
             UCMessage message = new UCMessage();
             message.user = fromUser;
             message.group = to;
             message.payload = msg;
+            message.packetId = packetId;
 
-
-            String packetId = MIMCUtil.CreateMsgId(this);
 
             UCPacket ucPacket = new UCPacket();
             ucPacket.user = fromUser;
@@ -1553,7 +1563,7 @@ namespace com.xiaomi.mimc
             return ucPacket;
         }
 
-        internal UCPacket BuildUcSeqAckPacket(MIMCUser user, UCMessageList messageList)
+        internal UCPacket BuildUcSeqAckPacket(MIMCUser user, UCGroup group, long maxSequence)
         {
             logger.DebugFormat("{0} User BuildUcSeqAckPacket", user.AppAccount);
 
@@ -1575,9 +1585,9 @@ namespace com.xiaomi.mimc
             ucPacket.type = UC_MSG_TYPE.SEQ_ACK;
 
             UCSequenceAck ucSeqAck = new UCSequenceAck();
-            ucSeqAck.group = messageList.group;
-            ucSeqAck.sequence = messageList.maxSequence;
-            logger.DebugFormat("ucSeqAck.sequence:{0}, messageList.maxSequence:{1}", ucSeqAck.sequence, messageList.maxSequence);
+            ucSeqAck.group = group;
+            ucSeqAck.sequence = maxSequence;
+            logger.DebugFormat("ucSeqAck.sequence:{0}, messageList.maxSequence:{1}", ucSeqAck.sequence, maxSequence);
 
             using (MemoryStream ms = new MemoryStream())
             {

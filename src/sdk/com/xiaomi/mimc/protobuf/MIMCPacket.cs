@@ -227,6 +227,15 @@ namespace mimc
       get { return _messageFilter; }
       set { _messageFilter = value; }
     }
+
+    private string _ucMsgCallbackUrl = "";
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"ucMsgCallbackUrl", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string ucMsgCallbackUrl
+    {
+      get { return _ucMsgCallbackUrl; }
+      set { _ucMsgCallbackUrl = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -564,6 +573,94 @@ namespace mimc
     {
       get { return _resource; }
       set { _resource = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"P2PPushMesage")]
+  public partial class P2PPushMesage : global::ProtoBuf.IExtensible
+  {
+    public P2PPushMesage() {}
+    
+
+    private mimc.MIMCUser _from = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"from", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public mimc.MIMCUser from
+    {
+      get { return _from; }
+      set { _from = value; }
+    }
+    private readonly global::System.Collections.Generic.List<mimc.MIMCUser> _to = new global::System.Collections.Generic.List<mimc.MIMCUser>();
+    [global::ProtoBuf.ProtoMember(2, Name=@"to", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<mimc.MIMCUser> to
+    {
+      get { return _to; }
+    }
+  
+
+    private byte[] _payload = null;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"payload", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] payload
+    {
+      get { return _payload; }
+      set { _payload = value; }
+    }
+
+    private bool _isStore = default(bool);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"isStore", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool isStore
+    {
+      get { return _isStore; }
+      set { _isStore = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"P2TPushMesage")]
+  public partial class P2TPushMesage : global::ProtoBuf.IExtensible
+  {
+    public P2TPushMesage() {}
+    
+
+    private mimc.MIMCUser _from = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"from", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public mimc.MIMCUser from
+    {
+      get { return _from; }
+      set { _from = value; }
+    }
+    private readonly global::System.Collections.Generic.List<mimc.MIMCGroup> _to = new global::System.Collections.Generic.List<mimc.MIMCGroup>();
+    [global::ProtoBuf.ProtoMember(2, Name=@"to", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<mimc.MIMCGroup> to
+    {
+      get { return _to; }
+    }
+  
+
+    private byte[] _payload = null;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"payload", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] payload
+    {
+      get { return _payload; }
+      set { _payload = value; }
+    }
+
+    private bool _isStore = default(bool);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"isStore", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool isStore
+    {
+      get { return _isStore; }
+      set { _isStore = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -915,6 +1012,73 @@ namespace mimc
       get { return _timestamp; }
       set { _timestamp = value; }
     }
+
+    private string _packetId = "";
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"packetId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string packetId
+    {
+      get { return _packetId; }
+      set { _packetId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCPushMessage")]
+  public partial class UCPushMessage : global::ProtoBuf.IExtensible
+  {
+    public UCPushMessage() {}
+    
+    private mimc.MIMCUser _user;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"user", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public mimc.MIMCUser user
+    {
+      get { return _user; }
+      set { _user = value; }
+    }
+    private readonly global::System.Collections.Generic.List<mimc.UCGroup> _group = new global::System.Collections.Generic.List<mimc.UCGroup>();
+    [global::ProtoBuf.ProtoMember(2, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<mimc.UCGroup> group
+    {
+      get { return _group; }
+    }
+  
+    private readonly global::System.Collections.Generic.List<byte[]> _payloads = new global::System.Collections.Generic.List<byte[]>();
+    [global::ProtoBuf.ProtoMember(3, Name=@"payloads", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<byte[]> payloads
+    {
+      get { return _payloads; }
+    }
+  
+
+    private bool _isStore = default(bool);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"isStore", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool isStore
+    {
+      get { return _isStore; }
+      set { _isStore = value; }
+    }
+
+    private long _timestamp = default(long);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"timestamp", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(long))]
+    public long timestamp
+    {
+      get { return _timestamp; }
+      set { _timestamp = value; }
+    }
+
+    private string _packetId = "";
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"packetId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string packetId
+    {
+      get { return _packetId; }
+      set { _packetId = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -1138,8 +1302,11 @@ namespace mimc
       [global::ProtoBuf.ProtoEnum(Name=@"UC_PACKET", Value=8)]
       UC_PACKET = 8,
             
-      [global::ProtoBuf.ProtoEnum(Name=@"P2P_MESSAGE_FOR_SYNC", Value=9)]
-      P2P_MESSAGE_FOR_SYNC = 9
+      [global::ProtoBuf.ProtoEnum(Name=@"P2P_PUSH_MESSAGE", Value=9)]
+      P2P_PUSH_MESSAGE = 9,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"P2T_PUSH_MESSAGE", Value=10)]
+      P2T_PUSH_MESSAGE = 10
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"UC_MSG_TYPE")]

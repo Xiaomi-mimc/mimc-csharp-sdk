@@ -96,6 +96,7 @@
     <Compile Include="com\xiaomi\mimc\packet\MIMCObject.cs" />
     <Compile Include="com\xiaomi\mimc\packet\P2PMessage.cs" />
     <Compile Include="com\xiaomi\mimc\packet\MIMCUCPacket.cs" />
+    <Compile Include="com\xiaomi\mimc\packet\P2UMessage.cs" />
     <Compile Include="com\xiaomi\mimc\packet\P2TMessage.cs" />
     <Compile Include="com\xiaomi\mimc\packet\ServerAck.cs" />
     <Compile Include="com\xiaomi\mimc\packet\TimeoutPacket.cs" />

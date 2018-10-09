@@ -67,6 +67,8 @@ namespace com.xiaomi.mimc
 
                 return;
             }
+            List<P2UMessage> p2uMessagesList = new List<P2UMessage>();
+
             if (packet.type == MIMC_MSG_TYPE.UC_PACKET)
             {
 
@@ -85,8 +87,29 @@ namespace com.xiaomi.mimc
 
                 if (ucPacket.type == UC_MSG_TYPE.MESSAGE_LIST)
                 {
-                    logger.DebugFormat("HandleSecMsg UC_MSG_TYPE.MESSAGE_LIST：{0}", ucPacket.type);
-                    user.HandleUnlimitedGroupMessage(ucPacket);
+                    UCMessageList messageList = null;
+                    using (MemoryStream stream = new MemoryStream(ucPacket.payload))
+                    {
+                        messageList = Serializer.Deserialize<UCMessageList>(stream);
+                    }
+                    if (messageList == null || messageList.message.Count == 0 || messageList.message == null)
+                    {
+                        logger.WarnFormat("HandleUnlimitedGroupMessage messageList is null");
+                        return;
+                    }
+
+                    foreach (UCMessage ucMessage in messageList.message)
+                    {
+                        logger.DebugFormat("HandleSecMsg UC_MSG_TYPE.MESSAGE_LIST：{0},size:{1}", ucPacket.type, messageList.message.Count);
+                        p2uMessagesList.Add(new P2UMessage(ucMessage.packetId, ucMessage.sequence,
+                               ucMessage.user.appAccount, null,
+                               ucMessage.group.topicId, ucMessage.payload, ucMessage.timestamp));
+                        continue;
+                    }
+                    if (p2uMessagesList.Count > 0)
+                    {
+                        user.HandleUnlimitedGroupMessage(p2uMessagesList, messageList.group, messageList.maxSequence);
+                    }
                 }
                 if (ucPacket.type == UC_MSG_TYPE.JOIN_RESP)
                 {
@@ -100,7 +123,8 @@ namespace com.xiaomi.mimc
                     user.HandleQuitUnlimitedGroup(ucPacket);
                 }
                 if (ucPacket.type == UC_MSG_TYPE.DISMISS)
-                {   logger.DebugFormat("HandleDismissUnlimitedGroup UC_MSG_TYPE.DISMISS：{0}", ucPacket.type);
+                {
+                    logger.DebugFormat("HandleDismissUnlimitedGroup UC_MSG_TYPE.DISMISS：{0}", ucPacket.type);
                     user.HandleDismissUnlimitedGroup(ucPacket);
                 }
 
@@ -194,8 +218,6 @@ namespace com.xiaomi.mimc
                     logger.WarnFormat("HandleSecMsg RECV_MIMC_PACKET ,invalid type, Type：{0}", p.type);
                 }
 
-
-
                 if (p2pMessagesList.Count > 0)
                 {
                     user.HandleMessage(p2pMessagesList);
@@ -204,7 +226,6 @@ namespace com.xiaomi.mimc
                 {
                     user.HandleGroupMessage(p2tMessagesList);
                 }
-
             }
         }
     }

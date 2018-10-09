@@ -33,8 +33,8 @@ namespace sdk.demo
         private static string appKey = "5361761377988";
         private static string appSecret = "2SZbrJOAL1xHRKb7L9AiRQ==";
 
-        private string appAccount1 = "leijun" + GenerateRandomString(5);
-        private string appAccount2 = "linbin" + GenerateRandomString(5);
+        private string appAccount1 = "leijun" + GenerateRandomString(10);
+        private string appAccount2 = "linbin" + GenerateRandomString(10);
         private MIMCUser leijun;
         private MIMCUser linbin;
 
@@ -78,11 +78,11 @@ namespace sdk.demo
                 return;
             }
 
-            demo.SendMessageAsync();
-            Thread.Sleep(1000);
+            //demo.SendMessageAsync();
+            //Thread.Sleep(1000);
 
-            demo.SendGroupMessageAsync();
-            Thread.Sleep(1000);
+            //demo.SendGroupMessageAsync();
+            //Thread.Sleep(1000);
 
             demo.SendUnlimitedGroupMessage();
             Thread.Sleep(1000);
@@ -402,11 +402,14 @@ namespace sdk.demo
             logger.InfoFormat("SendUnlimitedGroupMessage  result:{0}", result);
             String userListResult = leijun.GetUnlimitedGroupUsers(4535345345);
             logger.InfoFormat("SendUnlimitedGroupMessage userListResult:{0}", userListResult);
-
-            String packetId = leijun.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
-
-            logger.InfoFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3},uuid2:{4}", leijun.AppAccount, topicId, packetId, leijun.Uuid, linbin.Uuid);
-            Thread.Sleep(5000);
+            String packetId = null;
+            for (int i = 0; i < 20; i++)
+            {
+                packetId = leijun.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
+                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3},uuid2:{4}", leijun.AppAccount, topicId, packetId, leijun.Uuid, linbin.Uuid);
+                Thread.Sleep(10);
+            }
+            Thread.Sleep(20000);
             linbin.QuitUnlimitedGroup(topicId);
             Thread.Sleep(1000);
 
@@ -632,17 +635,27 @@ namespace sdk.demo
 
         public void HandleUnlimitedGroupMessage(object source, UnlimitedGroupMessageEventArgs e)
         {
-            mimc.UCPacket msg = e.Packet;
-            logger.InfoFormat("HandleUnlimitedGroupMessage, to:{0}, packetId:{1}, type:{2}",
-                     e.User.AppAccount, msg.packetId, msg.type);
+            List<P2UMessage> packets = e.P2uMessagesList;
+            logger.InfoFormat("HandleUnlimitedGroupMessage, to:{0}, packetCount:{1}", e.User.AppAccount, packets.Count);
+            if (packets.Count == 0)
+            {
+                logger.WarnFormat("HandleUnlimitedGroupMessage packets.Count==0");
+                return;
+            }
+            foreach (P2UMessage msg in packets)
+            {
+                logger.InfoFormat("HandleUnlimitedGroupMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                      e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
+                    Encoding.UTF8.GetString(msg.Payload));
+            }
 
         }
 
         public void HandleUnlimitedGroupMessageTimeout(object source, SendUnlimitedGroupMessageTimeoutEventArgs e)
         {
-            mimc.UCPacket msg = e.Packet;
-            logger.InfoFormat("HandleUnlimitedGroupMessageTimeout, to:{0}, packetId:{1}, type:{2}",
-                     e.User.AppAccount, msg.packetId, msg.type);
+            P2UMessage msg = e.Packet;
+            logger.InfoFormat("HandleUnlimitedGroupMessageTimeout, to:{0}, packetId:{1}",
+                     e.User.AppAccount, msg.PacketId);
         }
 
         public void HandleJoinUnlimitedGroup(object source, JoinUnlimitedGroupEventArgs e)
