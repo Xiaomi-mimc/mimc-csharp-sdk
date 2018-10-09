@@ -84,8 +84,9 @@ namespace com.xiaomi.mimc
         private IMIMCTokenFetcher tokenFetcher;
         private MIMCUserHandler userHandler;
         private List<long> ucTopics;
-        private HashSet<long> ackSequenceSet;
-
+        private HashSet<long> ucAckSequenceSet;
+        private HashSet<long> p2pAckSequenceSet;
+        private HashSet<long> p2tAckSequenceSet;
 
         public long LastLoginTimestamp { get; set; }
         public long LastCreateConnTimestamp { get; set; }
@@ -107,7 +108,9 @@ namespace com.xiaomi.mimc
         public ConcurrentDictionary<string, TimeoutPacket> TimeoutPackets { get => timeoutPackets; set => timeoutPackets = value; }
         public long AppId { get => appId; set => appId = value; }
         public long LastUcPingTimestamp { get => lastUcPingTimestamp; set => lastUcPingTimestamp = value; }
-        public HashSet<long> AckSequenceSet { get => ackSequenceSet; set => ackSequenceSet = value; }
+        public HashSet<long> UCAckSequenceSet { get => ucAckSequenceSet; set => ucAckSequenceSet = value; }
+        public HashSet<long> P2pAckSequenceSet { get => p2pAckSequenceSet; set => p2pAckSequenceSet = value; }
+        public HashSet<long> P2tAckSequenceSet { get => p2tAckSequenceSet; set => p2tAckSequenceSet = value; }
 
 
         //定义事件处理器
@@ -147,15 +150,16 @@ namespace com.xiaomi.mimc
             this.Status = Constant.OnlineStatus.Offline;
             this.logoutFlag = false;
             this.LastLoginTimestamp = 0;
-            this.LastCreateConnTimestamp
-                = 0;
+            this.LastCreateConnTimestamp = 0;
             this.LastPingTimestamp = 0;
             this.lastUcPingTimestamp = 0;
             this.atomic = new AtomicInteger();
             this.timeoutPackets = new ConcurrentDictionary<string, TimeoutPacket>();
             this.userHandler = new MIMCUserHandler();
             this.SetResource(path);
-            this.ackSequenceSet = new HashSet<long>();
+            this.ucAckSequenceSet = new HashSet<long>();
+            this.P2pAckSequenceSet = new HashSet<long>();
+            this.P2tAckSequenceSet = new HashSet<long>();
 
             MIMCConnection connection = new MIMCConnection();
             this.connection = connection;
@@ -188,6 +192,29 @@ namespace com.xiaomi.mimc
                 logger.WarnFormat("{0} HandleMessage fail MessageEvent is null. ", this.appAccount);
                 return;
             }
+            if (packets.Count == 0 || packets == null)
+            {
+                logger.WarnFormat("{0} HandleMessage fail packets is null. ", this.appAccount);
+                return;
+            }
+            logger.DebugFormat("{0} HandleMessage ,packets size：{1}", this.AppAccount, packets.Count);
+
+            for (int i = packets.Count - 1; i >= 0; i--)
+            {
+                if (this.P2pAckSequenceSet.Contains(packets[i].Sequence))
+                {
+                    logger.WarnFormat("{0} HandleMessage fail,packet.Sequence already existed ：{1}", this.AppAccount, packets[i].Sequence);
+                    continue;
+                }
+                logger.DebugFormat("{0} HandleMessage ,packet.Sequence add：{1}", this.AppAccount, packets[i].Sequence);
+                this.P2pAckSequenceSet.Add(packets[i].Sequence);
+                packets.RemoveAt(i);
+            }
+            if (packets.Count == 0 || packets == null)
+            {
+                return;
+            }
+            logger.DebugFormat("{0} HandleMessage ,packets size：{1}", this.AppAccount, packets.Count);
             MessageEventArgs eventArgs = new MessageEventArgs(this, packets);
             messageEvent(this, eventArgs);
         }
@@ -212,6 +239,22 @@ namespace com.xiaomi.mimc
             }
             logger.InfoFormat("{0} HandleGroupMessage success. ", this.appAccount);
 
+            for (int i = packets.Count - 1; i >= 0; i--)
+            {
+                P2TMessage message = packets[i];
+                if (this.P2tAckSequenceSet.Contains(message.Sequence))
+                {
+                    logger.WarnFormat("{0} HandleGroupMessage fail,packet.Sequence already existed ：{1}", this.AppAccount, message.Sequence);
+                    packets.RemoveAt(i);
+                    return;
+                }
+                logger.DebugFormat("{0} HandleGroupMessage ,packet.Sequence add：{1}", this.AppAccount, message.Sequence);
+                this.P2tAckSequenceSet.Add(message.Sequence);
+            }
+            if (packets.Count == 0 || packets == null)
+            {
+                return;
+            }
             GroupMessageEventArgs eventArgs = new GroupMessageEventArgs(this, packets);
             groupMessageEvent(this, eventArgs);
         }
@@ -260,6 +303,22 @@ namespace com.xiaomi.mimc
                 return;
             }
 
+            for (int i = messageList.message.Count - 1; i >= 0; i--)
+            {
+                UCMessage ucMessage = messageList.message[i];
+                if (this.UCAckSequenceSet.Contains(ucMessage.sequence))
+                {
+                    logger.WarnFormat("{0} HandleUnlimitedGroupMessage fail,packet.sequence already existed ：{1}", this.AppAccount, ucMessage.sequence);
+                    messageList.message.Remove(ucMessage);
+                    return;
+                }
+                logger.DebugFormat("{0} HandleUnlimitedGroupMessage ,packet.sequence add ：{1}", this.AppAccount, ucMessage.sequence);
+                this.UCAckSequenceSet.Add(ucMessage.sequence);
+            }
+            if (messageList.message.Count == 0 || messageList.message == null)
+            {
+                return;
+            }
             UCPacket ucAckPacket = BuildUcSeqAckPacket(this, messageList);
             String packetId = MIMCUtil.CreateMsgId(this);
 
@@ -1518,6 +1577,8 @@ namespace com.xiaomi.mimc
             UCSequenceAck ucSeqAck = new UCSequenceAck();
             ucSeqAck.group = messageList.group;
             ucSeqAck.sequence = messageList.maxSequence;
+            logger.DebugFormat("ucSeqAck.sequence:{0}, messageList.maxSequence:{1}", ucSeqAck.sequence, messageList.maxSequence);
+
             using (MemoryStream ms = new MemoryStream())
             {
                 Serializer.Serialize(ms, ucSeqAck);

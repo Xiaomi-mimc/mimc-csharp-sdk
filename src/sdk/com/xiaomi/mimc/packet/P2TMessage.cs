@@ -32,13 +32,13 @@ namespace com.xiaomi.mimc.packet
         private long groupId;
         private byte[] payload;
 
-        public string PacketId { get; }
-        public long Sequence { get; }
-        public long Timestamp { get; }
-        public string FromResource { get; }
-        public string FromAccount { get; }
-        public long GroupId { get; }
-        public byte[] Payload { get; }
+        public string PacketId { get => packetId; set => packetId = value; }
+        public long Sequence { get => sequence; set => sequence = value; }
+        public long Timestamp { get => timestamp; set => timestamp = value; }
+        public string FromAccount { get => fromAccount; set => fromAccount = value; }
+        public string FromResource { get => fromResource; set => fromResource = value; }
+        public long GroupId { get => groupId; set => groupId = value; }
+        public byte[] Payload { get => payload; set => payload = value; }
 
         public P2TMessage(String packetId, long sequence, String fromAccount, String fromResource, long groupId, byte[] payload, long timestamp)
         {

@@ -31,12 +31,12 @@ namespace com.xiaomi.mimc.packet
         private String fromResource;
         private byte[] payload;
 
-        public string PacketId { get;}
-        public long Sequence { get; }
-        public long Timestamp { get;}
-        public string FromAccount { get; }
-        public string FromResource { get; }
-        public byte[] Payload { get;}
+        public string PacketId { get => packetId; set => packetId = value; }
+        public long Sequence { get => sequence; set => sequence = value; }
+        public long Timestamp { get => timestamp; set => timestamp = value; }
+        public string FromAccount { get => fromAccount; set => fromAccount = value; }
+        public string FromResource { get => fromResource; set => fromResource = value; }
+        public byte[] Payload { get => payload; set => payload = value; }
 
         public P2PMessage(String packetId, long sequence, String fromAccount, String fromResource, byte[] payload, long timestamp)
         {

@@ -28,10 +28,10 @@ namespace com.xiaomi.mimc.packet
         private long timestamp;
         private String errorMsg;
 
-        public string PacketId { get;}
-        public long Sequence { get;}
-        public long Timestamp { get;}
-        public string ErrorMsg { get; }
+        public string PacketId { get => packetId; set => packetId = value; }
+        public long Sequence { get => sequence; set => sequence = value; }
+        public long Timestamp { get => timestamp; set => timestamp = value; }
+        public string ErrorMsg { get => errorMsg; set => errorMsg = value; }
 
         public ServerAck(String packetId, long sequence, long timestamp, String errorMsg)
         {
@@ -43,7 +43,7 @@ namespace com.xiaomi.mimc.packet
 
         public override String ToString()
         {
-            return "packetId:" + PacketId + " sequence:" + sequence + " timestamp:" + timestamp;
+            return "packetId:" + PacketId + " sequence:" + sequence + " timestamp:" + timestamp + " ErrorMsg:" + ErrorMsg;
         }
 
     }

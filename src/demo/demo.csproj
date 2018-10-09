@@ -5,12 +5,13 @@
     <ProjectGuid>{FDA7974D-8770-44F7-ABF7-E1E96D21D9D5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ConsoleApplication</AssemblyName>
+    <AssemblyName>mimcdemo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +24,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +48,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>demo</RootNamespace>
@@ -54,10 +56,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>sdk.demo.MIMCDemo</StartupObject>
@@ -66,14 +70,17 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>demo.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -108,6 +115,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="demo.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -129,4 +137,7 @@
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>:editbin /subsystem:console $(OutDir)$(ProjectName).exe</PostBuildEvent>
+  </PropertyGroup>
 </Project>

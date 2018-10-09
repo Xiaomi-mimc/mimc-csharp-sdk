@@ -28,7 +28,6 @@ namespace sdk.demo
         *   开发者访问小米开放平台(https://dev.mi.com/console/man/)，申请appId/appKey/appSecurity
         **/
         private static string topicUrl = "https://mimc.chat.xiaomi.net/api/topic/";
-
         private static string url = "https://mimc.chat.xiaomi.net/api/account/token";
         private static string appId = "2882303761517613988";
         private static string appKey = "5361761377988";
@@ -79,10 +78,10 @@ namespace sdk.demo
                 return;
             }
 
-            //demo.SendMessageAsync();
-            //Thread.Sleep(1000);
+            demo.SendMessageAsync();
+            Thread.Sleep(1000);
 
-            //demo.SendGroupMessageAsync();
+            demo.SendGroupMessageAsync();
             Thread.Sleep(1000);
 
             demo.SendUnlimitedGroupMessage();
@@ -399,6 +398,10 @@ namespace sdk.demo
             leijun.QueryUnlimitedGroups();
             Thread.Sleep(2000);
             linbin.QueryUnlimitedGroups();
+            String result = leijun.GetUnlimitedGroupUsersNum(topicId);
+            logger.InfoFormat("SendUnlimitedGroupMessage  result:{0}", result);
+            String userListResult = leijun.GetUnlimitedGroupUsers(4535345345);
+            logger.InfoFormat("SendUnlimitedGroupMessage userListResult:{0}", userListResult);
 
             String packetId = leijun.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
 
@@ -407,7 +410,9 @@ namespace sdk.demo
             linbin.QuitUnlimitedGroup(topicId);
             Thread.Sleep(1000);
 
-            //bool dismissFlag = leijun.DismissUnlimitedGroup(topicId);
+            bool dismissFlag = leijun.DismissUnlimitedGroup(topicId);
+            logger.InfoFormat("SendUnlimitedGroupMessage, DismissUnlimitedGroup AppAccount:{0}-->topicId:{1}, PacketId:{2},uuid:{3},uuid2:{4}", leijun.AppAccount, topicId, packetId, leijun.Uuid, linbin.Uuid);
+
             Thread.Sleep(1000);
 
             //if (dismissFlag)
@@ -663,11 +668,6 @@ namespace sdk.demo
         public void HandleServerACK(object source, ServerACKEventArgs e)
         {
             ServerAck serverAck = e.ServerAck;
-            if (serverAck.ErrorMsg!=null&& serverAck.ErrorMsg != "")
-            {
-                logger.WarnFormat("{0} HandleServerACK, some errors ErrorMsg:{1}",
-                 e.User.AppAccount, serverAck.ErrorMsg);
-            }
             logger.InfoFormat("HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3},ErrorMsg:{4}",
                   e.User.AppAccount, serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp, serverAck.ErrorMsg);
         }
