@@ -463,16 +463,25 @@ namespace mimc
       get { return _isStore; }
       set { _isStore = value; }
     }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MIMCP2TMessage")]
   public partial class MIMCP2TMessage : global::ProtoBuf.IExtensible
   {
     public MIMCP2TMessage() {}
-    
+
 
     private mimc.MIMCUser _from = null;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"from", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -509,16 +518,25 @@ namespace mimc
       get { return _isStore; }
       set { _isStore = value; }
     }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MIMCSequenceAck")]
   public partial class MIMCSequenceAck : global::ProtoBuf.IExtensible
   {
     public MIMCSequenceAck() {}
-    
+
 
     private long _uuid = default(long);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"uuid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -550,12 +568,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MIMCPull")]
   public partial class MIMCPull : global::ProtoBuf.IExtensible
   {
     public MIMCPull() {}
-    
+
 
     private long _uuid = default(long);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"uuid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -578,12 +596,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"P2PPushMesage")]
   public partial class P2PPushMesage : global::ProtoBuf.IExtensible
   {
     public P2PPushMesage() {}
-    
+
 
     private mimc.MIMCUser _from = null;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"from", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -599,7 +617,7 @@ namespace mimc
     {
       get { return _to; }
     }
-  
+
 
     private byte[] _payload = null;
     [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"payload", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -618,16 +636,25 @@ namespace mimc
       get { return _isStore; }
       set { _isStore = value; }
     }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"P2TPushMesage")]
   public partial class P2TPushMesage : global::ProtoBuf.IExtensible
   {
     public P2TPushMesage() {}
-    
+
 
     private mimc.MIMCUser _from = null;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"from", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -643,7 +670,7 @@ namespace mimc
     {
       get { return _to; }
     }
-  
+
 
     private byte[] _payload = null;
     [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"payload", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -662,16 +689,25 @@ namespace mimc
       get { return _isStore; }
       set { _isStore = value; }
     }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MIMCUser")]
   public partial class MIMCUser : global::ProtoBuf.IExtensible
   {
     public MIMCUser() {}
-    
+
 
     private long _appId = default(long);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"appId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -712,12 +748,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MIMCGroup")]
   public partial class MIMCGroup : global::ProtoBuf.IExtensible
   {
     public MIMCGroup() {}
-    
+
 
     private long _appId = default(long);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"appId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -740,12 +776,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCGroup")]
   public partial class UCGroup : global::ProtoBuf.IExtensible
   {
     public UCGroup() {}
-    
+
 
     private long _appId = default(long);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"appId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -768,12 +804,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCPacket")]
   public partial class UCPacket : global::ProtoBuf.IExtensible
   {
     public UCPacket() {}
-    
+
     private mimc.MIMCUser _user;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"user", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.MIMCUser user
@@ -806,12 +842,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCExchange")]
   public partial class UCExchange : global::ProtoBuf.IExtensible
   {
     public UCExchange() {}
-    
+
 
     private mimc.FeInfo _feInfo = null;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"feInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -839,12 +875,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCJoin")]
   public partial class UCJoin : global::ProtoBuf.IExtensible
   {
     public UCJoin() {}
-    
+
     private mimc.UCGroup _group;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.UCGroup group
@@ -856,12 +892,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCJoinResp")]
   public partial class UCJoinResp : global::ProtoBuf.IExtensible
   {
     public UCJoinResp() {}
-    
+
     private mimc.UCGroup _group;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.UCGroup group
@@ -889,12 +925,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCQuit")]
   public partial class UCQuit : global::ProtoBuf.IExtensible
   {
     public UCQuit() {}
-    
+
     private mimc.UCGroup _group;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.UCGroup group
@@ -906,12 +942,12 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCQuitResp")]
   public partial class UCQuitResp : global::ProtoBuf.IExtensible
   {
     public UCQuitResp() {}
-    
+
     private mimc.UCGroup _group;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.UCGroup group
@@ -939,29 +975,29 @@ namespace mimc
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCPing")]
   public partial class UCPing : global::ProtoBuf.IExtensible
   {
     public UCPing() {}
-    
+
     private readonly global::System.Collections.Generic.List<mimc.UCGroup> _group = new global::System.Collections.Generic.List<mimc.UCGroup>();
     [global::ProtoBuf.ProtoMember(1, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<mimc.UCGroup> group
     {
       get { return _group; }
     }
-  
+
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCMessage")]
   public partial class UCMessage : global::ProtoBuf.IExtensible
   {
     public UCMessage() {}
-    
+
     private mimc.UCGroup _group;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"group", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.UCGroup group
@@ -1021,16 +1057,25 @@ namespace mimc
       get { return _packetId; }
       set { _packetId = value; }
     }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
+
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UCPushMessage")]
   public partial class UCPushMessage : global::ProtoBuf.IExtensible
   {
     public UCPushMessage() {}
-    
+
     private mimc.MIMCUser _user;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"user", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public mimc.MIMCUser user
@@ -1044,14 +1089,14 @@ namespace mimc
     {
       get { return _group; }
     }
-  
+
     private readonly global::System.Collections.Generic.List<byte[]> _payloads = new global::System.Collections.Generic.List<byte[]>();
     [global::ProtoBuf.ProtoMember(3, Name=@"payloads", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<byte[]> payloads
     {
       get { return _payloads; }
     }
-  
+
 
     private bool _isStore = default(bool);
     [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"isStore", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -1078,6 +1123,15 @@ namespace mimc
     {
       get { return _packetId; }
       set { _packetId = value; }
+    }
+
+    private string _bizType = "";
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"bizType", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bizType
+    {
+      get { return _bizType; }
+      set { _bizType = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
