@@ -90,8 +90,8 @@ namespace com.xiaomi.mimc.client
             this.user.LastCreateConnTimestamp = 0;
             this.user.Status = Constant.OnlineStatus.Offline;
 
-            this.rc4Key = null;
-            this.TcpConnection = null;
+            //this.rc4Key = null;
+            //this.TcpConnection = null;
             this.ClearNextResetSockTimestamp();
 
             peerFetcher = new ProdFrontendPeerFetcher();
@@ -100,7 +100,29 @@ namespace com.xiaomi.mimc.client
             this.user.HandleStateChange(false, null, "NETWORK_RESET", "NETWORK_RESET");
             logger.DebugFormat("{0} MIMCConnection reset {1}", this.User.AppAccount, this.User.Status);
         }
+        public void Close()
+        {
+            logger.DebugFormat("{0} MIMCConnection Close {1}", this.User.AppAccount, this.User.Status);
+            if (this.TcpConnection != null)
+            {
+                this.TcpConnection.Close();
+            }
 
+            this.ConnState = State.NOT_CONNECTED;
+            this.user.LastLoginTimestamp = 0;
+            this.user.LastCreateConnTimestamp = 0;
+            this.user.Status = Constant.OnlineStatus.Offline;
+
+            //this.rc4Key = null;
+            //this.TcpConnection = null;
+            this.ClearNextResetSockTimestamp();
+
+//            peerFetcher = new ProdFrontendPeerFetcher();
+            //logger.DebugFormat(" this.user.OnlineStatusHandler:{0}=====", this.user.OnlineStatusHandler);
+
+//            this.user.HandleStateChange(false, null, "NETWORK_Close", "NETWORK_Close");
+            logger.DebugFormat("{0} MIMCConnection Close {1}", this.User.AppAccount, this.User.Status);
+        }
         internal bool Connect()
         {
             Peer peer = peerFetcher.Peer();
@@ -168,5 +190,7 @@ namespace com.xiaomi.mimc.client
         {
             this.NextResetSockTimestamp = -1;
         }
+
+      
     }
 }

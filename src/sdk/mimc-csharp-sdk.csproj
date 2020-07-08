@@ -105,9 +105,9 @@
     <Compile Include="com\xiaomi\mimc\packet\V6PacketEncoder.cs" />
     <Compile Include="com\xiaomi\mimc\protobuf\ControlMessage.cs" />
     <Compile Include="com\xiaomi\mimc\protobuf\ImsPushService.cs" />
-    <Compile Include="com\xiaomi\mimc\protobuf\MIMCPacket.cs" />
     <Compile Include="com\xiaomi\mimc\handler\GroupMessageEventArgs.cs" />
     <Compile Include="com\xiaomi\mimc\handler\JoinUnlimitedGroupEventArgs.cs" />
+    <Compile Include="com\xiaomi\mimc\protobuf\MIMCPacket.cs" />
     <Compile Include="com\xiaomi\mimc\user\MIMCUser.cs" />
     <Compile Include="com\xiaomi\mimc\handler\ServerACKEventArgs.cs" />
     <Compile Include="com\xiaomi\mimc\handler\SendGroupMessageTimeoutEventArgs.cs" />

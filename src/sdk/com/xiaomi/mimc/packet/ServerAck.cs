@@ -26,24 +26,24 @@ namespace com.xiaomi.mimc.packet
         private String packetId;
         private long sequence;
         private long timestamp;
-        private String errorMsg;
+        private String desc;
 
         public string PacketId { get => packetId; set => packetId = value; }
         public long Sequence { get => sequence; set => sequence = value; }
         public long Timestamp { get => timestamp; set => timestamp = value; }
-        public string ErrorMsg { get => errorMsg; set => errorMsg = value; }
+        public string Desc { get => desc; set => desc = value; }
 
-        public ServerAck(String packetId, long sequence, long timestamp, String errorMsg)
+        public ServerAck(String packetId, long sequence, long timestamp, String desc)
         {
             this.PacketId = packetId;
             this.Sequence = sequence;
             this.Timestamp = timestamp;
-            this.ErrorMsg = errorMsg;
+            this.desc = desc;
         }
 
         public override String ToString()
         {
-            return "packetId:" + PacketId + " sequence:" + sequence + " timestamp:" + timestamp + " ErrorMsg:" + ErrorMsg;
+            return "packetId:" + PacketId + " sequence:" + sequence + " timestamp:" + timestamp + " Desc:" + desc;
         }
 
     }

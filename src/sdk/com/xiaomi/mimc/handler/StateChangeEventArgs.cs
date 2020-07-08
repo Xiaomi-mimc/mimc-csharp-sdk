@@ -10,26 +10,26 @@ namespace com.xiaomi.mimc.handler
     {
         private readonly MIMCUser user;
         private readonly bool isOnline;
-        private readonly string errType;
-        private readonly string errReason;
-        private readonly string errDescription;
+        private readonly string type;
+        private readonly string reason;
+        private readonly string desc;
 
-        public StateChangeEventArgs(MIMCUser user,bool isOnline, string errType, string errReason, string errDescription)
+        public StateChangeEventArgs(MIMCUser user, bool isOnline, string type, string reason, string desc)
         {
             this.user = user;
             this.isOnline = isOnline;
-            this.errType = errType;
-            this.errReason = errReason;
-            this.errDescription = errDescription;
+            this.type = type;
+            this.reason = reason;
+            this.desc = desc;
         }
 
         public bool IsOnline => isOnline;
 
-        public string ErrType => errType;
+        public string Type => type;
 
-        public string ErrReason => errReason;
+        public string Reason => reason;
 
-        public string ErrDescription => errDescription;
+        public string Desc => desc;
 
         public MIMCUser User => user;
     }

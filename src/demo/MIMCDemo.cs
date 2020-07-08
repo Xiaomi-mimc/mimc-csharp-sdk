@@ -29,14 +29,20 @@ namespace sdk.demo
         **/
         private static string topicUrl = "https://mimc.chat.xiaomi.net/api/topic/";
         private static string url = "https://mimc.chat.xiaomi.net/api/account/token";
-        private static string appId = "2882303761517613988";
-        private static string appKey = "5361761377988";
-        private static string appSecret = "2SZbrJOAL1xHRKb7L9AiRQ==";
+        private static string appId = "2882303761517669588";
+        private static string appKey = "5111766983588";
+        private static string appSecret = "b0L3IOz/9Ob809v8H2FbVg==";
 
-        private string appAccount1 = "leijun" + GenerateRandomString(10);
-        private string appAccount2 = "linbin" + GenerateRandomString(10);
-        private MIMCUser leijun;
-        private MIMCUser linbin;
+        //private static string topicUrl = "http://10.38.162.149/api/topic/";
+        //private static string url = "http://10.38.162.149/api/account/token";
+        //private static string appId = "2882303761517479657";
+        //private static string appKey = "5221747911657";
+        //private static string appSecret = "PtfBeZyC+H8SIM/UXhZx1w==";
+
+        private string appAccount1 = "5566";
+        private string appAccount2 = "9527";
+        private MIMCUser user5566;
+        private MIMCUser user9527;
 
         static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -56,12 +62,13 @@ namespace sdk.demo
                 return;
             }
 
+            Thread.Sleep(5000);
             demo.SendMessage();
-            Thread.Sleep(1000);
 
-            demo.SendGroupMessage();
-            Thread.Sleep(2000);
-
+            Thread.Sleep(5000);
+            //demo.SendGroupMessage();
+            //Thread.Sleep(2000);
+            //demo.GetP2PHistoryMessage();
             if (!demo.Over())
             {
                 return;
@@ -78,14 +85,15 @@ namespace sdk.demo
                 return;
             }
 
-            //demo.SendMessageAsync();
-            //Thread.Sleep(1000);
+            demo.SendMessageAsync();
+            Thread.Sleep(1000);
 
             //demo.SendGroupMessageAsync();
             //Thread.Sleep(1000);
 
-            demo.SendUnlimitedGroupMessage();
-            Thread.Sleep(1000);
+            //demo.SendUnlimitedGroupMessage();
+            //Thread.Sleep(1000);
+            //demo.GetP2PHistoryMessage();
 
             //demo.JoinInexistentUnlimitedGroup();
             //Thread.Sleep(1000);
@@ -93,75 +101,70 @@ namespace sdk.demo
             //demo.QuitInexistentUnlimitedGroup();
             //Thread.Sleep(5000);
 
-            //if (!await demo.OverAsync())
-            //{
-            //    return;
-            //}
+            if (!await demo.OverAsync())
+            {
+                return;
+            }
         }
 
         public MIMCDemo()
         {
-            leijun = new MIMCUser(appAccount1);
-            leijun.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount1));
-            leijun.stateChangeEvent += HandleStatusChange;
-            leijun.messageEvent += HandleMessage;
-            leijun.messageTimeOutEvent += HandleMessageTimeout;
-            leijun.groupMessageEvent += HandleGroupMessage;
-            leijun.groupMessageTimeoutEvent += HandleGroupMessageTimeout;
-            leijun.serverACKEvent += HandleServerACK;
-            leijun.unlimitedGroupMessageEvent += HandleUnlimitedGroupMessage;
-            leijun.unlimitedGroupMessageTimeoutEvent += HandleUnlimitedGroupMessageTimeout;
-            leijun.joinUnlimitedGroupEvent += HandleJoinUnlimitedGroup;
-            leijun.quitUnlimitedGroupEvent += HandleQuitUnlimitedGroup;
-            leijun.dismissUnlimitedGroupEvent += HandleDismissUnlimitedGroup;
+            user5566 = new MIMCUser(appAccount1);
+            user5566.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount1));
+            user5566.stateChangeEvent += HandleStatusChange;
+            user5566.messageEvent += HandleMessage;
+            user5566.messageTimeOutEvent += HandleMessageTimeout;
+            user5566.groupMessageEvent += HandleGroupMessage;
+            user5566.groupMessageTimeoutEvent += HandleGroupMessageTimeout;
+            user5566.serverACKEvent += HandleServerACK;
+            user5566.unlimitedGroupMessageEvent += HandleUnlimitedGroupMessage;
+            user5566.unlimitedGroupMessageTimeoutEvent += HandleUnlimitedGroupMessageTimeout;
+            user5566.joinUnlimitedGroupEvent += HandleJoinUnlimitedGroup;
+            user5566.quitUnlimitedGroupEvent += HandleQuitUnlimitedGroup;
+            user5566.dismissUnlimitedGroupEvent += HandleDismissUnlimitedGroup;
 
-            linbin = new MIMCUser(appAccount2);
-            linbin.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount2));
-            linbin.stateChangeEvent += HandleStatusChange;
-            linbin.messageEvent += HandleMessage;
-            linbin.messageTimeOutEvent += HandleMessageTimeout;
-            linbin.groupMessageEvent += HandleGroupMessage;
-            linbin.groupMessageTimeoutEvent += HandleGroupMessageTimeout;
-            linbin.serverACKEvent += HandleServerACK;
-            linbin.unlimitedGroupMessageEvent += HandleUnlimitedGroupMessage;
-            linbin.unlimitedGroupMessageTimeoutEvent += HandleUnlimitedGroupMessageTimeout;
-            linbin.joinUnlimitedGroupEvent += HandleJoinUnlimitedGroup;
-            linbin.quitUnlimitedGroupEvent += HandleQuitUnlimitedGroup;
-            linbin.dismissUnlimitedGroupEvent += HandleDismissUnlimitedGroup;
-
+            user9527 = new MIMCUser(appAccount2);
+            user9527.RegisterMIMCTokenFetcher(new MIMCCaseTokenFetcher(appId, appKey, appSecret, url, appAccount2));
+            user9527.stateChangeEvent += HandleStatusChange;
+            user9527.messageEvent += HandleMessage;
+            user9527.messageTimeOutEvent += HandleMessageTimeout;
+            user9527.groupMessageEvent += HandleGroupMessage;
+            user9527.groupMessageTimeoutEvent += HandleGroupMessageTimeout;
+            user9527.serverACKEvent += HandleServerACK;
+            user9527.unlimitedGroupMessageEvent += HandleUnlimitedGroupMessage;
+            user9527.unlimitedGroupMessageTimeoutEvent += HandleUnlimitedGroupMessageTimeout;
+            user9527.joinUnlimitedGroupEvent += HandleJoinUnlimitedGroup;
+            user9527.quitUnlimitedGroupEvent += HandleQuitUnlimitedGroup;
+            user9527.dismissUnlimitedGroupEvent += HandleDismissUnlimitedGroup;
         }
-
-
 
         bool Ready()
         {
-            if (!leijun.Login())
+            if (!user5566.Login())
             {
-                logger.ErrorFormat("Login Fail, {0}", leijun.AppAccount);
+                logger.ErrorFormat("Login Fail, {0}", user5566.AppAccount);
                 return false;
             }
-            if (!linbin.Login())
+            if (!user9527.Login())
             {
-                logger.ErrorFormat("Login Fail, {0}", linbin.AppAccount);
+                logger.ErrorFormat("Login Fail, {0}", user9527.AppAccount);
                 return false;
             }
-
-            Thread.Sleep(1000);
             return true;
         }
 
         async Task<bool> ReadyAsync()
         {
-            if (!await leijun.LoginAsync())
+            if (!await user5566.LoginAsync())
             {
-                logger.ErrorFormat("Login Fail, {0}", leijun.AppAccount);
+                logger.ErrorFormat("Login Fail, {0}", user5566.AppAccount);
                 return false;
             }
 
 
-            if (!await linbin.LoginAsync())
+            if (!await user9527.LoginAsync())
             {
-                logger.ErrorFormat("Login Fail, {0}", linbin.AppAccount);
+                logger.ErrorFormat("Login Fail, {0}", user9527.AppAccount);
                 return false;
             }
 
@@ -173,16 +176,18 @@ namespace sdk.demo
         /// </summary>
         bool Over()
         {
-            if (!leijun.Logout())
+            if (!user5566.Logout())
             {
-                logger.ErrorFormat("Logout Fail, {0}", leijun.AppAccount);
+                logger.ErrorFormat("Logout Fail, {0}", user5566.AppAccount);
                 return false;
             }
-            if (!linbin.Logout())
+            user5566.Destroy();
+            if (!user9527.Logout())
             {
-                logger.ErrorFormat("Logout Fail, {0}", linbin.AppAccount);
+                logger.ErrorFormat("Logout Fail, {0}", user9527.AppAccount);
                 return false;
             }
+            user9527.Destroy();
 
             Thread.Sleep(1000);
             return true;
@@ -193,17 +198,18 @@ namespace sdk.demo
         /// </summary>
         async Task<bool> OverAsync()
         {
-            if (!await leijun.LogoutAsync())
+            if (!await user5566.LogoutAsync())
             {
-                logger.ErrorFormat("Logout Fail, {0}", leijun.AppAccount);
+                logger.ErrorFormat("Logout Fail, {0}", user5566.AppAccount);
                 return false;
             }
-            if (!await linbin.LogoutAsync())
+            user5566.Destroy();
+            if (!await user9527.LogoutAsync())
             {
-                logger.ErrorFormat("Logout Fail, {0}", linbin.AppAccount);
+                logger.ErrorFormat("Logout Fail, {0}", user9527.AppAccount);
                 return false;
             }
-
+            user9527.Destroy();
             Thread.Sleep(1000);
             return true;
         }
@@ -213,48 +219,69 @@ namespace sdk.demo
         /// </summary>
         void SendMessage()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} login fail, quit!", user5566.AppAccount);
                 return;
             }
-            if (!linbin.IsOnline())
+            if (!user9527.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", linbin.AppAccount);
+                logger.DebugFormat("{0} login fail, quit!", user9527.AppAccount);
                 return;
             }
 
-            String packetId = leijun.SendMessage(linbin.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount, linbin.AppAccount, packetId);
+            String packetId = user5566.SendMessage(user9527.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
             Thread.Sleep(100);
 
-            packetId = linbin.SendMessage(leijun.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", linbin.AppAccount, leijun.AppAccount, packetId);
+            packetId = user9527.SendMessage(user5566.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user9527.AppAccount, user5566.AppAccount, packetId);
             Thread.Sleep(100);
         }
 
         /// <summary>
         /// 发送单聊消息测试
         /// </summary>
-        async void SendMessageAsync()
+        void GetP2PHistoryMessage()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} login fail, quit!", user5566.AppAccount);
                 return;
             }
-            if (!linbin.IsOnline())
+            if (!user9527.IsOnline())
             {
-                logger.DebugFormat("{0} login fail, quit!", linbin.AppAccount);
+                logger.DebugFormat("{0} login fail, quit!", user9527.AppAccount);
                 return;
             }
 
-            String packetId = await leijun.SendMessageAsync(linbin.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount, linbin.AppAccount, packetId);
+            String data = user5566.GetP2PHistory(user9527.AppAccount, user5566.AppAccount, 0,DateTime.Now.Millisecond,null,null);
+            logger.InfoFormat("GetP2PHistoryMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, data);
             Thread.Sleep(100);
 
-            packetId = await linbin.SendMessageAsync(leijun.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", linbin.AppAccount, leijun.AppAccount, packetId);
+        }
+        /// <summary>
+        /// 发送单聊消息测试
+        /// </summary>
+        async void SendMessageAsync()
+        {
+            if (!user5566.IsOnline())
+            {
+                logger.DebugFormat("{0} login fail, quit!", user5566.AppAccount);
+                return;
+            }
+            if (!user9527.IsOnline())
+            {
+                logger.DebugFormat("{0} login fail, quit!", user9527.AppAccount);
+                return;
+            }
+
+            String packetId = await user5566.SendMessageAsync(user9527.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
+            Thread.Sleep(100);
+
+            packetId = await user9527.SendMessageAsync(user5566.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
+            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user9527.AppAccount, user5566.AppAccount, packetId);
             Thread.Sleep(100);
         }
 
@@ -263,21 +290,21 @@ namespace sdk.demo
         /// </summary>
         void SendGroupMessage()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
-            if (!linbin.IsOnline())
+            if (!user9527.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", linbin.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user9527.AppAccount);
                 return;
             }
             long topicId = CreateNormalTopic(topicUrl, appAccount1, appAccount1 + "," + appAccount2);
 
-            String packetId = leijun.SendGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
+            String packetId = user5566.SendGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
 
-            logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount, linbin.AppAccount, packetId);
+            logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
             Thread.Sleep(100);
         }
 
@@ -287,21 +314,21 @@ namespace sdk.demo
         /// </summary>
         async void SendGroupMessageAsync()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
-            if (!linbin.IsOnline())
+            if (!user9527.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", linbin.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user9527.AppAccount);
                 return;
             }
             long topicId = CreateNormalTopic(topicUrl, appAccount1, appAccount1 + "," + appAccount2);
 
-            String packetId = await leijun.SendGroupMessageAsync(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
+            String packetId = await user5566.SendGroupMessageAsync(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
 
-            logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", leijun.AppAccount, linbin.AppAccount, packetId);
+            logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
             Thread.Sleep(100);
         }
 
@@ -312,13 +339,13 @@ namespace sdk.demo
         /// </summary>
         void CreateUnlimitedGroup()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
-            string topicId = leijun.CreateUnlimitedGroup("test");
-            logger.InfoFormat("CreateUnlimitedGroup, {0}, topicId:{1}", leijun.AppAccount, topicId);
+            string topicId = user5566.CreateUnlimitedGroup("test");
+            logger.InfoFormat("CreateUnlimitedGroup, {0}, topicId:{1}", user5566.AppAccount, topicId);
             Thread.Sleep(100);
         }
 
@@ -327,14 +354,14 @@ namespace sdk.demo
         /// </summary>
         void DismissUnlimitedGroup(long topicId)
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
 
-            leijun.DismissUnlimitedGroup(topicId);
-            logger.InfoFormat("DismissUnlimitedGroup, {0}, topicId:{1}", leijun.AppAccount, topicId);
+            user5566.DismissUnlimitedGroup(topicId);
+            logger.InfoFormat("DismissUnlimitedGroup, {0}, topicId:{1}", user5566.AppAccount, topicId);
             Thread.Sleep(100);
         }
 
@@ -343,14 +370,14 @@ namespace sdk.demo
         /// </summary>
         void JoinInexistentUnlimitedGroup()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.ErrorFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.ErrorFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
 
-            leijun.JoinUnlimitedGroup(12311111111111111L);
-            logger.InfoFormat("JoinInexistentUnlimitedGroup, {0}, topicId:{1}", leijun.AppAccount, 12311111111111111L);
+            user5566.JoinUnlimitedGroup(12311111111111111L);
+            logger.InfoFormat("JoinInexistentUnlimitedGroup, {0}, topicId:{1}", user5566.AppAccount, 12311111111111111L);
             Thread.Sleep(100);
         }
 
@@ -359,14 +386,14 @@ namespace sdk.demo
         /// </summary>
         void QuitInexistentUnlimitedGroup()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.ErrorFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.ErrorFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
 
-            leijun.QuitUnlimitedGroup(12311111111111111L);
-            logger.InfoFormat("QuitUnlimitedGroup, {0}, topicId:{1}", leijun.AppAccount, 12311111111111111L);
+            user5566.QuitUnlimitedGroup(12311111111111111L);
+            logger.InfoFormat("QuitUnlimitedGroup, {0}, topicId:{1}", user5566.AppAccount, 12311111111111111L);
             Thread.Sleep(100);
         }
 
@@ -375,46 +402,52 @@ namespace sdk.demo
         /// </summary>
         void SendUnlimitedGroupMessage()
         {
-            if (!leijun.IsOnline())
+            if (!user5566.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", leijun.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
-            long topicId = long.Parse(leijun.CreateUnlimitedGroup("test"));
+            long topicId = long.Parse(user5566.CreateUnlimitedGroup("test"));
             Thread.Sleep(100);
 
             if (topicId == 0)
             {
-                logger.ErrorFormat("SendUnlimitedGroupMessage CreateUnlimitedGroup error , {0}-->{1},uuid:{2}", leijun.AppAccount, topicId, leijun.Uuid);
+                logger.ErrorFormat("SendUnlimitedGroupMessage CreateUnlimitedGroup error , {0}-->{1},uuid:{2}", user5566.AppAccount, topicId, user5566.Uuid);
                 return;
             }
-            if (!linbin.IsOnline())
+            if (!user9527.IsOnline())
             {
-                logger.DebugFormat("{0} offline, quit!", linbin.AppAccount);
+                logger.DebugFormat("{0} offline, quit!", user9527.AppAccount);
                 return;
             }
-            linbin.JoinUnlimitedGroup(topicId);
+            user9527.JoinUnlimitedGroup(topicId);
             Thread.Sleep(2000);
-            leijun.QueryUnlimitedGroups();
+            if (user5566.QueryUnlimitedGroups())
+            {
+                logger.DebugFormat("{0} has joined uctopics:{1}", user5566.AppAccount, user5566.UcTopics);
+            }
             Thread.Sleep(2000);
-            linbin.QueryUnlimitedGroups();
-            String result = leijun.GetUnlimitedGroupUsersNum(topicId);
+            if (user9527.QueryUnlimitedGroups())
+            {
+                logger.DebugFormat("{0} has joined uctopics:{1}", user9527.AppAccount, user9527.UcTopics);
+            }
+            String result = user5566.GetUnlimitedGroupUsersNum(topicId);
             logger.InfoFormat("SendUnlimitedGroupMessage  result:{0}", result);
-            String userListResult = leijun.GetUnlimitedGroupUsers(4535345345);
+            String userListResult = user5566.GetUnlimitedGroupUsers(4535345345);
             logger.InfoFormat("SendUnlimitedGroupMessage userListResult:{0}", userListResult);
             String packetId = null;
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 200; i++)
             {
-                packetId = leijun.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
-                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3},uuid2:{4}", leijun.AppAccount, topicId, packetId, leijun.Uuid, linbin.Uuid);
+                packetId = user5566.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
+                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3},uuid2:{4}", user5566.AppAccount, topicId, packetId, user5566.Uuid, user9527.Uuid);
                 Thread.Sleep(10);
             }
             Thread.Sleep(20000);
-            linbin.QuitUnlimitedGroup(topicId);
+            user9527.QuitUnlimitedGroup(topicId);
             Thread.Sleep(1000);
 
-            bool dismissFlag = leijun.DismissUnlimitedGroup(topicId);
-            logger.InfoFormat("SendUnlimitedGroupMessage, DismissUnlimitedGroup AppAccount:{0}-->topicId:{1}, PacketId:{2},uuid:{3},uuid2:{4}", leijun.AppAccount, topicId, packetId, leijun.Uuid, linbin.Uuid);
+            bool dismissFlag = user5566.DismissUnlimitedGroup(topicId);
+            logger.InfoFormat("SendUnlimitedGroupMessage, DismissUnlimitedGroup AppAccount:{0}-->topicId:{1}, PacketId:{2},uuid:{3},uuid2:{4}", user5566.AppAccount, topicId, packetId, user5566.Uuid, user9527.Uuid);
 
             Thread.Sleep(1000);
 
@@ -580,7 +613,7 @@ namespace sdk.demo
 
         public void HandleStatusChange(object source, StateChangeEventArgs e)
         {
-            logger.InfoFormat("{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", e.User.AppAccount, e.IsOnline, e.ErrType, e.ErrReason, e.ErrDescription);
+            logger.InfoFormat(".........................{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", e.User.AppAccount, e.IsOnline, e.Type, e.Reason, e.Desc);
         }
 
         public void HandleMessage(object source, MessageEventArgs e)
@@ -594,7 +627,7 @@ namespace sdk.demo
             }
             foreach (P2PMessage msg in packets)
             {
-                logger.InfoFormat("HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                logger.InfoFormat("+++++++++++++++++++++++++HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
                     e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
                     Encoding.UTF8.GetString(msg.Payload));
             }
@@ -682,7 +715,7 @@ namespace sdk.demo
         {
             ServerAck serverAck = e.ServerAck;
             logger.InfoFormat("HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3},ErrorMsg:{4}",
-                  e.User.AppAccount, serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp, serverAck.ErrorMsg);
+                  e.User.AppAccount, serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp, serverAck.Desc);
         }
     }
 }
