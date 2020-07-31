@@ -7,23 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from: ims_push_service.proto
-// Note: requires additional types generated from: control_message.proto
-/*
-
-* ==============================================================================
-*
-* Filename: $safeitemname$
-* Description: 
-*
-* Created: $time$
-* Compiler: Visual Studio 2017
-*
-* Author: zhangming8
-* Company: Xiaomi.com
-*
-* ==============================================================================
-*/
+// Generated from: proto/ims_push_service.proto
+// Note: requires additional types generated from: proto/control_message.proto
 namespace sdk.protobuf
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ClientHeader")]
@@ -87,10 +72,10 @@ namespace sdk.protobuf
       get { return _id; }
       set { _id = value; }
     }
-        private sdk.protobuf.ClientHeader.MSG_DIR_FLAG _dir_flag = sdk.protobuf.ClientHeader.MSG_DIR_FLAG.CS_ONEWAY;
+    private sdk.protobuf.ClientHeader.MSG_DIR_FLAG _dir_flag = sdk.protobuf.ClientHeader.MSG_DIR_FLAG.CS_ONEWAY;
     [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"dir_flag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-        [global::System.ComponentModel.DefaultValue(sdk.protobuf.ClientHeader.MSG_DIR_FLAG.CS_ONEWAY)]
-        public sdk.protobuf.ClientHeader.MSG_DIR_FLAG dir_flag
+    [global::System.ComponentModel.DefaultValue(sdk.protobuf.ClientHeader.MSG_DIR_FLAG.CS_ONEWAY)]
+    public sdk.protobuf.ClientHeader.MSG_DIR_FLAG dir_flag
     {
       get { return _dir_flag; }
       set { _dir_flag = value; }
@@ -232,6 +217,22 @@ namespace sdk.protobuf
       get { return _andver; }
       set { _andver = value; }
     }
+    private byte[] _publicKeyN = null;
+    [global::ProtoBuf.ProtoMember(11, IsRequired = false, Name=@"publicKeyN", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] publicKeyN
+    {
+      get { return _publicKeyN; }
+      set { _publicKeyN = value; }
+    }
+    private byte[] _publicKeyE = null;
+    [global::ProtoBuf.ProtoMember(12, IsRequired = false, Name=@"publicKeyE", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] publicKeyE
+    {
+      get { return _publicKeyE; }
+      set { _publicKeyE = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -265,6 +266,14 @@ namespace sdk.protobuf
     {
       get { return _psc; }
       set { _psc = value; }
+    }
+    private byte[] _sessionKey = null;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"sessionKey", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] sessionKey
+    {
+      get { return _sessionKey; }
+      set { _sessionKey = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -323,6 +332,14 @@ namespace sdk.protobuf
     {
       get { return _sig; }
       set { _sig = value; }
+    }
+    private bool _sso = default(bool);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"sso", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool sso
+    {
+      get { return _sso; }
+      set { _sso = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -417,6 +434,98 @@ namespace sdk.protobuf
     {
       get { return _err_str; }
       set { _err_str = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"XMMsgKick")]
+  public partial class XMMsgKick : global::ProtoBuf.IExtensible
+  {
+    public XMMsgKick() {}
+    
+    private string _type = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"type", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string type
+    {
+      get { return _type; }
+      set { _type = value; }
+    }
+    private string _reason = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"reason", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string reason
+    {
+      get { return _reason; }
+      set { _reason = value; }
+    }
+    private string _desc = "";
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"desc", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string desc
+    {
+      get { return _desc; }
+      set { _desc = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"XMMsgU")]
+  public partial class XMMsgU : global::ProtoBuf.IExtensible
+  {
+    public XMMsgU() {}
+    
+    private string _url = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"url", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string url
+    {
+      get { return _url; }
+      set { _url = value; }
+    }
+    private string _token = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"token", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string token
+    {
+      get { return _token; }
+      set { _token = value; }
+    }
+    private ulong _start = default(ulong);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"start", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(ulong))]
+    public ulong start
+    {
+      get { return _start; }
+      set { _start = value; }
+    }
+    private ulong _end = default(ulong);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"end", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(ulong))]
+    public ulong end
+    {
+      get { return _end; }
+      set { _end = value; }
+    }
+    private bool _force = default(bool);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"force", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool force
+    {
+      get { return _force; }
+      set { _force = value; }
+    }
+    private int _maxlen = default(int);
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"maxlen", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int maxlen
+    {
+      get { return _maxlen; }
+      set { _maxlen = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

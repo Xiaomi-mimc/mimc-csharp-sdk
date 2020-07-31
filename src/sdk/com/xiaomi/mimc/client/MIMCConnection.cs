@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using com.xiaomi.mimc.common;
 using com.xiaomi.mimc.frontend;
+using com.xiaomi.mimc.handler;
 using com.xiaomi.mimc.packet;
 using com.xiaomi.mimc.utils;
 using log4net;
@@ -40,7 +41,7 @@ namespace com.xiaomi.mimc.client
         private long nextResetSockTimestamp;
 
         private IFrontendPeerFetcher peerFetcher;
-        private ConcurrentQueue<MIMCObject> packetWaitToSend;
+        private ConcurrentQueue<PacketWrapper> packetWaitToSend;
 
         private byte[] rc4Key = null;
 
@@ -63,16 +64,16 @@ namespace com.xiaomi.mimc.client
         public MIMCUser User { get => user; set => user = value; }
         public string Host { get => host; set => host = value; }
         public int Port { get => port; set => port = value; }
-        public ConcurrentQueue<MIMCObject> PacketWaitToSend { get => packetWaitToSend; }
         public string Challenge { get => challenge; set => challenge = value; }
         public byte[] Rc4Key { get => rc4Key; set => rc4Key = value; }
         public long NextResetSockTimestamp { get => nextResetSockTimestamp; set => nextResetSockTimestamp = value; }
+        internal ConcurrentQueue<PacketWrapper> PacketWaitToSend { get => packetWaitToSend; set => packetWaitToSend = value; }
 
         public MIMCConnection()
         {
             this.NextResetSockTimestamp = -1;
             this.ConnState = State.NOT_CONNECTED;
-            this.packetWaitToSend = new ConcurrentQueue<MIMCObject>();
+            this.PacketWaitToSend = new ConcurrentQueue<PacketWrapper>();
             this.TcpConnection = null;
             peerFetcher = new ProdFrontendPeerFetcher();
         }
@@ -96,8 +97,7 @@ namespace com.xiaomi.mimc.client
 
             peerFetcher = new ProdFrontendPeerFetcher();
             //logger.DebugFormat(" this.user.OnlineStatusHandler:{0}=====", this.user.OnlineStatusHandler);
-
-            this.user.HandleStateChange(false, null, "NETWORK_RESET", "NETWORK_RESET");
+            this.user.HandleStateChange(new StateChangeEventArgs(false, "RESET", "NETWORK_RESET", "NETWORK_RESET"));
             logger.DebugFormat("{0} MIMCConnection reset {1}", this.User.AppAccount, this.User.Status);
         }
         public void Close()

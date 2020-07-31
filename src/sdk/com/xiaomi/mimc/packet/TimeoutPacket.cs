@@ -13,21 +13,20 @@
 *
 * ==============================================================================
 */
-namespace mimc.com.xiaomi.mimc.packet
-{
-    public class TimeoutPacket
-    {
-        
-         private long timestamp;
-         private MIMCPacket packet;
 
-         public TimeoutPacket(MIMCPacket packet, long timeStamp)
+using mimc;
+
+namespace com.xiaomi.mimc.packet
+{
+    public class TimeoutPacket : MIMCObject
+    {
+         private long timestamp;
+     
+         public TimeoutPacket(MIMCPacket packet, long timeStamp) : base(packet)
          {
-             this.Packet = packet;
              this.Timestamp = timeStamp;
          }
 
-        public long Timestamp { get; }
-        public MIMCPacket Packet { get; }
+        public long Timestamp { get => timestamp; set => timestamp = value; }
     }
 }

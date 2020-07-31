@@ -5,18 +5,16 @@ namespace com.xiaomi.mimc
 {
     public class DismissUnlimitedGroupEventArgs : EventArgs
     {
-        private readonly MIMCUser user;
+        private ulong topicId;
 
-        private UCPacket packet;
 
-        public DismissUnlimitedGroupEventArgs(MIMCUser user, UCPacket packet)
+        public DismissUnlimitedGroupEventArgs() { }
+
+        public DismissUnlimitedGroupEventArgs(ulong topicId)
         {
-            this.user = user;
-            this.packet = packet;
+            this.TopicId = topicId;
         }
 
-        public UCPacket Packet { get => packet; set => packet = value; }
-
-        public MIMCUser User => user;
+        public ulong TopicId { get => topicId; set => topicId = value; }
     }
 }

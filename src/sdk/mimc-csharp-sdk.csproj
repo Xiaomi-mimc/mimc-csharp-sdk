@@ -34,6 +34,7 @@
     <DocumentationFile>bin\Debug\framework4.5\mimc_csharp_sdk.xml</DocumentationFile>
     <OutputPath>bin\Debug\framework4.5\</OutputPath>
     <CodeAnalysisRuleSet>mimc-csharp-sdk.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -74,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="ProtoGen\common.xslt" />
+    <Content Include="ProtoGen\csharp.xslt" />
+    <Content Include="ProtoGen\protobuf-net.dll" />
+    <Content Include="ProtoGen\protogen.exe" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -81,10 +86,15 @@
     </None>
     <None Include="mimc-csharp-sdk.ruleset" />
     <None Include="packages.config" />
+    <None Include="ProtoGen\proto\control_message.proto" />
+    <None Include="ProtoGen\proto\ims_push_service.proto" />
+    <None Include="ProtoGen\proto\mimc.proto" />
+    <None Include="ProtoGen\run.bat" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="com\xiaomi\mimc\client\MIMCConnection.cs" />
     <Compile Include="com\xiaomi\mimc\common\Constant.cs" />
+    <Compile Include="com\xiaomi\mimc\common\QueryUnlimitedGroupsThread.cs" />
     <Compile Include="com\xiaomi\mimc\frontend\FrontendPeerFetcher.cs" />
     <Compile Include="com\xiaomi\mimc\frontend\ProdFrontendPeerFetcher.cs" />
     <Compile Include="com\xiaomi\mimc\handler\DismissUnlimitedGroupEventArgs.cs" />
@@ -98,6 +108,7 @@
     <Compile Include="com\xiaomi\mimc\packet\MIMCUCPacket.cs" />
     <Compile Include="com\xiaomi\mimc\packet\P2UMessage.cs" />
     <Compile Include="com\xiaomi\mimc\packet\P2TMessage.cs" />
+    <Compile Include="com\xiaomi\mimc\packet\PacketWrapper.cs" />
     <Compile Include="com\xiaomi\mimc\packet\ServerAck.cs" />
     <Compile Include="com\xiaomi\mimc\packet\TimeoutPacket.cs" />
     <Compile Include="com\xiaomi\mimc\packet\V6Packet.cs" />

@@ -6,19 +6,14 @@ namespace com.xiaomi.mimc.handler
 {
     public class SendMessageTimeoutEventArgs : EventArgs
     {
-        private readonly MIMCUser user;
+        private P2PMessage p2PMessage;
 
-        private readonly P2PMessage p2PMessage;
-
-        public SendMessageTimeoutEventArgs(MIMCUser user, P2PMessage p2PMessage)
+        public SendMessageTimeoutEventArgs(P2PMessage p2PMessage)
         {
-            this.user = user;
-            this.p2PMessage = p2PMessage;
+            this.P2PMessage = p2PMessage;
 
         }
 
-        public P2PMessage P2PMessage => p2PMessage;
-
-        public MIMCUser User => user;
+        public P2PMessage P2PMessage { get => p2PMessage; set => p2PMessage = value; }
     }
 }

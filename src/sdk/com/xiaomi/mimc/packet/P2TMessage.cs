@@ -31,6 +31,7 @@ namespace com.xiaomi.mimc.packet
         private String fromResource;
         private long groupId;
         private byte[] payload;
+        private string bizType;
 
         public string PacketId { get => packetId; set => packetId = value; }
         public long Sequence { get => sequence; set => sequence = value; }
@@ -39,8 +40,9 @@ namespace com.xiaomi.mimc.packet
         public string FromResource { get => fromResource; set => fromResource = value; }
         public long GroupId { get => groupId; set => groupId = value; }
         public byte[] Payload { get => payload; set => payload = value; }
+        public string BizType { get => bizType; set => bizType = value; }
 
-        public P2TMessage(String packetId, long sequence, String fromAccount, String fromResource, long groupId, byte[] payload, long timestamp)
+        public P2TMessage(String packetId, long sequence, String fromAccount, String fromResource, long groupId, byte[] payload, string bizType, long timestamp)
         {
             this.PacketId = packetId;
             this.Sequence = sequence;
@@ -49,13 +51,14 @@ namespace com.xiaomi.mimc.packet
             this.FromAccount = fromResource;
             this.GroupId = groupId;
             this.Payload = payload;
+            this.BizType = bizType;
         }
 
 
         public override String ToString()
         {
             return "packetId:" + packetId + " sequence:" + sequence + " timestamp:" + timestamp + " fromAccount:" + fromAccount +
-                    " fromResource:" + fromResource + " roupId" + groupId + " payload:" + payload;
+                    " fromResource:" + fromResource + " roupId" + groupId + " payload:" + payload + " bizType:" + bizType;
         }
 
         public int CompareTo(Object o)

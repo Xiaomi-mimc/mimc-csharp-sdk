@@ -5,7 +5,6 @@ using com.xiaomi.mimc.packet;
 using com.xiaomi.mimc.utils;
 using log4net;
 using mimc;
-using mimc.com.xiaomi.mimc.packet;
 using ProtoBuf;
 
 namespace com.xiaomi.mimc
@@ -50,7 +49,7 @@ namespace com.xiaomi.mimc
                     logger.WarnFormat("{0} HandleSecMsg parse MIMCPacketAck fail", user.AppAccount);
                     return;
                 }
-                user.HandleServerACK(new ServerAck(packetAck.packetId, packetAck.sequence, packetAck.timestamp, packetAck.errorMsg));
+                user.HandleServerACK(new ServerAck(packetAck.packetId, packetAck.sequence, packetAck.timestamp, packetAck.code, packetAck.errorMsg));
                 logger.DebugFormat("{0} HandleSecMsg MIMCPacketAck packetId:{1}, msg：{2}", user.AppAccount, packetAck.packetId, packetAck.errorMsg);
                 logger.DebugFormat("{0} HandleSecMsg timeoutPackets TimeoutPackets before size :{1}", user.AppAccount, user.TimeoutPackets.Count);
 
@@ -67,8 +66,7 @@ namespace com.xiaomi.mimc
 
                 return;
             }
-            List<P2UMessage> p2uMessagesList = new List<P2UMessage>();
-
+            
             if (packet.type == MIMC_MSG_TYPE.UC_PACKET)
             {
 
@@ -98,12 +96,13 @@ namespace com.xiaomi.mimc
                         return;
                     }
 
+                    List<P2UMessage> p2uMessagesList = new List<P2UMessage>();
                     foreach (UCMessage ucMessage in messageList.message)
                     {
                         logger.DebugFormat("HandleSecMsg UC_MSG_TYPE.MESSAGE_LIST：{0},size:{1}", ucPacket.type, messageList.message.Count);
                         p2uMessagesList.Add(new P2UMessage(ucMessage.packetId, ucMessage.sequence,
-                               ucMessage.user.appAccount, null,
-                               ucMessage.group.topicId, ucMessage.payload, ucMessage.timestamp));
+                               ucMessage.user.appAccount, ucMessage.user.resource,
+                               (long)ucMessage.group.topicId, ucMessage.payload, ucMessage.bizType, ucMessage.timestamp));
                         continue;
                     }
                     if (p2uMessagesList.Count > 0)
@@ -124,8 +123,13 @@ namespace com.xiaomi.mimc
                 }
                 if (ucPacket.type == UC_MSG_TYPE.DISMISS)
                 {
+                    UCDismiss ucDismiss = null;
+                    using (MemoryStream ucStream = new MemoryStream(ucPacket.payload))
+                    {
+                        ucDismiss = Serializer.Deserialize<UCDismiss>(ucStream);
+                    }
                     logger.DebugFormat("HandleDismissUnlimitedGroup UC_MSG_TYPE.DISMISS：{0}", ucPacket.type);
-                    user.HandleDismissUnlimitedGroup(ucPacket);
+                    user.HandleDismissUnlimitedGroup(new DismissUnlimitedGroupEventArgs(ucDismiss.group.topicId));
                 }
 
                 else if (ucPacket.type == UC_MSG_TYPE.PONG)
@@ -154,10 +158,8 @@ namespace com.xiaomi.mimc
                 }
 
                 V6Packet mimcSequenceAckPacket = MIMCUtil.BuildSequenceAckPacket(user, packetList);
-                MIMCObject miObj = new MIMCObject();
-                miObj.Type = Constant.MIMC_C2S_SINGLE_DIRECTION;
-                miObj.Packet = mimcSequenceAckPacket;
-                user.Connection.PacketWaitToSend.Enqueue(miObj);
+                PacketWrapper packetWrapper = new PacketWrapper(Constant.MIMC_C2S_SINGLE_DIRECTION, mimcSequenceAckPacket);
+                user.Connection.PacketWaitToSend.Enqueue(packetWrapper);
 
                 int packetListNum = packetList.packets.Count;
                 List<P2PMessage> p2pMessagesList = new List<P2PMessage>();
@@ -190,7 +192,7 @@ namespace com.xiaomi.mimc
 
                         p2pMessagesList.Add(new P2PMessage(p.packetId, p.sequence,
                             p2pMessage.from.appAccount, p2pMessage.from.resource,
-                            p2pMessage.payload, p.timestamp));
+                            p2pMessage.to.appAccount, p2pMessage.to.resource, p2pMessage.payload, p2pMessage.bizType, p.timestamp));
                         logger.DebugFormat("HandleSecMsg P2P_MESSAGE packetId:{0}", p2pMessagesList[0]);
 
                         continue;
@@ -211,7 +213,7 @@ namespace com.xiaomi.mimc
 
                         p2tMessagesList.Add(new P2TMessage(p.packetId, p.sequence,
                             p2tMessage.from.appAccount, p2tMessage.from.resource,
-                            p2tMessage.to.topicId, p2tMessage.payload, p.timestamp));
+                            (long)p2tMessage.to.topicId, p2tMessage.payload, p2tMessage.bizType, p.timestamp));
                         continue;
                     }
 

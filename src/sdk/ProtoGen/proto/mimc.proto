@@ -1,0 +1,381 @@
+syntax = "proto2";
+package mimc;
+
+
+// .\protoc --csharp_out=. mimc.proto
+
+
+/*************MessageFilter************/
+enum ErrorCode {
+    OK = 0;
+    INTERNAL_ERROR = 1;
+}
+
+message FilterRequest {
+    required string id = 1;
+    required MIMCPacket packet = 2;
+}
+
+message FilterResponse {
+    required string id = 1;
+    optional MIMC_MSG_TYPE type = 2;
+    optional ErrorCode errorCode = 3;
+    optional bool isFilter = 4;
+}
+/*************MessageFilter************/
+
+/***************SMS*********************/
+/* xmq --> seq-msg-storage */
+message PullMessageRequest {
+    required uint64 uuid = 1;
+    required string resource = 2;
+    optional uint64 appId = 3;
+}
+
+message TopicMessage {
+    required uint64 topicId = 1;
+    required MIMCPacket packet = 2;
+    optional uint64 uuid = 3;
+    optional string resource = 4;
+    optional bool isSystemMsg = 5;
+}
+
+// sms --> sms
+message TransferTopicMessage {
+    //optional TopicMessage topicMessage = 1;
+    optional  MIMCPacket packet = 1;
+    repeated uint64 uuidList = 2;
+    optional MIMC_MSG_TYPE type = 3;
+    optional uint64 appId = 4;
+}
+
+message SmsNodeInfo {
+    required string smsNodeName = 1;
+    repeated uint64 uuids = 2;
+}
+
+message MimcEmqMessage {
+    optional uint64 topicId = 1;
+    optional MIMCPacket packet = 2;
+    optional MIMC_MSG_TYPE type = 3;
+    optional uint64 appId = 4;
+    optional string smsCluster = 5;
+    repeated SmsNodeInfo smsNodes = 6;
+}
+
+message MimcEmqPushMessage {
+    optional TopicMessage topicMessage = 1;
+    optional string smsSluster = 2;
+    optional uint64 appId = 3;
+}
+
+//MIMCSequenceAck
+
+/***************SMS*************************/
+
+/***AF**************************************/
+//TopicMessage
+
+/***AF**************************************/
+
+/***AM**************************************/
+message QueryAppinfoRequest {
+    required uint64 appId = 1;
+    optional string context = 2;
+}
+
+message Appinfo {
+    required uint64 appId = 1;
+    optional string msgCallbackUrl = 2;
+    optional string offlineMsgCallbackUrl = 3;
+    optional uint64 uuidTTL = 4;
+    optional string context = 5;
+    optional string messageFilter = 6;
+    optional bool enableBlacklist = 7;
+    optional int64 topicMemberCount = 8;
+    optional bool enableAntiSpam = 9;
+    optional int32 msgStorageTime = 10;
+    optional int32 contactExpireTime = 11;
+    optional int32 p2pMaxQps = 12;
+    optional int32 p2tMaxQps = 13;
+    optional int32 ucMaxQps = 14;
+    optional string offlineResourceCallbackUrl = 15;
+    optional int32 offlineMsgMaxCount = 16;
+    optional bool enableContacts = 17;
+    optional string offlineResourceCallbackRE = 18;
+}
+/***AM**************************************/
+
+/***************************上行消息*************************/
+/**
+ * MIMCPacket为packetv6中的payload
+ **/
+message MIMCPacket {
+    optional string packetId = 1;
+    optional string package = 2;
+    optional int64 sequence = 3; // 服务器设置
+    optional MIMC_MSG_TYPE type = 4;
+    optional bytes payload = 5;
+    optional int64 timestamp = 6;
+    optional bool conversation = 7;
+    optional int64 convIndex = 8; // 会话列表index，自增加1
+}
+
+enum MIMC_MSG_TYPE {
+    P2P_MESSAGE = 1; // MIMCP2PMessage   c-->s
+    P2T_MESSAGE = 2; // MIMCP2TMessage   c-->s
+    SEQUENCE_ACK = 3; // MIMCSequenceAck  c-->s
+    PACKET_ACK = 4; // MIMCPacketAck    s-->c
+    PULL = 5; // PullMessageRequest         c-->s
+    COMPOUND = 6; // MIMCPacketList   s-->c
+
+    RTS_SIGNAL = 7; // RTSSignalMessage
+
+    UC_PACKET = 8; // UCPacket c→s
+
+    P2P_PUSH_MESSAGE = 9; // P2PPushMessage   c-->s
+    P2T_PUSH_MESSAGE = 10; // P2TPushMessage   c-->s
+
+    ONLINE_MESSAGE = 11; // MIMCP2PMessage   c-->c  for camera's signal
+    ONLINE_MESSAGE_ACK = 12; // MIMCP2PMessage   c-->c  for camera's signal ACK
+}
+
+/***************************下行消息*************************/
+enum MIMC_PUSH_STATUS {
+    STATUS_NORMAL = 1;
+    STATUS_EXCEED_COUNT_LIMIT = 2;
+}
+message MIMCPacketList {
+    optional uint64 uuid = 1;
+    optional string resource = 2;
+    optional int64 maxSequence = 3;
+    repeated MIMCPacket packets = 4;
+    optional MIMC_PUSH_STATUS status = 5;
+}
+
+message MIMCPacketAck {
+    optional string packetId = 1;
+    optional uint64 uuid = 2;
+    optional string resource = 3;
+    optional int64 sequence = 4;
+    optional int64 timestamp = 5;
+    optional string package = 6;
+    optional string errorMsg = 7;
+    optional int32 code = 8;
+    optional int64 convIndex = 9; // 会话列表index，自增加1
+}
+
+/***************************上行消息*************************/
+message MIMCP2PMessage {
+    optional MIMCUser from = 1;
+    optional MIMCUser to = 2;
+    optional bytes payload = 3; // APP自定义数据
+    optional bool isStore = 4; // 是否存储这条消息
+    optional string bizType = 5; //消息类型
+}
+
+message MIMCP2TMessage {
+    optional MIMCUser from = 1;
+    optional MIMCGroup to = 2;
+    optional bytes payload = 3; // APP自定义数据
+    optional bool isStore = 4; // 是否存储这条消息
+    optional string bizType = 5; //消息类型
+}
+
+message MIMCSequenceAck {
+    optional uint64 uuid = 1;
+    optional string resource = 2;
+    optional int64 sequence = 3;
+    optional uint64 appId = 4;
+}
+
+message MIMCOnlineMessageAck {
+    required string packetId = 1;
+    optional uint64 uuid = 2;
+    optional string resource = 3;
+    required int32 code = 4;
+    optional string errorMsg = 5;
+}
+
+/***************Push Message******************/
+
+// 单聊推送
+message P2PPushMesage {
+    optional MIMCUser from = 1;
+    repeated MIMCUser to = 2;
+    optional bytes payload = 3; // APP自定义数据
+    optional bool isStore = 4; // 是否存储这条消息
+    optional string bizType = 5; //消息类型
+    optional bool isSystemMsg = 6;
+}
+// 普通群聊推送
+message P2TPushMesage {
+    optional MIMCUser from = 1;
+    repeated MIMCGroup to = 2;
+    optional bytes payload = 3; // APP自定义数据
+    optional bool isStore = 4; // 是否存储这条消息
+    optional string bizType = 5; //消息类型
+    optional bool isSystemMsg = 6;
+}
+
+/***************************公共定义*************************/
+message MIMCUser {
+    optional uint64 appId = 1; //允许不同app间通信
+    optional string appAccount = 2;
+    optional uint64 uuid = 3;
+    optional string resource = 4;
+}
+
+message MIMCGroup {
+    optional uint64 appId = 1; //允许不同app间通信
+    optional uint64 topicId = 2;
+}
+
+message UCGroup {
+    optional uint64 appId = 1; //允许不同app间通信
+    optional uint64 topicId = 2;
+}
+
+/***************Dig udp request******************/
+
+message GenerateIdRequest {
+    required uint64 requestId = 1;
+    required int32 bussinessType = 2;
+}
+message GenerateIdResponse {
+    required uint64 requestId = 1;
+    required uint64 id = 2;
+}
+
+/**************************UnlimitedChat**************************/
+message UCPacket {
+    required MIMCUser user = 1;
+    required UC_MSG_TYPE type = 2;
+    required bytes payload = 3;
+    required string packetId = 4;
+}
+
+message UCExchange {
+    optional FeInfo feInfo = 1;
+    required UCPacket packet = 2;
+    required string package = 3;
+}
+
+enum UC_MSG_TYPE {
+    PING = 1;
+    PONG = 2;
+
+    JOIN = 3;
+    JOIN_RESP = 4;
+
+    QUIT = 5;
+    QUIT_RESP = 6;
+
+    SEQ_ACK = 7;
+    MESSAGE = 8;
+    MESSAGE_LIST = 9;
+    DISMISS = 10;
+
+    QUERY_ONLINE_USERS = 11;
+    QUERY_ONLINE_USERS_RESP = 12;
+}
+
+message UCJoin {
+    required UCGroup group = 1;
+}
+
+message UCJoinResp {
+    required UCGroup group = 1;
+    required int32 code = 2;
+    optional string message = 3;
+}
+
+message UCQuit {
+    required UCGroup group = 1;
+}
+
+message UCQuitResp {
+    required UCGroup group = 1;
+    required int32 code = 2;
+    optional string message = 3;
+}
+
+message UCPing {
+    repeated UCGroup group = 1;
+}
+
+message UCMessage {
+    required UCGroup group = 1;
+    required bytes payload = 2; // APP自定义数据
+    optional int64 sequence = 3; // 服务器设置
+    optional bool isStore = 4; // 是否存储这条消息
+    optional MIMCUser user = 5;
+    optional int64 timestamp = 6;
+    optional string packetId = 7;
+    optional string bizType = 8; //消息类型
+}
+
+// for push
+message UCPushMessage {
+    required MIMCUser user = 1;
+    repeated UCGroup group = 2;
+    repeated bytes payloads = 3;
+    optional bool isStore = 4;
+    optional int64 timestamp = 5;
+    optional string packetId = 6;
+    optional string bizType = 7; //消息类型
+}
+
+message UCMessageList {
+    required UCGroup group = 1;
+    repeated UCMessage message = 2;
+    optional int64 maxSequence = 3;
+}
+
+//每个Group一个ack
+message UCSequenceAck {
+    required UCGroup group = 1;
+    required int64 sequence = 2;
+}
+
+message UCDismiss {
+    required UCGroup group = 1;
+}
+
+message UCQueryOnlineUsers {
+    required UCGroup group = 1;
+}
+
+message UCQueryOnlineUsersResp {
+    required UCGroup group = 1;
+    required int64 userCount = 2;
+}
+
+message UCGroupMemberInfo {
+    optional int64 forbidUntil = 1; // 禁言截止时间戳（秒）
+}
+
+// FE 信息以及用户具体服务在 FE session 的信息
+message FeInfo {
+    optional string fe_src_ip = 1;
+    optional int32 fe_src_port = 2;
+    optional int32 fe_thread_id = 3;
+    optional uint64 fe_ucid = 4;
+    optional uint64 fe_sid = 5;
+    optional uint64 fe_seqno = 6;
+}
+
+// Relationship好友关系的pb信息
+message RelationAuth {
+    optional string account = 1;
+    optional int32 status = 2; //0.关闭，1.开启
+    optional int64 ts = 3;
+}
+
+message Relationship {
+    optional string account = 1;
+    optional int32 status = 2; // 0.等待，1.通过，2.解除好友关系
+    optional int64 ts = 3;
+    optional string message = 4;
+    optional bool read_status = 5;//false 未读
+}

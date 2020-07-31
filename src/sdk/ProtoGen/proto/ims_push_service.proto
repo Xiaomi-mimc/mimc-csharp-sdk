@@ -1,0 +1,140 @@
+syntax = "proto2";
+package sdk.protobuf;
+
+import "proto/control_message.proto";
+
+//
+// IM-SERVICE 通信协议之PushService协议
+//
+
+//
+// 协议的消息头
+//
+
+message ClientHeader {
+    optional int32  chid     = 1;
+    optional int64  uuid     = 2;
+    optional string server   = 3;
+    optional string resource = 4;
+
+    optional string cmd      = 5;
+    optional string subcmd   = 6;
+    optional string id       = 7;
+
+    enum MSG_DIR_FLAG {
+        CS_ONEWAY = 1;  // 单次发送
+        CS_REQ    = 2;  // 隐含了 RPC 语义
+        CS_RESP   = 3;  // 作为 RPC 的应答
+        SC_ONEWAY = 4;
+        SC_REQ    = 5;
+        SC_RESP   = 6;
+    }
+
+    optional MSG_DIR_FLAG dir_flag = 8;
+    // 指定消息的方向（CS：上行，SC：下行）
+    // 客户端和 FE 通过方向以及 REQ/RESP 判断应该使用什么格式解析 PB
+
+    optional int32 cipher = 9; // payload 的加密方法 0：未加密；1：RC4 加密；2：AES 加密
+
+    // 错误码
+    optional int32  err_code = 10;
+    optional string err_str  = 11;
+}
+
+
+//
+// cmd = "CONN"
+//
+
+message XMMsgConn {
+    optional uint32 version = 1;
+    optional string model   = 2;
+    optional string os      = 3;
+    optional string udid    = 4; // 即 <stream:stream> 中的 uid，sha1(IMEI) 得到的一个字串
+    optional int32  sdk     = 5;
+    optional string connpt  = 6;
+    optional string host    = 7;
+    optional string locale  = 8;
+    optional protocol.PushServiceConfigMsg psc = 9;    // push service 相关的指令
+    optional int32 andver = 10;             // android.os.Build.VERSION.SDK_INT
+    optional bytes publicKeyN = 11;         // 客户端公钥N
+    optional bytes publicKeyE = 12;         // 客户端公钥E,N和E可以生成公钥，用来加密session key
+}
+
+message XMMsgConnResp {
+    optional string challenge = 1;
+    optional string host      = 2;   // FE 的 host id
+    optional protocol.PushServiceConfigMsg psc = 3;
+    optional bytes sessionKey = 4;         //加密后的session key
+}
+
+//
+// cmd = "BIND"
+//
+
+message XMMsgBind {
+    optional string token        = 1;
+    optional string kick         = 2;
+    optional string method       = 3;
+    optional string client_attrs = 4;
+    optional string cloud_attrs  = 5;
+    optional string sig          = 6;
+    optional bool sso            = 7; // 单点登录
+}
+
+message XMMsgBindResp {
+    optional bool   result       = 1; // 成功与否
+    optional string error_type   = 2;
+    optional string error_reason = 3;
+    optional string error_desc   = 4;
+}
+
+//
+// cmd = "PING"
+//
+
+message XMMsgPing {
+     optional bytes                         stats = 1;  // 发往FE的Ping包中，带有XMPP协议中的thrift打点数据，但去除了Base64编码.
+     optional protocol.PushServiceConfigMsg psc   = 2;
+}
+
+//
+// cmd = "NOTIFY"
+// 
+//
+
+message XMMsgNotify {
+    optional int32  err_code = 1;
+    optional string err_str  = 2;
+}
+
+//
+// cmd = "UBND"
+// cmd = "PING"
+// cmd = "KICK"
+message XMMsgKick {
+    optional string type   = 1;
+    optional string reason = 2;
+    optional string desc   = 3;
+}
+//
+
+//
+// cmd = "CTRL"
+//   subcmd = "PushServiceConfig", payload 为 PushServiceConfigMsg
+//
+
+//
+// cmd = "USRMSG"
+//   payload 用户自定
+//
+
+// subcmd = "U"
+message XMMsgU {
+    optional string url    = 1; // 上传地址
+    optional string token  = 2; // token
+    optional uint64 start  = 3; // log开始时间
+    optional uint64 end    = 4; // log结束时间
+    optional bool   force  = 5; // 强制上传标识
+    optional int32  maxlen = 6; // 上传文件大小限制
+}

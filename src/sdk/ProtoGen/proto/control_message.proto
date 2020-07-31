@@ -1,0 +1,25 @@
+syntax = "proto2";
+package protocol;
+
+// PushServiceConfigMsg用来传递客户端PushService
+// 和服务器前段frontend之间的状态和控制指令
+// 目前的功能
+//   上报打点数据
+//   上报日志
+//   去获取bucket数据
+//   去获取新版本的配置
+//   同步各channel bind状态
+
+
+
+
+/**
+ * Server&Client sync status and command with this message.
+ */
+message PushServiceConfigMsg {
+    optional bool fetchBucket        = 1;
+    optional bool useBucketV2        = 2;
+    optional int32 clientVersion     = 3;
+    optional int32 cloudVersion      = 4;
+    optional int32 dots              = 5; // seconds for dot
+}

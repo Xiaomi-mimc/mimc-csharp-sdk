@@ -27,12 +27,14 @@ namespace sdk.demo
         * @Important:
         *   开发者访问小米开放平台(https://dev.mi.com/console/man/)，申请appId/appKey/appSecurity
         **/
+        // online
         private static string topicUrl = "https://mimc.chat.xiaomi.net/api/topic/";
         private static string url = "https://mimc.chat.xiaomi.net/api/account/token";
         private static string appId = "2882303761517669588";
         private static string appKey = "5111766983588";
         private static string appSecret = "b0L3IOz/9Ob809v8H2FbVg==";
 
+        // staging
         //private static string topicUrl = "http://10.38.162.149/api/topic/";
         //private static string url = "http://10.38.162.149/api/account/token";
         //private static string appId = "2882303761517479657";
@@ -48,7 +50,7 @@ namespace sdk.demo
 
         public static void Main(string[] args)
         {
-            RunAsync();
+            Run();
             Console.ReadKey();
         }
 
@@ -61,47 +63,13 @@ namespace sdk.demo
             {
                 return;
             }
+            Thread.Sleep(5 * 1000);
 
-            Thread.Sleep(5000);
-            demo.SendMessage();
+            demo.SendUnlimitedGroupMessage();
 
-            Thread.Sleep(5000);
-            //demo.SendGroupMessage();
-            //Thread.Sleep(2000);
-            //demo.GetP2PHistoryMessage();
+            Thread.Sleep(5 * 1000);
+
             if (!demo.Over())
-            {
-                return;
-            }
-        }
-
-        static async void RunAsync()
-        {
-            logger.InfoFormat("demo start");
-
-            MIMCDemo demo = new MIMCDemo();
-            if (!await demo.ReadyAsync())
-            {
-                return;
-            }
-
-            demo.SendMessageAsync();
-            Thread.Sleep(1000);
-
-            //demo.SendGroupMessageAsync();
-            //Thread.Sleep(1000);
-
-            //demo.SendUnlimitedGroupMessage();
-            //Thread.Sleep(1000);
-            //demo.GetP2PHistoryMessage();
-
-            //demo.JoinInexistentUnlimitedGroup();
-            //Thread.Sleep(1000);
-
-            //demo.QuitInexistentUnlimitedGroup();
-            //Thread.Sleep(5000);
-
-            if (!await demo.OverAsync())
             {
                 return;
             }
@@ -153,24 +121,6 @@ namespace sdk.demo
             return true;
         }
 
-        async Task<bool> ReadyAsync()
-        {
-            if (!await user5566.LoginAsync())
-            {
-                logger.ErrorFormat("Login Fail, {0}", user5566.AppAccount);
-                return false;
-            }
-
-
-            if (!await user9527.LoginAsync())
-            {
-                logger.ErrorFormat("Login Fail, {0}", user9527.AppAccount);
-                return false;
-            }
-
-            Thread.Sleep(1000);
-            return true;
-        }
         /// <summary>
         /// 注销用户
         /// </summary>
@@ -194,27 +144,6 @@ namespace sdk.demo
         }
 
         /// <summary>
-        /// 注销用户
-        /// </summary>
-        async Task<bool> OverAsync()
-        {
-            if (!await user5566.LogoutAsync())
-            {
-                logger.ErrorFormat("Logout Fail, {0}", user5566.AppAccount);
-                return false;
-            }
-            user5566.Destroy();
-            if (!await user9527.LogoutAsync())
-            {
-                logger.ErrorFormat("Logout Fail, {0}", user9527.AppAccount);
-                return false;
-            }
-            user9527.Destroy();
-            Thread.Sleep(1000);
-            return true;
-        }
-
-        /// <summary>
         /// 发送单聊消息测试
         /// </summary>
         void SendMessage()
@@ -230,11 +159,11 @@ namespace sdk.demo
                 return;
             }
 
-            String packetId = user5566.SendMessage(user9527.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
+            String packetId = user5566.SendMessage(user9527.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")), "P2P");
             logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
             Thread.Sleep(100);
 
-            packetId = user9527.SendMessage(user5566.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
+            packetId = user9527.SendMessage(user5566.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")), "P2P");
             logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user9527.AppAccount, user5566.AppAccount, packetId);
             Thread.Sleep(100);
         }
@@ -260,30 +189,6 @@ namespace sdk.demo
             Thread.Sleep(100);
 
         }
-        /// <summary>
-        /// 发送单聊消息测试
-        /// </summary>
-        async void SendMessageAsync()
-        {
-            if (!user5566.IsOnline())
-            {
-                logger.DebugFormat("{0} login fail, quit!", user5566.AppAccount);
-                return;
-            }
-            if (!user9527.IsOnline())
-            {
-                logger.DebugFormat("{0} login fail, quit!", user9527.AppAccount);
-                return;
-            }
-
-            String packetId = await user5566.SendMessageAsync(user9527.AppAccount, UTF8Encoding.Default.GetBytes("Are you OK?" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
-            Thread.Sleep(100);
-
-            packetId = await user9527.SendMessageAsync(user5566.AppAccount, UTF8Encoding.Default.GetBytes("I'm OK!" + DateTime.Now.ToString("u")));
-            logger.InfoFormat("SendMessage, {0}-->{1}, PacketId:{2}", user9527.AppAccount, user5566.AppAccount, packetId);
-            Thread.Sleep(100);
-        }
 
         /// <summary>
         /// 发送群聊消息测试
@@ -302,37 +207,11 @@ namespace sdk.demo
             }
             long topicId = CreateNormalTopic(topicUrl, appAccount1, appAccount1 + "," + appAccount2);
 
-            String packetId = user5566.SendGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
+            String packetId = user5566.SendGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")), "P2T");
 
             logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
             Thread.Sleep(100);
         }
-
-
-        /// <summary>
-        /// 发送群聊消息测试
-        /// </summary>
-        async void SendGroupMessageAsync()
-        {
-            if (!user5566.IsOnline())
-            {
-                logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
-                return;
-            }
-            if (!user9527.IsOnline())
-            {
-                logger.DebugFormat("{0} offline, quit!", user9527.AppAccount);
-                return;
-            }
-            long topicId = CreateNormalTopic(topicUrl, appAccount1, appAccount1 + "," + appAccount2);
-
-            String packetId = await user5566.SendGroupMessageAsync(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
-
-            logger.InfoFormat("SendGroupMessage, {0}-->{1}, PacketId:{2}", user5566.AppAccount, user9527.AppAccount, packetId);
-            Thread.Sleep(100);
-        }
-
-
 
         /// <summary>
         /// 创建无限大群测试
@@ -347,6 +226,18 @@ namespace sdk.demo
             string topicId = user5566.CreateUnlimitedGroup("test");
             logger.InfoFormat("CreateUnlimitedGroup, {0}, topicId:{1}", user5566.AppAccount, topicId);
             Thread.Sleep(100);
+        }
+
+        void JoinUnlimitedGroup()
+        {
+            if (!user9527.IsOnline())
+            {
+                logger.DebugFormat("{0} offline, quit!", user9527.AppAccount);
+                return;
+            }
+
+            user9527.JoinUnlimitedGroup(29516394685530112);
+            Thread.Sleep(3 * 1000);
         }
 
         /// <summary>
@@ -407,7 +298,7 @@ namespace sdk.demo
                 logger.DebugFormat("{0} offline, quit!", user5566.AppAccount);
                 return;
             }
-            long topicId = long.Parse(user5566.CreateUnlimitedGroup("test"));
+            long topicId = long.Parse(user5566.CreateUnlimitedGroup("testUC"));
             Thread.Sleep(100);
 
             if (topicId == 0)
@@ -422,25 +313,18 @@ namespace sdk.demo
             }
             user9527.JoinUnlimitedGroup(topicId);
             Thread.Sleep(2000);
-            if (user5566.QueryUnlimitedGroups())
-            {
-                logger.DebugFormat("{0} has joined uctopics:{1}", user5566.AppAccount, user5566.UcTopics);
-            }
-            Thread.Sleep(2000);
-            if (user9527.QueryUnlimitedGroups())
-            {
-                logger.DebugFormat("{0} has joined uctopics:{1}", user9527.AppAccount, user9527.UcTopics);
-            }
             String result = user5566.GetUnlimitedGroupUsersNum(topicId);
             logger.InfoFormat("SendUnlimitedGroupMessage  result:{0}", result);
-            String userListResult = user5566.GetUnlimitedGroupUsers(4535345345);
+            String userListResult = user5566.GetUnlimitedGroupUsers(topicId);
             logger.InfoFormat("SendUnlimitedGroupMessage userListResult:{0}", userListResult);
             String packetId = null;
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 10000000; i++)
             {
-                packetId = user5566.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody!" + DateTime.Now.ToString("u")));
-                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3},uuid2:{4}", user5566.AppAccount, topicId, packetId, user5566.Uuid, user9527.Uuid);
-                Thread.Sleep(10);
+                packetId = user5566.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 5566 " + DateTime.Now.ToString("u")), "UC");
+                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3}, uuid2:{4}", user5566.AppAccount, topicId, packetId, user5566.Uuid, user9527.Uuid);
+                packetId = user9527.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 9527 " + DateTime.Now.ToString("u")), "UC");
+                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3}, uuid2:{4}", user9527.AppAccount, topicId, packetId, user9527.Uuid, user5566.Uuid);
+                Thread.Sleep(5 *1000);
             }
             Thread.Sleep(20000);
             user9527.QuitUnlimitedGroup(topicId);
@@ -613,13 +497,13 @@ namespace sdk.demo
 
         public void HandleStatusChange(object source, StateChangeEventArgs e)
         {
-            logger.InfoFormat(".........................{0} OnlineStatusHandler status:{1},errType:{2},errReason:{3},errDescription:{4}!", e.User.AppAccount, e.IsOnline, e.Type, e.Reason, e.Desc);
+            logger.InfoFormat("OnlineStatusHandler status:{0}, errType:{1}, errReason:{2}, errDescription:{3}!", e.IsOnline, e.Type, e.Reason, e.Desc);
         }
 
         public void HandleMessage(object source, MessageEventArgs e)
         {
             List<P2PMessage> packets = e.Packets;
-            logger.InfoFormat("HandleMessage, to:{0}, packetCount:{1}", e.User.AppAccount, packets.Count);
+            logger.InfoFormat("HandleMessage, packetCount:{1}", packets.Count);
             if (packets.Count == 0)
             {
                 logger.WarnFormat("HandleMessage packets.Count==0");
@@ -627,8 +511,8 @@ namespace sdk.demo
             }
             foreach (P2PMessage msg in packets)
             {
-                logger.InfoFormat("+++++++++++++++++++++++++HandleMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                    e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
+                logger.InfoFormat(">>>> HandleMessage, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                    msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
                     Encoding.UTF8.GetString(msg.Payload));
             }
         }
@@ -636,15 +520,14 @@ namespace sdk.demo
         public void HandleMessageTimeout(object source, SendMessageTimeoutEventArgs e)
         {
             P2PMessage msg = e.P2PMessage;
-            logger.InfoFormat("HandleSendMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                                   e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
+            logger.InfoFormat(">>>> HandleSendMessageTimeout, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                                   msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
                                    Encoding.UTF8.GetString(msg.Payload));
         }
 
         public void HandleGroupMessage(object source, GroupMessageEventArgs e)
         {
             List<P2TMessage> packets = e.Packets;
-            logger.InfoFormat("HandleGroupdMessage, to:{0}, packetCount:{1}", e.User.AppAccount, packets.Count);
             if (packets.Count == 0)
             {
                 logger.WarnFormat("HandleGroupdMessage packets.Count==0");
@@ -652,8 +535,8 @@ namespace sdk.demo
             }
             foreach (P2TMessage msg in packets)
             {
-                logger.InfoFormat("HandleGroupdMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                      e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
+                logger.InfoFormat("HandleGroupdMessage, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                      msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
                     Encoding.UTF8.GetString(msg.Payload));
             }
         }
@@ -661,15 +544,15 @@ namespace sdk.demo
         public void HandleGroupMessageTimeout(object source, SendGroupMessageTimeoutEventArgs e)
         {
             P2TMessage msg = e.P2tMessage;
-            logger.InfoFormat("HandleSendGroupdMessageTimeout, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                       e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
+            logger.InfoFormat("HandleSendGroupdMessageTimeout, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
+                      msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
                      Encoding.UTF8.GetString(msg.Payload));
         }
 
         public void HandleUnlimitedGroupMessage(object source, UnlimitedGroupMessageEventArgs e)
         {
             List<P2UMessage> packets = e.P2uMessagesList;
-            logger.InfoFormat("HandleUnlimitedGroupMessage, to:{0}, packetCount:{1}", e.User.AppAccount, packets.Count);
+            logger.InfoFormat("HandleUnlimitedGroupMessage, packetCount:{0}", packets.Count);
             if (packets.Count == 0)
             {
                 logger.WarnFormat("HandleUnlimitedGroupMessage packets.Count==0");
@@ -677,9 +560,8 @@ namespace sdk.demo
             }
             foreach (P2UMessage msg in packets)
             {
-                logger.InfoFormat("HandleUnlimitedGroupMessage, to:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}",
-                      e.User.AppAccount, msg.PacketId, msg.Sequence, msg.Timestamp,
-                    Encoding.UTF8.GetString(msg.Payload));
+                logger.InfoFormat(">>>> HandleUnlimitedGroupMessage, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}, type:{5}",
+                      msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp, Encoding.UTF8.GetString(msg.Payload), msg.BizType);
             }
 
         }
@@ -687,8 +569,8 @@ namespace sdk.demo
         public void HandleUnlimitedGroupMessageTimeout(object source, SendUnlimitedGroupMessageTimeoutEventArgs e)
         {
             P2UMessage msg = e.Packet;
-            logger.InfoFormat("HandleUnlimitedGroupMessageTimeout, to:{0}, packetId:{1}",
-                     e.User.AppAccount, msg.PacketId);
+            logger.InfoFormat(">>>> HandleUnlimitedGroupMessageTimeout, from:{0}, packetId:{1}, type:{2}",
+                     msg.FromAccount, msg.PacketId, msg.BizType);
         }
 
         public void HandleJoinUnlimitedGroup(object source, JoinUnlimitedGroupEventArgs e)
@@ -706,16 +588,14 @@ namespace sdk.demo
         }
         public void HandleDismissUnlimitedGroup(object source, DismissUnlimitedGroupEventArgs e)
         {
-            mimc.UCPacket msg = e.Packet;
-            logger.InfoFormat("HandleDismissUnlimitedGroup, to:{0}, packetId:{1}, type:{2}",
-                     e.User.AppAccount, msg.packetId, msg.type);
+            logger.InfoFormat("HandleDismissUnlimitedGroup, topicId:{0}", e.TopicId);
         }
 
         public void HandleServerACK(object source, ServerACKEventArgs e)
         {
             ServerAck serverAck = e.ServerAck;
-            logger.InfoFormat("HandleServerACK, appAccount:{0}, packetId:{1}, sequence:{2}, ts:{3},ErrorMsg:{4}",
-                  e.User.AppAccount, serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp, serverAck.Desc);
+            logger.InfoFormat("HandleServerACK, packetId:{0}, sequence:{1}, ts:{2}, code:{3}, desc:{4}",
+                  serverAck.PacketId, serverAck.Sequence, serverAck.Timestamp, serverAck.Code, serverAck.Desc);
         }
     }
 }

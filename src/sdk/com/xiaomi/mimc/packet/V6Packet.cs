@@ -70,11 +70,11 @@ namespace com.xiaomi.mimc.packet
         private byte[] v6BodyBin;
         private V6Body body;
 
-        public char Magic { get; set; }
-        public char Version { get; set; }
-        public int PacketLen { get; set; }
-        public byte[] V6BodyBin { get; set; }
-        public V6Body Body { get; set; }
+        public V6Body Body { get => body; set => body = value; }
+        public char Magic { get => magic; set => magic = value; }
+        public char Version { get => version; set => version = value; }
+        public int PacketLen { get => packetLen; set => packetLen = value; }
+        public byte[] V6BodyBin { get => v6BodyBin; set => v6BodyBin = value; }
 
         [Serializable]
         public class V6Body
@@ -85,18 +85,18 @@ namespace com.xiaomi.mimc.packet
             private ClientHeader clientHeader;
             private byte[] payload;
 
-            public short PayloadType { get; set; }
-            public int ClientHeaderLen { get; set; }
-            public int PayloadLen { get; set; }
-            public ClientHeader ClientHeader { get; set; }
-            public byte[] Payload { get; set; }
+            public byte[] Payload { get => payload; set => payload = value; }
+            public int PayloadLen { get => payloadLen; set => payloadLen = value; }
+            public int ClientHeaderLen { get => clientHeaderLen; set => clientHeaderLen = value; }
+            public short PayloadType { get => payloadType; set => payloadType = value; }
+            public ClientHeader ClientHeader { get => clientHeader; set => clientHeader = value; }
         }
 
 
         public byte[] ToByteArray(byte[] v6bodyKey, byte[] payloadKey, MIMCUser user)
         {
             //Ping packet
-            if (v6BodyBin == null && Body == null)
+            if (V6BodyBin == null && Body == null)
             {
                 ByteBuffer v6PingByteBuffer = ByteBuffer.Allocate(Constant.V6_HEAD_LENGTH + Constant.CRC_LEN);
                 v6PingByteBuffer.putChar(Constant.MAGIC);
@@ -125,19 +125,19 @@ namespace com.xiaomi.mimc.packet
                 bodyBuffer.putBytes(payloadKey != null ? RC4Cryption.DoEncrypt(payloadKey, Body.Payload) : Body.Payload);
             }
 
-            v6BodyBin = bodyBuffer.ToArray();
-            int v6BodyLen = (v6BodyBin == null || v6BodyBin.Length == 0) ? 0 : v6BodyBin.Length;
+            V6BodyBin = bodyBuffer.ToArray();
+            int v6BodyLen = (V6BodyBin == null || V6BodyBin.Length == 0) ? 0 : V6BodyBin.Length;
 
             if (!Constant.CMD_CONN.ToUpper().Equals(Body.ClientHeader.cmd.ToUpper()))
             {
-                v6BodyBin = RC4Cryption.DoEncrypt(v6bodyKey, v6BodyBin);
+                V6BodyBin = RC4Cryption.DoEncrypt(v6bodyKey, V6BodyBin);
             }
 
             ByteBuffer v6ByteBuffer = ByteBuffer.Allocate(Constant.V6_HEAD_LENGTH + v6BodyLen + Constant.CRC_LEN);
             v6ByteBuffer.putChar(Constant.MAGIC);
             v6ByteBuffer.putChar(Constant.V6_VERSION);
             v6ByteBuffer.putInt(v6BodyLen);
-            v6ByteBuffer.putBytes(v6BodyBin);
+            v6ByteBuffer.putBytes(V6BodyBin);
             uint crc = Adler32.checkCRC(v6ByteBuffer.ToArray(), 0, Constant.V6_HEAD_LENGTH + v6BodyLen);
             v6ByteBuffer.putUint(crc);
             logger.InfoFormat("---> send v6 packet cmd:{0},appAccount:{1}", Body.ClientHeader.cmd, user.AppAccount);

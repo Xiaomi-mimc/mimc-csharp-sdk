@@ -89,22 +89,22 @@ namespace com.xiaomi.mimc.common
         public const String FE_URL_STAGING = "10.38.162.154";
         public const int FE_PORT_STAGING = 5222;
 
-        public static int MIMC_MAX_PACKET_SIZE =10240;
+        public static int MIMC_MAX_PACKET_SIZE =15 * 1024;
 
-//         public static string CREATE_UNLIMITE_CHAT_URL= "http://10.38.162.149/api/uctopic/";
-//         public static string DISMISS_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/";
-//         public static string QUERY_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/topics/";
-//         public static string QUERY_UNLIMITE_CHAT_ONLINE_INFO_URL = "http://10.38.162.149/api/uctopic/onlineinfo";
-//         public static string QUERY_UNLIMITE_CHAT_USERLIST_URL = "http://10.38.162.149/api/uctopic/userlist";
+        //public static string CREATE_UNLIMITE_CHAT_URL= "http://10.38.162.149/api/uctopic/";
+        //public static string DISMISS_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/";
+        //public static string QUERY_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/topics/";
+        //public static string QUERY_UNLIMITE_CHAT_ONLINE_INFO_URL = "http://10.38.162.149/api/uctopic/onlineinfo";
+        //public static string QUERY_UNLIMITE_CHAT_USERLIST_URL = "http://10.38.162.149/api/uctopic/userlist";
 
-//         public static string QUERY_P2P_ONTIME_URL = "http://10.38.166.51:40123/api/msg/p2p/queryOnTime";
-//         public static string QUERY_P2P_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2p/queryOnCount/";
-//         public static string QUERY_P2T_ONTIME_URL = "http://10.38.162.149/api/msg/p2t/queryOnTime/";
-//         public static string QUERY_P2T_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2t/queryOnCount/";
-//         public static string QUERY_P2U_ONTIME_URL = "http://10.38.162.149/api/msg/p2u/queryOnTime/";
-//         public static string QUERY_P2U_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2u/queryOnCount/";
-//         public static string UPDATE_P2P_EXTRA_URL = "http://10.38.162.149/api/msg/p2p/extra/update";
-//         public static string UPDATE_P2T_EXTRA_URL = "http://10.38.162.149/api/msg/p2t/extra/update";
+        //public static string QUERY_P2P_ONTIME_URL = "http://10.38.166.51:40123/api/msg/p2p/queryOnTime";
+        //public static string QUERY_P2P_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2p/queryOnCount/";
+        //public static string QUERY_P2T_ONTIME_URL = "http://10.38.162.149/api/msg/p2t/queryOnTime/";
+        //public static string QUERY_P2T_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2t/queryOnCount/";
+        //public static string QUERY_P2U_ONTIME_URL = "http://10.38.162.149/api/msg/p2u/queryOnTime/";
+        //public static string QUERY_P2U_ONCOUNT_URL = "http://10.38.162.149/api/msg/p2u/queryOnCount/";
+        //public static string UPDATE_P2P_EXTRA_URL = "http://10.38.162.149/api/msg/p2p/extra/update";
+        //public static string UPDATE_P2T_EXTRA_URL = "http://10.38.162.149/api/msg/p2t/extra/update";
 
         public static string CREATE_UNLIMITE_CHAT_URL = "https://mimc.chat.xiaomi.net/api/uctopic/";
         public static string DISMISS_UNLIMITE_CHAT_URL = "https://mimc.chat.xiaomi.net/api/uctopic/";
@@ -120,5 +120,7 @@ namespace com.xiaomi.mimc.common
         public static string QUERY_P2U_ONCOUNT_URL = "https://mimc.chat.xiaomi.net/api/msg/p2u/queryOnCount/";
         public static string UPDATE_P2P_EXTRA_URL = "https://mimc.chat.xiaomi.net/api/msg/p2p/extra/update";
         public static string UPDATE_P2T_EXTRA_URL = "https://mimc.chat.xiaomi.net/api/msg/p2t/extra/update";
+
+
     }
 }

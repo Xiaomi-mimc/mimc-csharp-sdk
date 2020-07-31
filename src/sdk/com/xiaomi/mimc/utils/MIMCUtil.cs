@@ -183,7 +183,7 @@ namespace com.xiaomi.mimc.utils
             logger.DebugFormat("{0} CreateClientHeader cmd:{1},msgId:{2}", user.AppAccount, cmd, msgId);
             ClientHeader clientHeader = new ClientHeader();
             clientHeader.id = msgId;
-            clientHeader.uuid = user.Uuid;
+            clientHeader.uuid = (long)user.Uuid;
             clientHeader.chid = Constant.MIMC_CHID;
             clientHeader.resource = user.Resource;
             clientHeader.cmd = cmd;

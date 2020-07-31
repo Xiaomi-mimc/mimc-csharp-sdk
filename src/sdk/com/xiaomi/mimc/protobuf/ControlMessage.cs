@@ -7,23 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from: control_message.proto
-/*
-
-* ==============================================================================
-*
-* Filename: $safeitemname$
-* Description: 
-*
-* Created: $time$
-* Compiler: Visual Studio 2017
-*
-* Author: zhangming8
-* Company: Xiaomi.com
-*
-* ==============================================================================
-*/
-namespace sdk.protocol
+// Generated from: proto/control_message.proto
+namespace protocol
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PushServiceConfigMsg")]
   public partial class PushServiceConfigMsg : global::ProtoBuf.IExtensible

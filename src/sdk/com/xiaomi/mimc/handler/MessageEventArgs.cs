@@ -6,19 +6,13 @@ namespace com.xiaomi.mimc.handler
 {
     public class MessageEventArgs : EventArgs
     {
-        private readonly MIMCUser user;
+        private List<P2PMessage> packets;
 
-        private readonly List<P2PMessage> packets;
-
-        public MessageEventArgs(MIMCUser user, List<P2PMessage> packets)
+        public MessageEventArgs(List<P2PMessage> packets)
         {
-            this.user = user;
-            this.packets = packets;
-
+            this.Packets = packets;
         }
 
-        public List<P2PMessage> Packets => packets;
-
-        public MIMCUser User => user;
+        public List<P2PMessage> Packets { get => packets; set => packets = value; }
     }
 }

@@ -18,20 +18,17 @@ namespace com.xiaomi.mimc.packet
 {
     public class MIMCObject
     {
-        private string type;
-        private Object packet;
+        private Object content;
 
         public MIMCObject()
         {
         }
 
-        public MIMCObject(string type, object packet)
+        public MIMCObject(Object content)
         {
-            this.Type = type;
-            this.Packet = packet;
+            this.Content = content;
         }
 
-        public string Type { get; set; }
-        public object Packet { get; set; }
+        public object Content { get => content; set => content = value; }
     }
 }

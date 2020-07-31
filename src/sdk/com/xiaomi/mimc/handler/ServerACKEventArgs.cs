@@ -5,17 +5,13 @@ namespace com.xiaomi.mimc
 {
     public class ServerACKEventArgs : EventArgs
     {
-        private readonly MIMCUser user;
-        private readonly ServerAck serverAck;
+        private ServerAck serverAck;
 
-        public ServerACKEventArgs(MIMCUser user,ServerAck serverAck)
+        public ServerACKEventArgs(ServerAck serverAck)
         {
-            this.user = user;
-            this.serverAck = serverAck;
+            this.ServerAck = serverAck;
         }
 
-        public MIMCUser User => user;
-
-        public ServerAck ServerAck => serverAck;
+        public ServerAck ServerAck { get => serverAck; set => serverAck = value; }
     }
 }
