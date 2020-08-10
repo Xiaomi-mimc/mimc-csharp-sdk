@@ -6,7 +6,7 @@ package protocol;
 // 目前的功能
 //   上报打点数据
 //   上报日志
-//   去获取bucket数据
+//   去获取bucket数据    
 //   去获取新版本的配置
 //   同步各channel bind状态
 

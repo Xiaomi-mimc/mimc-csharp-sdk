@@ -1151,7 +1151,7 @@ namespace com.xiaomi.mimc
 
                 if (timeoutPackets.TryRemove(mimcPacket.packetId, out timeoutPacket))
                 {
-                    logger.DebugFormat("{0} ScanAndCallBack timeoutPackets TryRemove sucess,packetId:{1}",
+                    logger.DebugFormat("{0} ScanAndCallBack timeoutPackets TryRemove sucess, packetId:{1}",
                         this.appAccount, mimcPacket.packetId);
                 }
                 else

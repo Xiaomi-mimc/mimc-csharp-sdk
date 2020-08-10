@@ -74,7 +74,7 @@ namespace com.xiaomi.mimc.common
         public const int PING_TIMEVAL_MS = 15000;
         public const int CONNECT_TIMEOUT = 10000;
         public const int LOGIN_TIMEOUT = 10000;
-        public const int CHECK_TIMEOUT_TIMEVAL_MS = 10000;
+        public const int CHECK_TIMEOUT_TIMEVAL_MS = 10 * 1000;
         public const int RESET_SOCKET_TIMEOUT_TIMEVAL_MS = 50000;
 
         public const int UC_PING_TIMEVAL_MS = 50000;
@@ -91,7 +91,7 @@ namespace com.xiaomi.mimc.common
 
         public static int MIMC_MAX_PACKET_SIZE =15 * 1024;
 
-        //public static string CREATE_UNLIMITE_CHAT_URL= "http://10.38.162.149/api/uctopic/";
+        //public static string CREATE_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/";
         //public static string DISMISS_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/";
         //public static string QUERY_UNLIMITE_CHAT_URL = "http://10.38.162.149/api/uctopic/topics/";
         //public static string QUERY_UNLIMITE_CHAT_ONLINE_INFO_URL = "http://10.38.162.149/api/uctopic/onlineinfo";
@@ -120,7 +120,5 @@ namespace com.xiaomi.mimc.common
         public static string QUERY_P2U_ONCOUNT_URL = "https://mimc.chat.xiaomi.net/api/msg/p2u/queryOnCount/";
         public static string UPDATE_P2P_EXTRA_URL = "https://mimc.chat.xiaomi.net/api/msg/p2p/extra/update";
         public static string UPDATE_P2T_EXTRA_URL = "https://mimc.chat.xiaomi.net/api/msg/p2t/extra/update";
-
-
     }
 }

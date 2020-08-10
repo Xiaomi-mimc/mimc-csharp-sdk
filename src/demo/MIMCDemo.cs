@@ -318,15 +318,15 @@ namespace sdk.demo
             String userListResult = user5566.GetUnlimitedGroupUsers(topicId);
             logger.InfoFormat("SendUnlimitedGroupMessage userListResult:{0}", userListResult);
             String packetId = null;
-            for (int i = 0; i < 10000000; i++)
+            for (int i = 0; i < 1; i++)
             {
-                packetId = user5566.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 5566 " + DateTime.Now.ToString("u")), "UC");
+                packetId = user5566.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 5566 " + DateTime.Now.ToString("u")), "UC", false);
                 logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3}, uuid2:{4}", user5566.AppAccount, topicId, packetId, user5566.Uuid, user9527.Uuid);
-                packetId = user9527.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 9527 " + DateTime.Now.ToString("u")), "UC");
-                logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3}, uuid2:{4}", user9527.AppAccount, topicId, packetId, user9527.Uuid, user5566.Uuid);
+                //packetId = user9527.SendUnlimitedGroupMessage(topicId, UTF8Encoding.Default.GetBytes("Hi,everybody! I am 9527 " + DateTime.Now.ToString("u")), "UC", false);
+                //logger.DebugFormat("SendUnlimitedGroupMessage, {0}-->{1}, PacketId:{2},uuid:{3}, uuid2:{4}", user9527.AppAccount, topicId, packetId, user9527.Uuid, user5566.Uuid);
                 Thread.Sleep(5 *1000);
             }
-            Thread.Sleep(20000);
+            Thread.Sleep(1000);
             user9527.QuitUnlimitedGroup(topicId);
             Thread.Sleep(1000);
 
@@ -560,7 +560,9 @@ namespace sdk.demo
             }
             foreach (P2UMessage msg in packets)
             {
-                logger.InfoFormat(">>>> HandleUnlimitedGroupMessage, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}, type:{5}",
+                logger.InfoFormat("+++++++++++++++++++++++++++++++++++++++++++" +
+                    "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++Success" +
+                    "+++++++++++++++++++++++++++++++++ HandleUnlimitedGroupMessage, from:{0}, packetId:{1}, sequence:{2}, ts:{3}, payload:{4}, type:{5}",
                       msg.FromAccount, msg.PacketId, msg.Sequence, msg.Timestamp, Encoding.UTF8.GetString(msg.Payload), msg.BizType);
             }
 
@@ -569,7 +571,9 @@ namespace sdk.demo
         public void HandleUnlimitedGroupMessageTimeout(object source, SendUnlimitedGroupMessageTimeoutEventArgs e)
         {
             P2UMessage msg = e.Packet;
-            logger.InfoFormat(">>>> HandleUnlimitedGroupMessageTimeout, from:{0}, packetId:{1}, type:{2}",
+            logger.InfoFormat("------------------------------------------------" +
+                "--------------------------------------------------------------Timeout" +
+                "---------------------------- HandleUnlimitedGroupMessageTimeout, from:{0}, packetId:{1}, type:{2}",
                      msg.FromAccount, msg.PacketId, msg.BizType);
         }
 

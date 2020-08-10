@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+// Option: missing-value detection (*Specified/ShouldSerialize*/Reset*) enabled
+    
 // Generated from: proto/control_message.proto
 namespace protocol
 {
@@ -15,46 +17,91 @@ namespace protocol
   {
     public PushServiceConfigMsg() {}
     
-    private bool _fetchBucket = default(bool);
+    private bool? _fetchBucket;
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"fetchBucket", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(default(bool))]
     public bool fetchBucket
     {
-      get { return _fetchBucket; }
+      get { return _fetchBucket?? default(bool); }
       set { _fetchBucket = value; }
     }
-    private bool _useBucketV2 = default(bool);
+    [global::System.Xml.Serialization.XmlIgnore]
+    [global::System.ComponentModel.Browsable(false)]
+    public bool fetchBucketSpecified
+    {
+      get { return this._fetchBucket != null; }
+      set { if (value == (this._fetchBucket== null)) this._fetchBucket = value ? this.fetchBucket : (bool?)null; }
+    }
+    private bool ShouldSerializefetchBucket() { return fetchBucketSpecified; }
+    private void ResetfetchBucket() { fetchBucketSpecified = false; }
+    
+    private bool? _useBucketV2;
     [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"useBucketV2", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(default(bool))]
     public bool useBucketV2
     {
-      get { return _useBucketV2; }
+      get { return _useBucketV2?? default(bool); }
       set { _useBucketV2 = value; }
     }
-    private int _clientVersion = default(int);
+    [global::System.Xml.Serialization.XmlIgnore]
+    [global::System.ComponentModel.Browsable(false)]
+    public bool useBucketV2Specified
+    {
+      get { return this._useBucketV2 != null; }
+      set { if (value == (this._useBucketV2== null)) this._useBucketV2 = value ? this.useBucketV2 : (bool?)null; }
+    }
+    private bool ShouldSerializeuseBucketV2() { return useBucketV2Specified; }
+    private void ResetuseBucketV2() { useBucketV2Specified = false; }
+    
+    private int? _clientVersion;
     [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"clientVersion", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
     public int clientVersion
     {
-      get { return _clientVersion; }
+      get { return _clientVersion?? default(int); }
       set { _clientVersion = value; }
     }
-    private int _cloudVersion = default(int);
+    [global::System.Xml.Serialization.XmlIgnore]
+    [global::System.ComponentModel.Browsable(false)]
+    public bool clientVersionSpecified
+    {
+      get { return this._clientVersion != null; }
+      set { if (value == (this._clientVersion== null)) this._clientVersion = value ? this.clientVersion : (int?)null; }
+    }
+    private bool ShouldSerializeclientVersion() { return clientVersionSpecified; }
+    private void ResetclientVersion() { clientVersionSpecified = false; }
+    
+    private int? _cloudVersion;
     [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"cloudVersion", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
     public int cloudVersion
     {
-      get { return _cloudVersion; }
+      get { return _cloudVersion?? default(int); }
       set { _cloudVersion = value; }
     }
-    private int _dots = default(int);
+    [global::System.Xml.Serialization.XmlIgnore]
+    [global::System.ComponentModel.Browsable(false)]
+    public bool cloudVersionSpecified
+    {
+      get { return this._cloudVersion != null; }
+      set { if (value == (this._cloudVersion== null)) this._cloudVersion = value ? this.cloudVersion : (int?)null; }
+    }
+    private bool ShouldSerializecloudVersion() { return cloudVersionSpecified; }
+    private void ResetcloudVersion() { cloudVersionSpecified = false; }
+    
+    private int? _dots;
     [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"dots", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
     public int dots
     {
-      get { return _dots; }
+      get { return _dots?? default(int); }
       set { _dots = value; }
     }
+    [global::System.Xml.Serialization.XmlIgnore]
+    [global::System.ComponentModel.Browsable(false)]
+    public bool dotsSpecified
+    {
+      get { return this._dots != null; }
+      set { if (value == (this._dots== null)) this._dots = value ? this.dots : (int?)null; }
+    }
+    private bool ShouldSerializedots() { return dotsSpecified; }
+    private void Resetdots() { dotsSpecified = false; }
+    
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
